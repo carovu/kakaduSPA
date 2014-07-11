@@ -1,0 +1,15 @@
+[
+    {
+        "id": "q1",
+        "type": "simple",
+        "question": "Test question 1: Bla bla bla?",
+        "answer": "Test answer 1 of course 1: Bla bla bla!"
+    },
+    {
+        "id": "q2",
+        "type": "simple",
+        "question": "Test question 2: Lol lol lol?",
+        "answer": "Test answer 2 of course 1: Lol lol!"
+    }
+]
+

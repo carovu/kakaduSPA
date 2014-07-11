@@ -1,0 +1,16 @@
+[
+    {
+        "id": "c1",
+        "age": 0, 
+        "name": "Metropolises", 
+        "description": "In this course you can find questions to capital cities of different continents. The rest of this description is just filler text, so you can have an impression how it will look with more text. The rest of this description is just filler text, so you can have an impression how it will look with more text. The rest of this description is just filler text, so you can have an impression how it will look with more text.",
+        "catalog": "1"
+    },
+    {
+        "id": "c2",
+        "age": 1, 
+        "name": "General Knowledge", 
+        "description": "In this course you can find questions from different themes. The rest of this description is just filler text, so you can have an impression how it will look with more text. The rest of this description is just filler text, so you can have an impression how it will look with more text. The rest of this description is just filler text, so you can have an impression how it will look with more text. The rest of this description is just filler text, so you can have an impression how it will look with more text.",
+        "catalog": "2"
+    }
+]
