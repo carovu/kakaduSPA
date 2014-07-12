@@ -28,4 +28,3 @@ kakaduServices.factory('Question', ['$resource',
       query: {method:'GET', params:{questionId:'questions'}, isArray:true}
     });
   }]);
-
