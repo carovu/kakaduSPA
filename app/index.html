@@ -15,11 +15,15 @@
   <body>
   <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li><a ng-href="#/courses">Home</a></li>
+          <li><a ng-href="#/">Home</a></li>
+          <li><a ng-href="#/courses">Courses</a></li>
         </ul>
         <h3 class="text-muted">Kakadu</h3>
-  </div>
+  </div> 
 
+    <div id="flash" class="alert-box alert" ng-show="flash">
+        {{ flash }}
+    </div>
   <div ng-view></div>
 
     <!-- build:js(.) scripts/vendor.js -->
@@ -35,15 +39,16 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/courses.js"></script>
-        <script src="scripts/controllers/learning.js"></script>
         <script src="scripts/services/services.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/courses.js"></script> 
+        
         <!-- endbuild -->
 </body>
 </html>

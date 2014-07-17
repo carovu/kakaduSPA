@@ -6,9 +6,8 @@
  * @description
  * # Controller for the login
  */
- 
-angular.module('kakaduSpaApp')
-  .controller('LoginCtrl', ['$scope', 'User',
-  function($scope, User) {
-    $scope.users = User.query();
-  }]);
+
+angular.module('kakaduSpaApp').controller("LoginCtrl", function($scope, $location, AuthenticationService) {
+	
+  };
+});

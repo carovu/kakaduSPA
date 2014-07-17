@@ -8,23 +8,39 @@
 
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
 
-kakaduServices.factory('User', ['$resource',
-  function($resource){
-    return $resource('tmpJSONFiles_todelete/:userId.json', {}, {
-      query: {method:'GET', params:{userId:'users'}, isArray:true}
-    });
-  }]);
+kakaduServices.factory('Test', function($resource) {
+  return $resource('/kakadu/public/api/v1/learning/next');
+});
 
-kakaduServices.factory('Course', ['$resource',
-  function($resource){
-    return $resource('tmpJSONFiles_todelete/:courseId.json', {}, {
-      query: {method:'GET', params:{courseId:'courses'}, isArray:true}
-    });
-  }]);
+kakaduServices.factory("FlashService", function($rootScope) {
+  return {
+    show: function(message) {
+      $rootScope.flash = message;
+    },
+    clear: function() {
+      $rootScope.flash = "";
+    }
+  }
+});
 
-kakaduServices.factory('Question', ['$resource',
-  function($resource){
-    return $resource('tmpJSONFiles_todelete/:questionId.json', {}, {
-      query: {method:'GET', params:{questionId:'questions'}, isArray:true}
-    });
-  }]);
+kakaduServices.factory('CoursesService', function($http) {
+  return {
+    get: function() {
+      return $http.get('http://localhost/kakadu/public/api/spa/courses');
+    }
+  };
+});
+
+kakaduServices.factory("SessionService", function() {
+  return {
+    get: function(key) {
+      return sessionStorage.getItem(key);
+    },
+    set: function(key, val) {
+      return sessionStorage.setItem(key, val);
+    },
+    unset: function(key) {
+      return sessionStorage.removeItem(key);
+    }
+  }
+});
