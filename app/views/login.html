@@ -1,33 +1,33 @@
 <!-- Login view, part of our index.html view -->
-<div class="container0">
-<div class="col-md-6 col-md-offset-3">
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
 
-  <div class="page-header">
-    <!-- <img ng-src="images/"> -->
-    <h1>Please sign in</h1> 
-  </div>
+        <div class="page-header">
+            <img class="img-responsive" src="images/kakadu2.png">
+            <h1>Please sign in</h1> 
+        </div>
 
-  <!-- FORM -->
-<form class="form-horizontal" ng-submit="login()">
-    <div class="control-group">
-        <label class="control-label" for="inputEmail">E-Mail</label>
-        <div class="controls">
-            <input type="text" id="inputEmail" class="form-control" placeholder="alex@example.com" ng-model="credentials.email" required/>
-        </div>
+        <!-- Login form -->
+        <form class="form-horizontal" ng-submit="login()">
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">E-Mail</label>
+                <div class="controls">
+                    <input type="text" id="inputEmail" class="form-control" placeholder="alex@example.com" ng-model="credentials.email" required/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <div class="controls">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="password" ng-model="password" required/>
+                </div>
+            </div>
+            <span class="help-block"></span>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                </div>
+            </div>
+            </div>
+        </form>
     </div>
-    <div class="control-group">
-        <label class="control-label" for="inputPassword">Password</label>
-        <div class="controls">
-            <input type="password" id="inputPassword" class="form-control" placeholder="password" ng-model="password" required/>
-        </div>
-    </div>
-    <span class="help-block"></span>
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
-        </div>
-    </div>
-    </div>
-</form>
-</div>
 </div>

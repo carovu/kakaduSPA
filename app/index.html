@@ -13,18 +13,42 @@
     <!-- endbuild -->
   </head>
   <body>
-  <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a ng-href="#/">Home</a></li>
-          <li><a ng-href="#/courses">Courses</a></li>
-        </ul>
-        <h3 class="text-muted">Kakadu</h3>
-  </div> 
 
-    <div id="flash" class="alert-box alert" ng-show="flash">
-        {{ flash }}
+    <!-- Header/ Menue -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#/" class="navbar-brand pull-left">Kakadu</a> 
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="glyphicon glyphicon-align-justify"></span>
+                </button>
+            </div>
+
+            <nav class="navbar-collapse collapse">
+                <ul class="navbar-nav nav pull-right">
+                    <li><a href="#/courses">Courses</a></li>
+                </ul>
+            </nav>
+        </div>
+    </nav>
+
+    <!-- Contents -->
+    <div class="container">
+        <div id="flash" class="alert-box alert" ng-show="flash">{{ flash }}</div>
+        <div ng-view></div>
     </div>
-  <div ng-view></div>
+
+    <!-- Footer  -->
+    <div class="footer navbar-fixed-bottom">
+        <div class="panel-footer">
+            <div class="row-fluid span12">
+                <p class="text-center">
+                    Version 2.0 of Kakadu 
+                    <a href="http://uibk.ac.at/">Universit&auml;t Innsbruck</a> - <a href="http://informatik.uibk.ac.at/">Institut f&uuml;r Informatik</a> - <a href="http://dbis-informatik.uibk.ac.at/">Databases and Information Systems</a>             
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->

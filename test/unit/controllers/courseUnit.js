@@ -17,52 +17,29 @@ describe('Unit test', function() {
   beforeEach(module('kakaduSpaApp'));
   beforeEach(module('kakaduSpaAppServices'));
   
+  it('should connect with Kakadu sucessfully',inject(function(CoursesService, $httpBackend) {
+    $httpBackend.expect('GET', 'http://localhost/kakadu/public/api/spa/courses');
+  }));
+
   describe('CourseListCtrl', function() {
-    var scope, ctrl, $httpBackend; 
-
-    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
-        $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('tmpJSONFiles_todelete/courses.json').
-            respond([{name: 'General Knowledge'}, {name: 'Metropolises'}]);
-
-        scope = $rootScope.$new();
-        ctrl = $controller('CourseListCtrl', {$scope: scope});
-    }));
-
-    it('should create "courses" model with 2 courses fetched from xhr', function() {
-      expect(scope.courses).toEqualData([]);
-      $httpBackend.flush();
-
-      expect(scope.courses).toEqualData([{name: 'General Knowledge'}, {name: 'Metropolises'}]);
-    });
-
-    it('should set the default value of orderProp model', function() {
-      expect(scope.orderProp).toBe('age');
-    });
   }); 
 
   describe('CourseQuestionCtrl', function(){
-    var scope, ctrl, $httpBackend, 
-    testData = function(){
-      return{
-        question: {id: '1', type: 'simple',question: 'test question', answer: 'test answer'}
-      };
-    };
-
-    beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
-      $httpBackend = _$httpBackend_;
-      $httpBackend.expectGET('tmpJSONFiles_todelete/test.json').respond(testData());
-
-      $routeParams.courseId = 'test';
-      scope = $rootScope.$new();
-      ctrl = $controller('CourseQuestionCtrl', {$scope: scope});
-    }));
-
-    it('should fetch course question view', function() {
-      expect(scope.course).toEqualData({});
-      $httpBackend.flush();
-
-      expect(scope.course).toEqualData(testData());
-    });
   });
 });
+
+/* Login unit test
+it('should get login success',
+  inject(function(LoginService, $httpBackend) {
+
+    $httpBackend.expect('POST', 'https://api.mydomain.com/login')
+      .respond(200, "[{ success : 'true', id : 123 }]");
+
+    LoginService.login('test@test.com', 'password')
+      .then(function(data) {
+        expect(data.success).toBeTruthy();
+    });
+
+  $httpBackend.flush();
+});
+*/

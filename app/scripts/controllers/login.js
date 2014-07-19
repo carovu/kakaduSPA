@@ -9,5 +9,4 @@
 
 angular.module('kakaduSpaApp').controller("LoginCtrl", function($scope, $location, AuthenticationService) {
 	
-  };
 });

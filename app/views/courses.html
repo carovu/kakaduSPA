@@ -1,34 +1,29 @@
 <!-- Courseslist view, part of our index.html view -->
-  <!-- PAGE TITLE -->
-  <div class="page-header">
-    <!-- <img ng-src="images/"> -->
-    <h1>Courses</h1> 
-  </div>
-<div class="alert-box">{{ message }}</div>
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2">
-        <!--Sidebar content-->
+	<div class="page-header">
+		<h1>Courses</h1> 
+	</div>
 
-        Search: <input ng-model="query">
-        <p>Sort by:
-          <select ng-model="orderProp">
-            <option value="name">Alphabetical</option>
-            <option value="age">Newest</option>
-          </select>
-        </p>
-        
-      </div>
-      <div class="col-md-10">
-        <!--Body content-->
-        
-        <ul class="courses">
-          <li ng-repeat="course in courses | filter:query | orderBy:orderProp" class="thumbnail">
-            <a href="#/course/{{course.id}}/learning">{{course.name}}</a>
-            <p>{{course.description}}</p>
-          </li>
-        </ul>
-
-      </div>
-    </div>
+	<div class="alert-box">{{ message }}</div>
+	<div class="row">
+		<div class="col-md-3">
+			<!--Sidebar content-->
+			Search: <input ng-model="query">
+			<p>Sort by:
+			  <select ng-model="orderProp">
+			    <option value="name">Alphabetical</option>
+			    <option value="age">Newest</option>
+			  </select>
+			</p>
+		</div>
+		<div class="col-md-9">
+			<!--Body content-->
+			<ul class="courses">
+				<li ng-repeat="course in courses | filter:query | orderBy:orderProp" class="thumbnail">
+					<a href="#/course/{{course.id}}/learning">{{course.name}}</a>
+					<p>{{course.description}}</p>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
