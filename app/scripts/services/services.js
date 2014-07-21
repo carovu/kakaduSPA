@@ -31,6 +31,14 @@ kakaduServices.factory('CoursesService', function($http) {
   };
 });
 
+kakaduServices.factory('TokenService', function($http) {
+  return {
+    get: function() {
+      return $http.get('http://localhost/kakadu/public/api/spa/token');
+    }
+  };
+});
+
 kakaduServices.factory("SessionService", function() {
   return {
     get: function(key) {
@@ -43,4 +51,45 @@ kakaduServices.factory("SessionService", function() {
       return sessionStorage.removeItem(key);
     }
   }
+});
+
+kakaduServices.factory("AuthenticationService", function($http, $sanitize, SessionService, FlashService, TokenService) {
+
+  var cacheSession   = function() {
+    SessionService.set('authenticated', true);
+  };
+
+  var uncacheSession = function() {
+    SessionService.unset('authenticated');
+  };
+
+  var loginError = function(response) {
+    FlashService.show(response.flash);
+  };
+
+  var sanitizeCredentials = function(credentials) {
+    return {
+      email: $sanitize(credentials.email),
+      password: $sanitize(credentials.password),
+    };
+  };
+
+  return {
+    login: function(credentials) {
+      console.log(JSON.stringify(sanitizeCredentials(credentials)));
+      var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
+      login.success(cacheSession);
+      login.success(FlashService.clear);
+      login.error(loginError);
+      return login;
+    },
+    logout: function() {
+      var logout = $http.get("/auth/logout");
+      logout.success(uncacheSession);
+      return logout;
+    },
+    isLoggedIn: function() {
+      return SessionService.get('authenticated');
+    }
+  };
 });
