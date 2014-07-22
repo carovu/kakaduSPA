@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-var kakaduSpaApp = angular.module('kakaduSpaApp', [
+angular.module('kakaduSpaApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -17,9 +17,7 @@ var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngSanitize',
     'ngTouch',
     'kakaduSpaAppServices'
-  ]);
-
-kakaduSpaApp.config(function ($routeProvider) {
+  ]).config(function ($routeProvider) {
   $routeProvider
   .when('/', {
     templateUrl: 'views/login.html',
@@ -38,6 +36,7 @@ kakaduSpaApp.config(function ($routeProvider) {
   });
 });
 
+/*
 kakaduSpaApp.config(function($httpProvider) {
   var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
     var success = function(response) {
@@ -62,7 +61,7 @@ kakaduSpaApp.config(function($httpProvider) {
 
 });
 
-/*
+
 kakaduSpaApp.run(function($rootScope, $location, AuthenticationService, FlashService) {
   var routesThatRequireAuth = ['/courses'];
 

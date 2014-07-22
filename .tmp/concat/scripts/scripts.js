@@ -7,16 +7,15 @@
  *
  * Main module of the application.
  */
-var kakaduSpaApp = angular.module('kakaduSpaApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'kakaduSpaAppServices'
-  ]);
-kakaduSpaApp.config([
+angular.module('kakaduSpaApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngResource',
+  'ngRoute',
+  'ngSanitize',
+  'ngTouch',
+  'kakaduSpaAppServices'
+]).config([
   '$routeProvider',
   function ($routeProvider) {
     $routeProvider.when('/', {
@@ -31,29 +30,32 @@ kakaduSpaApp.config([
     }).otherwise({ redirectTo: '/' });
   }
 ]);
-kakaduSpaApp.config([
-  '$httpProvider',
-  function ($httpProvider) {
-    var logsOutUserOn401 = function ($location, $q, SessionService, FlashService) {
-      var success = function (response) {
-        return response;
-      };
-      var error = function (response) {
-        if (response.status === 401) {
-          SessionService.unset('authenticated');
-          $location.path('/login');
-          FlashService.show(response.data.flash);
-        }
-        return $q.reject(response);
-      };
-      return function (promise) {
-        return promise.then(success, error);
-      };
-    };
-    $httpProvider.responseInterceptors.push(logsOutUserOn401);
-  }
-]);
 /*
+kakaduSpaApp.config(function($httpProvider) {
+  var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
+    var success = function(response) {
+      return response;
+    };
+
+    var error = function(response) {
+      if(response.status === 401) {
+        SessionService.unset('authenticated');
+        $location.path('/login');
+        FlashService.show(response.data.flash);
+      }
+      return $q.reject(response);
+    };
+
+    return function(promise) {
+      return promise.then(success, error);
+    };
+  };
+
+  $httpProvider.responseInterceptors.push(logsOutUserOn401);
+
+});
+
+
 kakaduSpaApp.run(function($rootScope, $location, AuthenticationService, FlashService) {
   var routesThatRequireAuth = ['/courses'];
 
