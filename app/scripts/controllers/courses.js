@@ -29,7 +29,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
 */
 angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', ['$scope', '$routeParams', '$http',
   function($scope, $routeParams, $http, $location, AuthenticationService) {
-    $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
+    $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
 
         $scope.logout = function() {
