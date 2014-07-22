@@ -222,16 +222,17 @@ module.exports = function (grunt) {
     //         '.tmp/styles/{,*/}*.css'
     //       ]
     //     }
-    //   }
+     //  }
     // },
     // uglify: {
     //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
+    //    options: {mangle: false},
+    //    files: {
+     //      '<%= yeoman.dist %>/scripts/scripts.js': [
+     //        '<%= yeoman.dist %>/scripts/scripts.js'
+     //      ]
+     //    }
+     //  }
     // },
     // concat: {
     //   dist: {}
@@ -374,6 +375,7 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-protractor-runner');
+
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);

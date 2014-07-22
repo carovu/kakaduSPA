@@ -7,11 +7,11 @@
  * # Controller for the login
  */
 
-angular.module('kakaduSpaApp').controller("LoginCtrl", function($scope, $location, AuthenticationService) {
-  	$scope.credentials = { email: "", password: ""};
+angular.module('kakaduSpaApp').controller('LoginCtrl', function($scope, $location, AuthenticationService) {
+  	$scope.credentials = { email: '', password: ''};
 
   	$scope.login = function() {
-    	AuthenticationService.login($scope.credentials).success(function(data) {
+    	AuthenticationService.login($scope.credentials).success(function() {
     		console.log('success');
     		$location.path('/courses');
     	});

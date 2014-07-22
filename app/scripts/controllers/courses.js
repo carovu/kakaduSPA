@@ -7,15 +7,18 @@
  * # Controller for List of Courses
  */
  
-angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, courses) {
-    $scope.courses = courses.data;
+angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $location, AuthenticationService, CoursesService) {
+    CoursesService.get().success(function(data) {
+      $scope.courses = data;
+    });
+
     $scope.orderProp = 'age';
 
-        $scope.logout = function() {
-          AuthenticationService.logout().success(function() {
-          $location.path('/login');
-          });
-        };
+    $scope.logout = function() {
+      AuthenticationService.logout().success(function() {
+      $location.path('/login');
+      });
+    };
   });
 
 /**
@@ -25,7 +28,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, cou
  * # Controller for questions of chosen course
 */
 angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http) {
+  function($scope, $routeParams, $http, $location, AuthenticationService) {
     $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
 

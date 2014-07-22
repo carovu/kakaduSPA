@@ -27,15 +27,10 @@ kakaduSpaApp.config(function ($routeProvider) {
   })
   .when('/courses', {
     templateUrl: 'views/courses.html',
-    controller: 'CourseListCtrl',
-    resolve: {
-      courses : function(CoursesService) {
-        return CoursesService.get();
-      }
-    }
+    controller: 'CourseListCtrl'
   })
   .when('/course/:courseId/learning', {
-    templateUrl: 'views/course-question.html',
+    templateUrl: 'views/coursequestion.html',
     controller: 'CourseQuestionCtrl'
   })
   .otherwise({

@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="kakaduSpaApp">
+<html class="no-js">
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -10,17 +10,16 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
-    <!-- endbuild -->
   </head>
-  <body>
+  <body ng-app="kakaduSpaApp">
 
     <!-- Header/ Menue -->
     <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
+        <div class="container">
             <div class="navbar-header">
                 <a href="#/" class="navbar-brand pull-left">Kakadu</a> 
                 <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="glyphicon glyphicon-align-justify"></span>
+                    <span class="glyphicon glyphicon-align-justify"></span>
                 </button>
             </div>
 
@@ -33,10 +32,7 @@
     </nav>
 
     <!-- Contents -->
-    <div class="container">
-        <div id="flash" class="alert-box alert" ng-show="flash">{{ flash }}</div>
-        <div ng-view></div>
-    </div>
+    <div class="container" ng-view=""></div>
 
     <!-- Footer  -->
     <div class="footer navbar-fixed-bottom">
@@ -71,6 +67,7 @@
         <script src="scripts/services/services.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/courses.js"></script> 
+        <script src="scripts/services/test.js"></script>
         <!-- endbuild -->
 </body>
 </html>

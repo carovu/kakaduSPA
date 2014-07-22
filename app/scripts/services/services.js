@@ -1,26 +1,28 @@
 'use strict';
 
 /**
- * Services
- * It represents our RESTful client. We can make requests to the server for data in an easier way,
- * without having to deal with the lower-leve $http API, HTTP methods and URLs.
+ * @ngdoc service
+ * @name kakaduSpaApp.services
+ * @description
+ * # services
+ * Service in the kakaduSpaApp.
  */
-
+ 
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
 
 kakaduServices.factory('Test', function($resource) {
   return $resource('/kakadu/public/api/v1/learning/next');
 });
 
-kakaduServices.factory("FlashService", function($rootScope) {
+kakaduServices.factory('FlashService', function($rootScope) {
   return {
     show: function(message) {
       $rootScope.flash = message;
     },
     clear: function() {
-      $rootScope.flash = "";
+      $rootScope.flash = '';
     }
-  }
+  };
 });
 
 kakaduServices.factory('CoursesService', function($http) {
@@ -39,7 +41,7 @@ kakaduServices.factory('TokenService', function($http) {
   };
 });
 
-kakaduServices.factory("SessionService", function() {
+kakaduServices.factory('SessionService', function() {
   return {
     get: function(key) {
       return sessionStorage.getItem(key);
@@ -50,10 +52,10 @@ kakaduServices.factory("SessionService", function() {
     unset: function(key) {
       return sessionStorage.removeItem(key);
     }
-  }
+  };
 });
 
-kakaduServices.factory("AuthenticationService", function($http, $sanitize, SessionService, FlashService, TokenService) {
+kakaduServices.factory('AuthenticationService', function($http, $sanitize, SessionService, FlashService) {
 
   var cacheSession   = function() {
     SessionService.set('authenticated', true);
@@ -84,7 +86,7 @@ kakaduServices.factory("AuthenticationService", function($http, $sanitize, Sessi
       return login;
     },
     logout: function() {
-      var logout = $http.get("/auth/logout");
+      var logout = $http.get('/auth/logout');
       logout.success(uncacheSession);
       return logout;
     },
