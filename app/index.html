@@ -10,11 +10,15 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
   </head>
+
   <body ng-app="kakaduSpaApp">
 
     <!-- Header/ Menue -->
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <a href="#/" class="navbar-brand pull-left">Kakadu</a> 
@@ -33,18 +37,14 @@
 
     <!-- Contents -->
     <div class="container" ng-view=""></div>
-
+    <div id="push"></div>
     <!-- Footer  -->
-    <div class="footer navbar-fixed-bottom">
-        <div class="panel-footer">
-            <div class="row-fluid span12">
-                <p class="text-center">
-                    Version 2.0 of Kakadu 
-                    <a href="http://uibk.ac.at/">Universit&auml;t Innsbruck</a> - <a href="http://informatik.uibk.ac.at/">Institut f&uuml;r Informatik</a> - <a href="http://dbis-informatik.uibk.ac.at/">Databases and Information Systems</a>             
-                </p>
-            </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <div class="panel-footer text-center">
+            Version 2.0 of Kakadu 
+            <a href="http://uibk.ac.at/">Universit&auml;t Innsbruck</a> - <a href="http://informatik.uibk.ac.at/">Institut f&uuml;r Informatik</a> - <a href="http://dbis-informatik.uibk.ac.at/">Databases and Information Systems</a>             
         </div>
-    </div>
+    </nav>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -61,12 +61,11 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/services/services.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/courses.js"></script> 
-        <!-- endbuild -->
+<!-- endbuild -->
 </body>
 </html>

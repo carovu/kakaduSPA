@@ -25,18 +25,18 @@ kakaduServices.factory('FlashService', function($rootScope) {
   };
 });
 
-kakaduServices.factory('CoursesService', function($http) {
+kakaduServices.factory('TokenService', function($http) {
   return {
     get: function() {
-      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses');
+      return $http.get('http://localhost/kakadu/public/api/spa/token');
     }
   };
 });
 
-kakaduServices.factory('TokenService', function($http) {
+kakaduServices.factory('CoursesService', function($http) {
   return {
     get: function() {
-      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/token');
+      return $http.get('http://localhost/kakadu/public/api/spa/courses');
     }
   };
 });
@@ -55,7 +55,8 @@ kakaduServices.factory('SessionService', function() {
   };
 });
 
-kakaduServices.factory('AuthenticationService', function($http, $sanitize, SessionService, FlashService) {
+
+kakaduServices.factory('AuthenticationService', function($http,  $sanitize, SessionService, FlashService) {
 
   var cacheSession   = function() {
     SessionService.set('authenticated', true);
@@ -69,24 +70,16 @@ kakaduServices.factory('AuthenticationService', function($http, $sanitize, Sessi
     FlashService.show(response.flash);
   };
 
-  var sanitizeCredentials = function(credentials) {
-    return {
-      email: $sanitize(credentials.email),
-      password: $sanitize(credentials.password),
-    };
-  };
-
   return {
     login: function(credentials) {
-      console.log(JSON.stringify(sanitizeCredentials(credentials)));
-      var login = $http.post('http://dbis-fw.uibk.ac.at:6680api/spa/auth/login', JSON.stringify(credentials));
+      var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
       login.success(cacheSession);
       login.success(FlashService.clear);
       login.error(loginError);
       return login;
     },
     logout: function() {
-      var logout = $http.get('/auth/logout');
+      var logout = $http.get('http://localhost/kakadu/public/api/spa/auth/logout');
       logout.success(uncacheSession);
       return logout;
     },

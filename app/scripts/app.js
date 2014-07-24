@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('kakaduSpaApp', [
+var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -17,7 +17,8 @@ angular.module('kakaduSpaApp', [
     'ngSanitize',
     'ngTouch',
     'kakaduSpaAppServices'
-  ]).config(function ($routeProvider) {
+  ]);
+kakaduSpaApp.config(function ($routeProvider) {
   $routeProvider
   .when('/', {
     templateUrl: 'views/login.html',
@@ -36,7 +37,24 @@ angular.module('kakaduSpaApp', [
   });
 });
 
+kakaduSpaApp.run(function($http, TokenService) {
+  TokenService.get().success(function(data){
+    console.log(data);
+    $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
+  }).error(function (data, config) {
+      console.log('error data:');
+      console.log(data);
+      console.log('error config:');
+      console.log(config);
+  });
+});
 /*
+angular.module('kakaduSpaApp').config([
+  "$httpProvider", function($httpProvider) {
+    $http.defaults.headers.post['X-CSRF-Token'] = $cookies['csrftoken'];
+    $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+  }
+]);
 kakaduSpaApp.config(function($httpProvider) {
   var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
     var success = function(response) {

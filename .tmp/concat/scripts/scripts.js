@@ -7,15 +7,16 @@
  *
  * Main module of the application.
  */
-angular.module('kakaduSpaApp', [
-  'ngAnimate',
-  'ngCookies',
-  'ngResource',
-  'ngRoute',
-  'ngSanitize',
-  'ngTouch',
-  'kakaduSpaAppServices'
-]).config([
+var kakaduSpaApp = angular.module('kakaduSpaApp', [
+    'ngAnimate',
+    'ngCookies',
+    'ngResource',
+    'ngRoute',
+    'ngSanitize',
+    'ngTouch',
+    'kakaduSpaAppServices'
+  ]);
+kakaduSpaApp.config([
   '$routeProvider',
   function ($routeProvider) {
     $routeProvider.when('/', {
@@ -30,7 +31,28 @@ angular.module('kakaduSpaApp', [
     }).otherwise({ redirectTo: '/' });
   }
 ]);
+kakaduSpaApp.run([
+  '$http',
+  'TokenService',
+  function ($http, TokenService) {
+    TokenService.get().success(function (data) {
+      console.log(data);
+      $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
+    }).error(function (data, config) {
+      console.log('error data:');
+      console.log(data);
+      console.log('error config:');
+      console.log(config);
+    });
+  }
+]);
 /*
+angular.module('kakaduSpaApp').config([
+  "$httpProvider", function($httpProvider) {
+    $http.defaults.headers.post['X-CSRF-Token'] = $cookies['csrftoken'];
+    $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+  }
+]);
 kakaduSpaApp.config(function($httpProvider) {
   var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
     var success = function(response) {
@@ -95,22 +117,22 @@ kakaduServices.factory('FlashService', [
     };
   }
 ]);
-kakaduServices.factory('CoursesService', [
-  '$http',
-  function ($http) {
-    return {
-      get: function () {
-        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses');
-      }
-    };
-  }
-]);
 kakaduServices.factory('TokenService', [
   '$http',
   function ($http) {
     return {
       get: function () {
-        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/token');
+        return $http.get('http://localhost/kakadu/public/api/spa/token');
+      }
+    };
+  }
+]);
+kakaduServices.factory('CoursesService', [
+  '$http',
+  function ($http) {
+    return {
+      get: function () {
+        return $http.get('http://localhost/kakadu/public/api/spa/courses');
       }
     };
   }
@@ -143,23 +165,16 @@ kakaduServices.factory('AuthenticationService', [
     var loginError = function (response) {
       FlashService.show(response.flash);
     };
-    var sanitizeCredentials = function (credentials) {
-      return {
-        email: $sanitize(credentials.email),
-        password: $sanitize(credentials.password)
-      };
-    };
     return {
       login: function (credentials) {
-        console.log(JSON.stringify(sanitizeCredentials(credentials)));
-        var login = $http.post('http://dbis-fw.uibk.ac.at:6680api/spa/auth/login', JSON.stringify(credentials));
+        var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
         login.success(cacheSession);
         login.success(FlashService.clear);
         login.error(loginError);
         return login;
       },
       logout: function () {
-        var logout = $http.get('/auth/logout');
+        var logout = $http.get('http://localhost/kakadu/public/api/spa/auth/logout');
         logout.success(uncacheSession);
         return logout;
       },
@@ -187,8 +202,12 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', [
     };
     $scope.login = function () {
       AuthenticationService.login($scope.credentials).success(function () {
-        console.log('success');
         $location.path('/courses');
+      }).error(function (data, config) {
+        console.log('error data:');
+        console.log(data);
+        console.log('error config:');
+        console.log(config);
       });
     };
   }
@@ -213,6 +232,11 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', [
     $scope.logout = function () {
       AuthenticationService.logout().success(function () {
         $location.path('/login');
+      }).error(function (data, config) {
+        console.log('error data:');
+        console.log(data);
+        console.log('error config:');
+        console.log(config);
       });
     };
   }
@@ -228,11 +252,16 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
   '$routeParams',
   '$http',
   function ($scope, $routeParams, $http, $location, AuthenticationService) {
-    $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/' + $routeParams.courseId + '/learning').success(function (data) {
+    $http.get('http://localhost/kakadu/public/api/spa/course/' + $routeParams.courseId + '/learning').success(function (data) {
       $scope.question = data;
       $scope.logout = function () {
         AuthenticationService.logout().success(function () {
           $location.path('/login');
+        }).error(function (data, config) {
+          console.log('error data:');
+          console.log(data);
+          console.log('error config:');
+          console.log(config);
         });
       };
     });

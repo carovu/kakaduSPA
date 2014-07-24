@@ -28,7 +28,7 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'app/scripts/**/*.js',
       //'test/mock/**/*.js',
-      'test/unit/**/*.js'
+      'test/spec/**/*.js'
     ],
 
     // list of files / patterns to exclude

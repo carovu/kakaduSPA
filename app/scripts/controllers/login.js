@@ -12,8 +12,12 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function($scope, $locatio
 
   	$scope.login = function() {
     	AuthenticationService.login($scope.credentials).success(function() {
-    		console.log('success');
     		$location.path('/courses');
-    	});
+    	}).error(function (data, config) {
+    		console.log('error data:');
+    		console.log(data);
+      		console.log('error config:');
+      		console.log(config);
+		  });
   	};
 });
