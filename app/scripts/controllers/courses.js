@@ -32,8 +32,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
  * @description
  * # Controller for questions of chosen course
 */
-angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http, $location, AuthenticationService) {
+angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService) {
     $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
       $scope.logOut = function() {
@@ -48,4 +47,4 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', ['$scope', '$rou
         });
       };
     });
-  }]);
+  });

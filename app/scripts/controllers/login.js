@@ -16,8 +16,8 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function($scope, $locatio
     	}).error(function (data, config) {
     		console.log('error data:');
     		console.log(data);
-      		console.log('error config:');
-      		console.log(config);
+      	console.log('error config:');
+      	console.log(config);
 		  });
   	};
 });

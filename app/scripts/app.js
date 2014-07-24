@@ -18,7 +18,8 @@ var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngTouch',
     'kakaduSpaAppServices'
   ]);
-kakaduSpaApp.config(function ($routeProvider) {
+kakaduSpaApp.config(function ($routeProvider, $httpProvider) {
+  $httpProvider.defaults.withCredentials = true;
   $routeProvider
   .when('/', {
     templateUrl: 'views/login.html',
@@ -37,9 +38,8 @@ kakaduSpaApp.config(function ($routeProvider) {
   });
 });
 
-kakaduSpaApp.run(function($http, TokenService) {
+kakaduSpaApp.run(function($http, $cookieStore, $cookies, $timeout, TokenService) {
   TokenService.get().success(function(data){
-    console.log(data);
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {
       console.log('error data:');
@@ -49,12 +49,6 @@ kakaduSpaApp.run(function($http, TokenService) {
   });
 });
 /*
-angular.module('kakaduSpaApp').config([
-  "$httpProvider", function($httpProvider) {
-    $http.defaults.headers.post['X-CSRF-Token'] = $cookies['csrftoken'];
-    $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
-  }
-]);
 kakaduSpaApp.config(function($httpProvider) {
   var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
     var success = function(response) {
