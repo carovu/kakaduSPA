@@ -5,6 +5,24 @@
 */
 describe('E2E test', function() {
 
+  describe('LoginCtrl', function() {
+
+    beforeEach(function() {
+      browser.get('index.html#/');
+    });
+
+    it('testing login', function() {
+      var queryEmail = element(by.model('credentials.email'));
+      var queryPassword = element(by.model('credentials.password'));
+      queryEmail.sendKeys('alex@example.com');
+      queryPassword.sendKeys('password');
+      element(by.id('login')).click();
+      browser.getLocationAbsUrl().then(function(url) {
+        expect(url.split('#')[1]).toBe('/courses');
+      });
+    });
+  });
+
   describe('CourseListCtrl', function() {
 
       beforeEach(function() {

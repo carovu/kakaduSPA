@@ -32,8 +32,8 @@ describe('Unit test', function() {
 it('should get login success',
   inject(function(LoginService, $httpBackend) {
 
-    $httpBackend.expect('POST', 'https://api.mydomain.com/login')
-      .respond(200, "[{ success : 'true', id : 123 }]");
+    $httpBackend.expect('POST', 'http://localhost/kakadu/public/api/spa/auth/login')
+      .respond(200, "[{ email : 'true', password : 123 }]");
 
     LoginService.login('test@test.com', 'password')
       .then(function(data) {

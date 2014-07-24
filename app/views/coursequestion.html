@@ -1,4 +1,22 @@
-<!-- Question/learing view of our chosen course, part of our index.html view-->
+<!-- header for question/learning view, difference: has logout button -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="#/" class="navbar-brand pull-left">Kakadu</a> 
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="glyphicon glyphicon-align-justify"></span>
+			</button>
+		</div>
+
+		<nav class="navbar-collapse collapse">
+			<ul class="navbar-nav nav pull-right">
+				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
+			</ul>
+		</nav>
+	</div>
+</nav>
+
+<!-- Question/learning view of our chosen course, part of our index.html view-->
 <div class="container">
 	<div class="col-md-9">
 
@@ -22,6 +40,5 @@
 				<button type="next" class="btn btn-primary btn-large">next Question</button>
 			</p>
 		</div>
-		<button class="button large expand radius" ng-click="logout()">Log Out</button>
 	</div>
 </div>

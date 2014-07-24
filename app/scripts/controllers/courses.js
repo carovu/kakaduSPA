@@ -14,9 +14,9 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
 
     $scope.orderProp = 'age';
 
-    $scope.logout = function() {
+    $scope.logOut = function() {
       AuthenticationService.logout().success(function() {
-        $location.path('/login');
+        $location.path('/');
       }).error(function (data, config) {
         console.log('error data:');
         console.log(data);
@@ -36,11 +36,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', ['$scope', '$rou
   function($scope, $routeParams, $http, $location, AuthenticationService) {
     $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
-
-      $scope.logout = function() {
+      $scope.logOut = function() {
         AuthenticationService.logout().success(function() {
-          $location.path('/login');
+
         }).error(function (data, config) {
+          $location.path('/course/'+$routeParams.courseId+'/learning');
           console.log('error data:');
           console.log(data);
           console.log('error config:');
