@@ -66,3 +66,15 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
     }
   };
 });
+
+kakaduServices.factory('MultipleQuestion', function() {
+  return {
+    getAnswers: function(choices, answer) {
+      var rightAnswerMultiple = [];
+      angular.forEach(answer, function(answerNumber){
+        rightAnswerMultiple.push(choices[answerNumber]);
+      });
+      return rightAnswerMultiple;
+    }
+  };
+});

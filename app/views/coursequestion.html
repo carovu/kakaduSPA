@@ -56,10 +56,16 @@
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
 				<h2> <p>Choices</p></h2>
-				<p>{{question.choices}}</p>					
+				<!-- Show all choices in list than json format -->
+				<div ng-repeat="choice in question.choices">
+					<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice)">{{choice}}</button>
+					<br>
+				</div>				
 				<h2> <p>Answer</p></h2>
 				<p>{{question.answer}}</p>
-				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 	
+				<!-- show check button, if showCheckMultiple is true, else hide -->
+				<button type="check" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">check</button>
+				<button type="next" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">next</button> 	
 		    </div>
 		    <div ng-switch-when="dragdrop">
 				<h2><p>Question</p></h2>
@@ -74,7 +80,7 @@
 		
 	<!--<div>
 			 <p>
-				 <button type="check" class="btn btn-primary btn-large">check</button> 
+				<button type="check" class="btn btn-primary btn-large">check</button> 
 				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button>
 			</p>
 		</div>-->
@@ -99,4 +105,6 @@
 		<p>{{question.answer}}</p>
 		questionchoices, if there are:
 		<p>{{question.choices}}</p>
+		#questionchoices 
+		<p>{{question.choices.length}}</p>
 		-->
