@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="#/" class="navbar-brand pull-left">Kakadu</a> 
+			<a href="#/courses" class="navbar-brand pull-left">Kakadu</a> 
 			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="glyphicon glyphicon-align-justify"></span>
 			</button>
@@ -10,6 +10,7 @@
 
 		<nav class="navbar-collapse collapse">
 			<ul class="navbar-nav nav pull-right">
+				<li><a href="#/courses" class="btn btn-large disabled">Click Kakadu to go back to the courses</a></li>
 				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
 			</ul>
 		</nav>
@@ -23,15 +24,63 @@
 		<div class="page-header">
 			<h1>Quiz</h1> 
 		</div>
+		<p>Type = {{question.type}}</p>
+ 
+		<div ng-switch on="question.type">
+		    <div ng-switch-when="simple">
+				<h2><p>Question</p></h2>
+				<p>{{question.question}}</p> 
+				<h2> <p>Answer</p></h2>
+				<p>{{question.answer}}</p> 	
+		    </div>
+		    <div class="animate-switch" ng-switch-when="cloze">
+				<h2><p>Question</p></h2>
+				<p>{{question.question}}</p> 
+				<h2> <p>Answer</p></h2>
+				<p>{{question.answer}}</p> 	
+		    </div>
+		    <div class="animate-switch" ng-switch-when="multiple">
+				<h2><p>Question</p></h2>
+				<p>{{question.question}}</p> 
+				<h2> <p>Choices</p></h2>
+				<p>{{question.choices}}</p>					
+				<h2> <p>Answer</p></h2>
+				<p>{{question.answer}}</p> 	
+		    </div>
+		    <div class="animate-switch" ng-switch-when="dragdrop">
+				<h2><p>Question</p></h2>
+				<p>{{question.question}}</p> 
+				<h2> <p>Choices</p></h2>
+				<p>{{question.choices}}</p>					
+				<h2> <p>Answer</p></h2>
+				<p>{{question.answer}}</p> 	
+		    </div>
+		</div>
 		<div>
-			<h2><p>Question</p></h2>
-			<p>{{question}}</p>
-			<h2> <p> Answer</p></h2>
-			<p>{{question}}</p>
 			<p>
 				<button type="check" class="btn btn-primary btn-large">check Question</button>
-				<button type="next" class="btn btn-primary btn-large">next Question</button>
+				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next Question</button>
 			</p>
 		</div>
 	</div>
-</div>
+</div>		
+
+
+
+		<!-- 
+		Every data sent in the response 
+		catalog:
+		<p>{{question.catalog}}</p>
+		course:
+		<p>{{question.course}}</p>
+		questionid:
+		<p>{{question.id}}</p>
+		questiontype:
+		<p>{{question.type}}</p>
+		questionquestion:
+		<p>{{question.question}}</p>
+		questionanswer:
+		<p>{{question.answer}}</p>
+		questionchoices, if there are:
+		<p>{{question.choices}}</p>
+		-->

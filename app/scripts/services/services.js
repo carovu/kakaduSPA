@@ -10,21 +10,6 @@
  
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
 
-kakaduServices.factory('Test', function($resource) {
-  return $resource('/kakadu/public/api/v1/learning/next');
-});
-
-kakaduServices.factory('FlashService', function($rootScope) {
-  return {
-    show: function(message) {
-      $rootScope.flash = message;
-    },
-    clear: function() {
-      $rootScope.flash = '';
-    }
-  };
-});
-
 kakaduServices.factory('TokenService', function($http) {
   return {
     get: function() {
@@ -55,8 +40,7 @@ kakaduServices.factory('SessionService', function() {
   };
 });
 
-
-kakaduServices.factory('AuthenticationService', function($http,  $sanitize, SessionService, FlashService) {
+kakaduServices.factory('AuthenticationService', function($http,  $sanitize, SessionService) {
 
   var cacheSession   = function() {
     SessionService.set('authenticated', true);
@@ -66,16 +50,10 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
     SessionService.unset('authenticated');
   };
 
-  var loginError = function(response) {
-    FlashService.show(response.flash);
-  };
-
   return {
     login: function(credentials) {
       var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
       login.success(cacheSession);
-      login.success(FlashService.clear);
-      login.error(loginError);
       return login;
     },
     logout: function() {

@@ -3,7 +3,7 @@
 /*
 * E2E testing of course list
 */
-describe('E2E test', function() {
+describe('E2E', function() {
 
   describe('LoginCtrl', function() {
 

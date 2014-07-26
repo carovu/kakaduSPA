@@ -38,7 +38,7 @@ kakaduSpaApp.config(function ($routeProvider, $httpProvider) {
   });
 });
 
-kakaduSpaApp.run(function($http, $cookieStore, $cookies, $timeout, TokenService) {
+kakaduSpaApp.run(function($rootScope, $location, $http, TokenService, AuthenticationService) {
   TokenService.get().success(function(data){
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {
@@ -47,41 +47,14 @@ kakaduSpaApp.run(function($http, $cookieStore, $cookies, $timeout, TokenService)
       console.log('error config:');
       console.log(config);
   });
-});
-/*
-kakaduSpaApp.config(function($httpProvider) {
-  var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
-    var success = function(response) {
-      return response;
-    };
 
-    var error = function(response) {
-      if(response.status === 401) {
-        SessionService.unset('authenticated');
-        $location.path('/login');
-        FlashService.show(response.data.flash);
-      }
-      return $q.reject(response);
-    };
-
-    return function(promise) {
-      return promise.then(success, error);
-    };
-  };
-
-  $httpProvider.responseInterceptors.push(logsOutUserOn401);
-
-});
-
-
-kakaduSpaApp.run(function($rootScope, $location, AuthenticationService, FlashService) {
+  //make sure you cannot access other course view without being logged in
   var routesThatRequireAuth = ['/courses'];
-
-  $rootScope.$on('$routeChangeStart', function(event, next, current) {
-    if(_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
+  $rootScope.$on('$routeChangeStart', function() {
+    if(window._(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
       $location.path('/login');
-      FlashService.show("Please log in to continue.");
+      console.log('Please log in to continue.');
     }
   });
 });
-*/
+

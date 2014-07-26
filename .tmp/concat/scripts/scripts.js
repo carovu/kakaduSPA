@@ -34,12 +34,12 @@ kakaduSpaApp.config([
   }
 ]);
 kakaduSpaApp.run([
+  '$rootScope',
+  '$location',
   '$http',
-  '$cookieStore',
-  '$cookies',
-  '$timeout',
   'TokenService',
-  function ($http, $cookieStore, $cookies, $timeout, TokenService) {
+  'AuthenticationService',
+  function ($rootScope, $location, $http, TokenService, AuthenticationService) {
     TokenService.get().success(function (data) {
       $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
     }).error(function (data, config) {
@@ -48,51 +48,16 @@ kakaduSpaApp.run([
       console.log('error config:');
       console.log(config);
     });
-  }
-]);
-/*
-angular.module('kakaduSpaApp').config([
-  "$httpProvider", function($httpProvider) {
-    $http.defaults.headers.post['X-CSRF-Token'] = $cookies['csrftoken'];
-    $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
-  }
-]);
-kakaduSpaApp.config(function($httpProvider) {
-  var logsOutUserOn401 = function($location, $q, SessionService, FlashService) {
-    var success = function(response) {
-      return response;
-    };
-
-    var error = function(response) {
-      if(response.status === 401) {
-        SessionService.unset('authenticated');
+    //make sure you cannot access other course view without being logged in
+    var routesThatRequireAuth = ['/courses'];
+    $rootScope.$on('$routeChangeStart', function () {
+      if (window._(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
         $location.path('/login');
-        FlashService.show(response.data.flash);
+        console.log('Please log in to continue.');
       }
-      return $q.reject(response);
-    };
-
-    return function(promise) {
-      return promise.then(success, error);
-    };
-  };
-
-  $httpProvider.responseInterceptors.push(logsOutUserOn401);
-
-});
-
-
-kakaduSpaApp.run(function($rootScope, $location, AuthenticationService, FlashService) {
-  var routesThatRequireAuth = ['/courses'];
-
-  $rootScope.$on('$routeChangeStart', function(event, next, current) {
-    if(_(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
-      $location.path('/login');
-      FlashService.show("Please log in to continue.");
-    }
-  });
-});
-*/
+    });
+  }
+]);
 'use strict';
 /**
  * @ngdoc service
@@ -102,25 +67,6 @@ kakaduSpaApp.run(function($rootScope, $location, AuthenticationService, FlashSer
  * Service in the kakaduSpaApp.
  */
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
-kakaduServices.factory('Test', [
-  '$resource',
-  function ($resource) {
-    return $resource('/kakadu/public/api/v1/learning/next');
-  }
-]);
-kakaduServices.factory('FlashService', [
-  '$rootScope',
-  function ($rootScope) {
-    return {
-      show: function (message) {
-        $rootScope.flash = message;
-      },
-      clear: function () {
-        $rootScope.flash = '';
-      }
-    };
-  }
-]);
 kakaduServices.factory('TokenService', [
   '$http',
   function ($http) {
@@ -158,23 +104,17 @@ kakaduServices.factory('AuthenticationService', [
   '$http',
   '$sanitize',
   'SessionService',
-  'FlashService',
-  function ($http, $sanitize, SessionService, FlashService) {
+  function ($http, $sanitize, SessionService) {
     var cacheSession = function () {
       SessionService.set('authenticated', true);
     };
     var uncacheSession = function () {
       SessionService.unset('authenticated');
     };
-    var loginError = function (response) {
-      FlashService.show(response.flash);
-    };
     return {
       login: function (credentials) {
         var login = $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/login', JSON.stringify(credentials));
         login.success(cacheSession);
-        login.success(FlashService.clear);
-        login.error(loginError);
         return login;
       },
       logout: function () {
@@ -260,6 +200,27 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
   function ($scope, $routeParams, $http, $location, AuthenticationService) {
     $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/' + $routeParams.courseId + '/learning').success(function (data) {
       $scope.question = data;
+      $scope.nextQuestion = function () {
+        //course bleibt immer gleich, quesiton und catalog id ändert sich, 
+        //answer ist, ob der user die question richtig oder falsch beantwortet hat
+        $scope.questionmodel = {
+          question: $scope.question.id,
+          course: $scope.question.course,
+          catalog: $scope.question.catalog,
+          section: 'course',
+          answer: 'false'
+        };
+        $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/learning/next', $scope.questionmodel).success(function (data) {
+          $scope.question = data;
+          console.log(data);
+        }).error(function (data, config) {
+          $location.path('/');
+          console.log('error data:');
+          console.log(data);
+          console.log('error config:');
+          console.log(config);
+        });
+      };
       $scope.logOut = function () {
         AuthenticationService.logout().success(function () {
         }).error(function (data, config) {
@@ -270,6 +231,13 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
           console.log(config);
         });
       };
+    }).error(function (data, config) {
+      $location.path('/');
+      console.log('Have you logged in?');
+      console.log('error data:');
+      console.log(data);
+      console.log('error config:');
+      console.log(config);
     });
   }
 ]);
