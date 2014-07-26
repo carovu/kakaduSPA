@@ -35,6 +35,9 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
 angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService) {
     $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
+      $scope.checkAnswer = 'false'; //check variable, wheter user answered question right or wrong
+      $scope.showSimpleAnswer = 'false';
+      $scope.simpleAnswered = 'false'; //hide button after checking answer
 
       $scope.nextQuestion = function() {
         //course bleibt immer gleich, quesiton und catalog id ändert sich, 
@@ -50,6 +53,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         };
         $http.post('http://localhost/kakadu/public/api/spa/learning/next', $scope.questionmodel).success(function(data) {
           $scope.question = data;
+          //dont forget to copy initializing here too
+          $scope.checkAnswer = 'false'; //check variable, wheter user answered question right or wrong
+          $scope.showSimpleAnswer = 'false';
+          $scope.simpleAnswered = 'false'; //hide button after checking answer
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
@@ -69,6 +76,28 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           console.log('error config:');
           console.log(config);
         });
+      };
+
+      //functions to display the different questions
+
+      //functions for simplequestions
+
+      //show simple answer
+      $scope.showSimple = function() {
+        $scope.showSimpleAnswer = 'true';
+        $scope.simpleAnswered = 'true'; //show correct, wrong button in simple
+      };
+
+      //use did remember answer correctly 
+      $scope.simpleAnswerCorrect = function() {
+        $scope.checkAnswer = 'true';
+        $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
+      };
+      
+      //user did not remember answer correctly
+      $scope.simpleAnswerWrong = function() {
+        $scope.checkAnswer = 'false';
+        $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
     }).error(function (data, config) {
       $location.path('/');

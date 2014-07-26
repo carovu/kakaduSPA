@@ -16,6 +16,7 @@ var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'ngDragDrop',
     'kakaduSpaAppServices'
   ]);
 kakaduSpaApp.config(function ($routeProvider, $httpProvider) {
