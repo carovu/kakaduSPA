@@ -72,6 +72,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
                              //we will add it manually here
           answer: 'false'
         };
+        console.log('You answered: ' + $scope.checkAnswer);
         $http.post('http://localhost/kakadu/public/api/spa/learning/next', $scope.questionmodel).success(function(data) {
           $scope.question = data;
           //dont forget to copy initializing here too
@@ -175,10 +176,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         //correct answers he has, it will be counted as wrongly answered
         //setting false is unnecessary, because checkanswer is false by default
         if(wrongAnswered === 0){
-          console.log('You have answererd this multiple question CORRECT');
           $scope.checkAnswer = 'true';
-        } else{
-          console.log('You have answererd this multiple question WRONG');
         }
 
         //iterate through multiple answer array, answer is the item of array
@@ -189,14 +187,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
 
       //check dragdrop answer
-
-
       $scope.dropCallback = function(event, ui, choice) {
         if($scope.question.answer === choice){
           $scope.checkAnswer = 'true';
-          console.log('you answered dragdrop CORRECT');
-        }else{
-          console.log('you answered dragdrop WRONG');
         }
       };
 
@@ -222,13 +215,6 @@ jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onSto
         console.log('outCallback');
       };
 */
-
-
-
-
-      $scope.checkDragDrop = function(){
-        console.log($scope.choiceDrop);
-      };
 
     }).error(function (data, config) {
       $location.path('/');
