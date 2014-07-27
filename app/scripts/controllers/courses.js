@@ -53,7 +53,14 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       $scope.showCheckMultiple = 'true';
       //show next button
       $scope.showNextMultiple = 'false';
+      //number, of which choice field is clicked
+      $scope.chooseButtonMultiple = [];
 
+      //init for dragdropquestion
+
+
+
+      //init for clozequestion
 
       $scope.nextQuestion = function() {
         //course bleibt immer gleich, quesiton und catalog id ändert sich, 
@@ -83,7 +90,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           $scope.showCheckMultiple = 'true';
           //show next button
           $scope.showNextMultiple = 'false';
-
+          //number, of which choice field is clicked
+          $scope.chooseButtonMultiple = [];
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
@@ -135,7 +143,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
       //put chosen answers into array chosenChoisesMultiple. array is unique. cannot undo chosen choice. 
       //what is in array, remains in array
-      $scope.chooseChoiceMultiple = function(choice){
+      //field is number of field, so you know which field will change color, once it is clicked
+      $scope.chooseChoiceMultiple = function(choice, field){
+        $scope.chooseButtonMultiple[field] = {'background-color':'orange'};
         //check for uniqeness
         if($scope.chosenChoisesMultiple.indexOf(choice) === -1){
           //push choice into array
@@ -154,7 +164,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         if($scope.chosenChoisesMultiple.length === 0){
             wrongAnswered++;
         }  
-        //iterate through multiple answer array, answer is the item of array
+        //iterate through multiple choice array, answer is the item of array
         angular.forEach($scope.chosenChoisesMultiple, function(choice){
           if($scope.rightAnswersMultiple.indexOf(choice) === -1){
             wrongAnswered++;
@@ -170,11 +180,17 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           console.log('You have answererd this multiple question WRONG');
         }
 
+        //iterate through multiple answer array, answer is the item of array
+        angular.forEach($scope.question.answer, function(answerNumber){
+          $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
+        });
       };
 
 
+      //check dragdrop answer
+      $scope.checkDragDrop = function(){
 
-
+      };
 
     }).error(function (data, config) {
       $location.path('/');

@@ -40,8 +40,8 @@
 					</div> 
 				</div>
 				<br>	
-				<!-- hide show button after showing answer and checking answer is done -->
-				<button type="button" class="btn btn-primary btn-large" ng-hide="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="showSimple()">show</button>
+				<!-- hide show button after showing answer -->
+				<button type="button" class="btn btn-primary btn-large" ng-hide="showSimpleAnswer" ng-click="showSimple()">show</button>
 				<!-- show next button after showing answer and checking answer is done -->
 				<button type="next" class="btn btn-primary btn-large" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">next</button>
 		    </div>
@@ -58,7 +58,7 @@
 				<h2> <p>Choices</p></h2>
 				<!-- Show all choices in list than json format -->
 				<div ng-repeat="choice in question.choices">
-					<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice)">{{choice}}</button>
+					<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice, {{$index}})" ng-style="chooseButtonMultiple[{{$index}}]">{{choice}}</button>
 					<br>
 				</div>				
 				<h2> <p>Answer</p></h2>
@@ -70,10 +70,16 @@
 		    <div ng-switch-when="dragdrop">
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
+				<h2><p> Answerfield</p><h2>
+				<div class="thumbnail" data-drop="true"  jqyoui-droppable style='height:50px;'></div>
 				<h2> <p>Choices</p></h2>
-				<p>{{question.choices}}</p>					
+				<!-- Show all choices in list than json format -->
+				<div ng-repeat="choice in question.choices">
+					<div class="btn btn-default" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:true}">{{choice}}</div>
+				</div>				
 				<h2> <p>Answer</p></h2>
 				<p>{{question.answer}}</p>
+				<button type="next" class="btn btn-primary btn-large" ng-click="checkDragDrop()">check</button> 	
 				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 	
 		    </div>
 		</div>
