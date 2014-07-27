@@ -271,9 +271,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
         console.log('You answered: ' + $scope.checkAnswer);
         $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/learning/next', $scope.questionmodel).success(function (data) {
           $scope.question = data;
-          //dont forget to copy initializing here too
+          //global variable, is the check variable for all questiontypes
           $scope.checkAnswer = 'false';
           //check variable, wheter user answered question right or wrong
+          //init for simplequesiton
           $scope.showSimpleAnswer = 'false';
           $scope.simpleAnswered = 'false';
           //hide button after checking answer
@@ -291,6 +292,30 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
           $scope.chooseButtonMultiple = [];
           //init for dragdropquestion
           $scope.choiceDrop = '';
+          //init for clozequestion
+          $scope.setUpCloze = [];
+          $scope.answeredCloze = [];
+          $scope.showCheckCloze = 'true';
+          //setup of cloze question, does not work if the answer is not unique
+          if ($scope.question.type === 'cloze') {
+            //split question into array with two elements, where the answer is taken out.
+            var iteration = $scope.question.question.split($scope.question.answer[0]);
+            var tmp = [];
+            var lastElement = iteration.length - 1;
+            //iterate through the answers to split the question at the answer
+            angular.forEach($scope.question.answer, function (answer) {
+              lastElement = iteration.length - 1;
+              //skip first element, because we already used and splitted it
+              if (answer === $scope.question.answer[0]) {
+              } else {
+                //split question into array with two elements, where the answer is taken out.
+                tmp = iteration[lastElement].split(answer);
+                iteration.splice(lastElement, 1);
+                iteration = iteration.concat(tmp);
+              }
+            });
+            $scope.setUpCloze = iteration;
+          }
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
