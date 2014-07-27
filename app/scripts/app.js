@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-var kakaduSpaApp = angular.module('kakaduSpaApp', [
+angular.module('kakaduSpaApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -18,8 +18,8 @@ var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngTouch',
     'ngDragDrop',
     'kakaduSpaAppServices'
-  ]);
-kakaduSpaApp.config(function ($routeProvider, $httpProvider) {
+  ])
+.config(function ($routeProvider, $httpProvider) {
   $httpProvider.defaults.withCredentials = true;
   $routeProvider
   .when('/', {
@@ -37,9 +37,8 @@ kakaduSpaApp.config(function ($routeProvider, $httpProvider) {
   .otherwise({
     redirectTo: '/'
   });
-});
-
-kakaduSpaApp.run(function($rootScope, $location, $http, TokenService, AuthenticationService) {
+})
+.run(function($rootScope, $location, $http, TokenService, AuthenticationService) {
   TokenService.get().success(function(data){
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {

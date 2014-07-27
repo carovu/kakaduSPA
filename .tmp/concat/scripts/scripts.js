@@ -7,17 +7,16 @@
  *
  * Main module of the application.
  */
-var kakaduSpaApp = angular.module('kakaduSpaApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ngDragDrop',
-    'kakaduSpaAppServices'
-  ]);
-kakaduSpaApp.config([
+angular.module('kakaduSpaApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngResource',
+  'ngRoute',
+  'ngSanitize',
+  'ngTouch',
+  'ngDragDrop',
+  'kakaduSpaAppServices'
+]).config([
   '$routeProvider',
   '$httpProvider',
   function ($routeProvider, $httpProvider) {
@@ -33,8 +32,7 @@ kakaduSpaApp.config([
       controller: 'CourseQuestionCtrl'
     }).otherwise({ redirectTo: '/' });
   }
-]);
-kakaduSpaApp.run([
+]).run([
   '$rootScope',
   '$location',
   '$http',
