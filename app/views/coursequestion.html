@@ -71,15 +71,21 @@
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
 				<h2><p> Answerfield</p><h2>
-				<div class="thumbnail" data-drop="true"  jqyoui-droppable style='height:50px;'></div>
+				<div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:50px;'>
+  					<div ng-if="choiceDrop === question.answer">
+  						<div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop">{{choiceDrop}}</div>
+					</div>
+					 <div ng-if="choiceDrop !== question.answer">
+  						<div class="btn btn-danger" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop">{{choiceDrop}}</div>
+					</div>
+				</div>
 				<h2> <p>Choices</p></h2>
 				<!-- Show all choices in list than json format -->
 				<div ng-repeat="choice in question.choices">
-					<div class="btn btn-default" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:true}">{{choice}}</div>
+					<div class="btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="choice">{{choice}}</div>
 				</div>				
 				<h2> <p>Answer</p></h2>
 				<p>{{question.answer}}</p>
-				<button type="next" class="btn btn-primary btn-large" ng-click="checkDragDrop()">check</button> 	
 				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 	
 		    </div>
 		</div>
@@ -96,6 +102,27 @@
 
 
 		<!-- 
+
+
+				<div class="thumbnail">
+					<p><div class="btn btn-droppable" data-drop="true" ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback',onOver: 'overCallback', onOut: 'outCallback'}">
+	                      <div class="btn btn-info btn-draggable" ng-show="choiceDrop" data-drag="{{choiceDrop.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="choiceDrop" jqyoui-draggable="{placeholder:true,animate:true}">{{choiceDrop}}</div>
+	                    </div>
+	                </p>
+            	</div>
+				<h2> <p>Choices</p></h2>
+			 Show all choices in list than json format 
+				<div class="btn-group-vertical">
+					 draggable choice in droppable box
+				   	<div class="btn btn-droppable" ng-repeat="choice in question.choices" data-drop="true" ng-model='question.choices' jqyoui-droppable="{index: {{$index}}}">
+		            	<div class="btn btn-info btn-draggable" data-drag="{{choice.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="question.choices" jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback(choice)', onStop: 'stopCallback', onDrag: 'dragCallback'}" ng-hide="!choice">{{choice}}</div>
+		          	</div>
+		        </div>	
+
+
+
+
+
 		Every data sent in the response 
 		catalog:
 		<p>{{question.catalog}}</p>

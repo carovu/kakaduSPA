@@ -57,9 +57,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       $scope.chooseButtonMultiple = [];
 
       //init for dragdropquestion
-
-
-
+      $scope.choiceDrop = '';
       //init for clozequestion
 
       $scope.nextQuestion = function() {
@@ -92,6 +90,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           $scope.showNextMultiple = 'false';
           //number, of which choice field is clicked
           $scope.chooseButtonMultiple = [];
+          //init for dragdropquestion
+          $scope.choiceDrop = '';
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
@@ -173,10 +173,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
         //if there is even one wrong answer, it does not matter how many, 
         //correct answers he has, it will be counted as wrongly answered
+        //setting false is unnecessary, because checkanswer is false by default
         if(wrongAnswered === 0){
           console.log('You have answererd this multiple question CORRECT');
-          console.log($scope.chosenChoisesMultiple.length);
-        } else {
+          $scope.checkAnswer = 'true';
+        } else{
           console.log('You have answererd this multiple question WRONG');
         }
 
@@ -188,8 +189,45 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
 
       //check dragdrop answer
-      $scope.checkDragDrop = function(){
 
+
+      $scope.dropCallback = function(event, ui, choice) {
+        if($scope.question.answer === choice){
+          $scope.checkAnswer = 'true';
+          console.log('you answered dragdrop CORRECT');
+        }else{
+          console.log('you answered dragdrop WRONG');
+        }
+      };
+
+/*    Not needed dragdropUI functions, here, in case i will need it in the future
+jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)',onOver: 'overCallback', onOut: 'outCallback'}"
+jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onStop: 'stopCallback', onDrag: 'dragCallback'}"
+      $scope.startCallback = function(event, ui) {
+
+      };
+
+      $scope.stopCallback = function(event, ui) {
+        console.log('stopCallback');
+      };
+
+      $scope.dragCallback = function(event, ui) {
+        console.log('dragCallback');
+      };
+      $scope.overCallback = function(event, ui) {
+        console.log('overCallback');
+      };
+
+      $scope.outCallback = function(event, ui) {
+        console.log('outCallback');
+      };
+*/
+
+
+
+
+      $scope.checkDragDrop = function(){
+        console.log($scope.choiceDrop);
       };
 
     }).error(function (data, config) {
