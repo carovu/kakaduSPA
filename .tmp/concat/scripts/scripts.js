@@ -233,29 +233,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
       //init for dragdropquestion
       $scope.choiceDrop = '';
       //init for clozequestion
-      $scope.setUpCloze = [];
-      $scope.answeredCloze = [];
-      $scope.showCheckCloze = 'true';
-      //setup of cloze question, does not work if the answer is not unique
-      if ($scope.question.type === 'cloze') {
-        //split question into array with two elements, where the answer is taken out.
-        var iteration = $scope.question.question.split($scope.question.answer[0]);
-        var tmp = [];
-        var lastElement = iteration.length - 1;
-        //iterate through the answers to split the question at the answer
-        angular.forEach($scope.question.answer, function (answer) {
-          lastElement = iteration.length - 1;
-          //skip first element, because we already used and splitted it
-          if (answer === $scope.question.answer[0]) {
-          } else {
-            //split question into array with two elements, where the answer is taken out.
-            tmp = iteration[lastElement].split(answer);
-            iteration.splice(lastElement, 1);
-            iteration = iteration.concat(tmp);
-          }
-        });
-        $scope.setUpCloze = iteration;
-      }
       $scope.nextQuestion = function () {
         //course bleibt immer gleich, quesiton und catalog id ändert sich, 
         //answer ist, ob der user die question richtig oder falsch beantwortet hat
@@ -290,30 +267,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
           $scope.chooseButtonMultiple = [];
           //init for dragdropquestion
           $scope.choiceDrop = '';
-          //init for clozequestion
-          $scope.setUpCloze = [];
-          $scope.answeredCloze = [];
-          $scope.showCheckCloze = 'true';
-          //setup of cloze question, does not work if the answer is not unique
-          if ($scope.question.type === 'cloze') {
-            //split question into array with two elements, where the answer is taken out.
-            var iteration = $scope.question.question.split($scope.question.answer[0]);
-            var tmp = [];
-            var lastElement = iteration.length - 1;
-            //iterate through the answers to split the question at the answer
-            angular.forEach($scope.question.answer, function (answer) {
-              lastElement = iteration.length - 1;
-              //skip first element, because we already used and splitted it
-              if (answer === $scope.question.answer[0]) {
-              } else {
-                //split question into array with two elements, where the answer is taken out.
-                tmp = iteration[lastElement].split(answer);
-                iteration.splice(lastElement, 1);
-                iteration = iteration.concat(tmp);
-              }
-            });
-            $scope.setUpCloze = iteration;
-          }
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
@@ -401,8 +354,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
         if ($scope.question.answer === choice) {
           $scope.checkAnswer = 'true';
         }
-      };
-      /*    Not needed dragdropUI functions, here, in case i will need it in the future
+      };  /*    Not needed dragdropUI functions, here, in case i will need it in the future
 jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)',onOver: 'overCallback', onOut: 'outCallback'}"
 jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onStop: 'stopCallback', onDrag: 'dragCallback'}"
       $scope.startCallback = function(event, ui) {
@@ -424,12 +376,9 @@ jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onSto
         console.log('outCallback');
       };
 */
-      /*
+          /*
       * functions for cloze questions
       */
-      $scope.checkCloze = function () {
-        console.log('no idea how to check yet');
-      };
     }).error(function (data, config) {
       $location.path('/');
       console.log('Have you logged in?');
