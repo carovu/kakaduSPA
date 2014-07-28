@@ -33,7 +33,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
  * # Controller for questions of chosen course
 */
 angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService, MultipleQuestion) {
-    $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
+    $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
 
       //global variable, is the check variable for all questiontypes
@@ -60,6 +60,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       $scope.choiceDrop = '';
 
       //init for clozequestion
+      $scope.answeredCloze = [];
+      $scope.numRightGaps = 0;
+      $scope.showCheckCloze = 'true';
+      $scope.showNextCloze = 'false';
 
 
       $scope.nextQuestion = function() {
@@ -75,7 +79,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           answer: 'false'
         };
         console.log('You answered: ' + $scope.checkAnswer);
-        $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/learning/next', $scope.questionmodel).success(function(data) {
+        $http.post('http://localhost/kakadu/public/api/spa/learning/next', $scope.questionmodel).success(function(data) {
           $scope.question = data;
 
           //global variable, is the check variable for all questiontypes
@@ -100,6 +104,12 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
           //init for dragdropquestion
           $scope.choiceDrop = '';
+
+          //init for clozequestion
+          $scope.answeredCloze = [];
+          $scope.numRightGaps = 0;
+          $scope.showCheckCloze = 'true';
+          $scope.showNextCloze = 'false';
           
           console.log(data);
         }).error(function (data, config) {
@@ -228,7 +238,21 @@ jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onSto
       /*
       * functions for cloze questions
       */
-
+      $scope.checkCloze = function(){
+        $scope.showCheckCloze = 'false';
+        $scope.showNextCloze = 'true';
+        angular.forEach($scope.question.answer, function(answer, i){
+          if(angular.lowercase(angular.element(document.getElementById('answeredCloze['+i+']')).val()) === angular.lowercase(answer)){
+            $scope.numRightGaps++;
+            angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#9acd32');
+          }else{
+            angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#FF6347');
+          }
+        });  
+        if($scope.numRightGaps === $scope.question.answer.length){
+          $scope.checkAnswer = 'true';
+        }
+      };
 
     }).error(function (data, config) {
       $location.path('/');

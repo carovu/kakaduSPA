@@ -140,6 +140,33 @@ kakaduServices.factory('MultipleQuestion', function () {
 });
 'use strict';
 /**
+ * @ngdoc directive
+ * @name kakaduSpaApp.directive:directives1
+ * @description
+ * # directives1
+ */
+angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
+  return {
+    restrict: 'E',
+    require: '^ngModel',
+    scope: { ngModel: '=' },
+    link: function (scope, element) {
+      var question = scope.ngModel.question;
+      var answers = scope.ngModel.answer;
+      for (var i = 0; i < answers.length; i++) {
+        var startPos = question.search(answers[i]);
+        var endPos = startPos + answers[i].length;
+        var before = question.substr(0, startPos);
+        var after = question.substr(endPos, question.length);
+        var gap = '<textarea id="answeredCloze[' + i + ']" class="span2" rows="1" style="resize:none"></textarea>';
+        question = before + gap + after;
+      }
+      element.html(question);
+    }
+  };
+});
+'use strict';
+/**
  * @ngdoc function
  * @name kakaduSpaApp.controller:LoginCtrl
  * @description
@@ -233,6 +260,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
       //init for dragdropquestion
       $scope.choiceDrop = '';
       //init for clozequestion
+      $scope.answeredCloze = [];
+      $scope.numRightGaps = 0;
+      $scope.showCheckCloze = 'true';
+      $scope.showNextCloze = 'false';
       $scope.nextQuestion = function () {
         //course bleibt immer gleich, quesiton und catalog id ändert sich, 
         //answer ist, ob der user die question richtig oder falsch beantwortet hat
@@ -267,6 +298,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
           $scope.chooseButtonMultiple = [];
           //init for dragdropquestion
           $scope.choiceDrop = '';
+          //init for clozequestion
+          $scope.answeredCloze = [];
+          $scope.numRightGaps = 0;
+          $scope.showCheckCloze = 'true';
+          $scope.showNextCloze = 'false';
           console.log(data);
         }).error(function (data, config) {
           $location.path('/');
@@ -354,7 +390,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
         if ($scope.question.answer === choice) {
           $scope.checkAnswer = 'true';
         }
-      };  /*    Not needed dragdropUI functions, here, in case i will need it in the future
+      };
+      /*    Not needed dragdropUI functions, here, in case i will need it in the future
 jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)',onOver: 'overCallback', onOut: 'outCallback'}"
 jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onStop: 'stopCallback', onDrag: 'dragCallback'}"
       $scope.startCallback = function(event, ui) {
@@ -376,9 +413,24 @@ jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onSto
         console.log('outCallback');
       };
 */
-          /*
+      /*
       * functions for cloze questions
       */
+      $scope.checkCloze = function () {
+        $scope.showCheckCloze = 'false';
+        $scope.showNextCloze = 'true';
+        angular.forEach($scope.question.answer, function (answer, i) {
+          if (angular.lowercase(angular.element(document.getElementById('answeredCloze[' + i + ']')).val()) === angular.lowercase(answer)) {
+            $scope.numRightGaps++;
+            angular.element(document.getElementById('answeredCloze[' + i + ']').style.backgroundColor = '#9acd32');
+          } else {
+            angular.element(document.getElementById('answeredCloze[' + i + ']').style.backgroundColor = '#FF6347');
+          }
+        });
+        if ($scope.numRightGaps === $scope.question.answer.length) {
+          $scope.checkAnswer = 'true';
+        }
+      };
     }).error(function (data, config) {
       $location.path('/');
       console.log('Have you logged in?');

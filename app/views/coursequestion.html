@@ -24,8 +24,6 @@
 		<div class="page-header">
 			<h1>Quiz</h1> 
 		</div>
-		<p>Type = {{question.type}}</p>
- 
 		<div ng-switch on="question.type">
 		    <div ng-switch-when="simple">
 				<h2><p>Question</p></h2>
@@ -43,14 +41,15 @@
 				<!-- hide show button after showing answer -->
 				<button type="button" class="btn btn-primary btn-large" ng-hide="showSimpleAnswer" ng-click="showSimple()">show</button>
 				<!-- show next button after showing answer and checking answer is done -->
-				<button type="next" class="btn btn-primary btn-large" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">next</button>
+				<button type="button" class="btn btn-primary btn-large" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">next</button>
 		    </div>
 		    <div ng-switch-when="cloze">
 				<h2><p>Question</p></h2>
-				<p>{{question.question}}</p>
+				<cloze-question ng-model="question"></cloze-question>
 				<h2> <p>Answer</p></h2>
 				<p>{{question.answer}}</p>
-				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 
+				<button type="button" class="btn btn-primary btn-large" ng-click="checkCloze()" ng-show="showCheckCloze">check</button>
+				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze">next</button>
 		    </div>
 		    <div ng-switch-when="multiple">
 				<h2><p>Question</p></h2>
@@ -64,8 +63,8 @@
 				<h2> <p>Answer</p></h2>
 				<p>{{question.answer}}</p>
 				<!-- show check button, if showCheckMultiple is true, else hide -->
-				<button type="check" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">check</button>
-				<button type="next" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">next</button> 	
+				<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">check</button>
+				<button type="button" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">next</button> 	
 		    </div>
 		    <div ng-switch-when="dragdrop">
 				<h2><p>Question</p></h2>
@@ -84,7 +83,7 @@
 				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in question.choices">
 					<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="choice">{{choice}}</div>
 				</div>				
-				<button type="next" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 	
+				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 	
 		    </div>
 		</div>
 	</div>
