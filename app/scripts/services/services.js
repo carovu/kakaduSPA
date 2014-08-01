@@ -67,7 +67,7 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
   };
 });
 
-kakaduServices.factory('MultipleQuestion', function() {
+kakaduServices.factory('MultipleQuestionService', function() {
   return {
     getAnswers: function(choices, answer) {
       var rightAnswerMultiple = [];

@@ -32,7 +32,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function($scope, $lo
  * @description
  * # Controller for questions of chosen course
 */
-angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService, MultipleQuestion) {
+angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService, MultipleQuestionService) {
     $http.get('http://localhost/kakadu/public/api/spa/course/'+$routeParams.courseId+'/learning').success(function(data) {
       $scope.question = data;
 
@@ -47,7 +47,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       $scope.chosenChoisesMultiple = [];
       //fill rightanswersmultiple array with the right answers
       if($scope.question.choices && $scope.question.type === 'multiple'){
-        $scope.rightAnswersMultiple = MultipleQuestion.getAnswers($scope.question.choices, $scope.question.answer);
+        $scope.rightAnswersMultiple = MultipleQuestionService.getAnswers($scope.question.choices, $scope.question.answer);
       }
       //hide check button
       $scope.showCheckMultiple = 'true';
@@ -93,7 +93,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           $scope.chosenChoisesMultiple = [];
           //fill rightanswersmultiple array with the right answers
           if($scope.question.choices && $scope.question.type === 'multiple'){
-            $scope.rightAnswersMultiple = MultipleQuestion.getAnswers($scope.question.choices, $scope.question.answer);
+            $scope.rightAnswersMultiple = MultipleQuestionService.getAnswers($scope.question.choices, $scope.question.answer);
           }
           //hide check button
           $scope.showCheckMultiple = 'true';

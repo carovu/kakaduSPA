@@ -401,8 +401,9 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma',
-    'protractor:run'
+    'karma',  
+    //have currently no e2e tests, because e2e cannot test http requests
+    //'protractor:run'
   ]);
 
   grunt.registerTask('build', [

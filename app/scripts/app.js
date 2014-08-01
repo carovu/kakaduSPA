@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('kakaduSpaApp', [
+var kakaduSpaApp = angular.module('kakaduSpaApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
