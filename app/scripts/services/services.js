@@ -22,6 +22,20 @@ kakaduServices.factory('CoursesService', function($http) {
   return {
     get: function() {
       return $http.get('http://localhost/kakadu/public/api/spa/courses');
+    },
+    reset: function(courseId) {
+      return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/reset');
+    }
+  };
+});
+
+kakaduServices.factory('CourseQuestionService', function($http) {
+  return {
+    getCourse: function(courseId) {
+      return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/learning');
+    },
+    nextQuestion: function(questionmodel) {
+      return $http.post('http://localhost/kakadu/public/api/spa/learning/next', questionmodel);
     }
   };
 });

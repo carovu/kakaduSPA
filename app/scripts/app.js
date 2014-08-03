@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-var kakaduSpaApp = angular.module('kakaduSpaApp', [
+angular.module('kakaduSpaApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -47,7 +47,6 @@ var kakaduSpaApp = angular.module('kakaduSpaApp', [
       console.log('error config:');
       console.log(config);
   });
-
   //make sure you cannot access other course view without being logged in
   var routesThatRequireAuth = ['/courses'];
   $rootScope.$on('$routeChangeStart', function() {

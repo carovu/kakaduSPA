@@ -35,10 +35,11 @@
 		</div>
 		<div class="col-md-9">
 			<!--Body content-->
-			<ul class="courses">
+			<ul id="courses">
 				<li ng-repeat="course in courses | filter:query | orderBy:orderProp" class="thumbnail">
-					<a href="#/course/{{course.id}}/learning">{{course.name}}</a>
+					{{course.percentage}}%<a href="#/course/{{course.id}}/learning"> {{course.name}}</a>
 					<p>{{course.description}}</p>
+					<button type="button" class="btn btn-default btn-large" ng-model="courses" ng-click="resetPercentage(course.id)">reset</button>
 				</li>
 			</ul>
 		</div>
