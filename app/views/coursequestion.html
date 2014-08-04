@@ -30,6 +30,7 @@
 		    {{question.percentage | number:0}}%
 		  </div>
 		</div>
+		<!-- questiontypes -->
 		<div ng-switch on="question.type">
 
 		    <div ng-switch-when="simple">
@@ -91,7 +92,7 @@
 				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in question.choices">
 					<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="choice">{{choice}}</div>
 				</div>				
-				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button> 
+				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button>
 		    </div>
 		    
 		</div>

@@ -14,8 +14,10 @@ describe('Unit test', function() {
   beforeEach(inject(function(_MultipleQuestionService_) {
      MultipleQuestionService = _MultipleQuestionService_;   
   }));
-  //testing routes
-  //
+
+  /*
+  testing routes
+  */
   it('should map routes to controllers', function() {
     inject(function($route) {
       
@@ -33,15 +35,18 @@ describe('Unit test', function() {
       expect($route.routes[null].redirectTo).toEqual('/');
     });
   });
-  //testing sessionservice
-  //
+
+  /*
+  testing sessionservice
+  */
   it('should be able to set the storage through SessionService',function(){
       SessionService.set('authenticated', true);
       expect(SessionService.set).toHaveBeenCalledWith('authenticated', true);
   });
 
-  //testing rightquestion
-  //
+  /*
+  testing rightquestion
+  */
   it('should give us the right answers from choices array through MultipleQuestionService',function(){
     var choices=['alpha', 'beta', 'gamma'];
     var answer=['1', '2']

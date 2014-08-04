@@ -13,7 +13,7 @@ var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
 kakaduServices.factory('TokenService', function($http) {
   return {
     get: function() {
-      return $http.get('http://localhost/kakadu/public/api/spa/token');
+      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/token');
     }
   };
 });
@@ -21,10 +21,10 @@ kakaduServices.factory('TokenService', function($http) {
 kakaduServices.factory('CoursesService', function($http) {
   return {
     get: function() {
-      return $http.get('http://localhost/kakadu/public/api/spa/courses');
+      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses');
     },
     reset: function(courseId) {
-      return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/reset');
+      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/'+ courseId +'/reset');
     }
   };
 });
@@ -32,10 +32,10 @@ kakaduServices.factory('CoursesService', function($http) {
 kakaduServices.factory('CourseQuestionService', function($http) {
   return {
     getCourse: function(courseId) {
-      return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/learning');
+      return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/'+ courseId +'/learning');
     },
     nextQuestion: function(questionmodel) {
-      return $http.post('http://localhost/kakadu/public/api/spa/learning/next', questionmodel);
+      return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/learning/next', questionmodel);
     }
   };
 });
@@ -66,12 +66,12 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
 
   return {
     login: function(credentials) {
-      var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
+      var login = $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/login', JSON.stringify(credentials));
       login.success(cacheSession);
       return login;
     },
     logout: function() {
-      var logout = $http.get('http://localhost/kakadu/public/api/spa/auth/logout');
+      var logout = $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/logout');
       logout.success(uncacheSession);
       return logout;
     },
