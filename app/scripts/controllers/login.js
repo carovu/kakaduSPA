@@ -7,7 +7,7 @@
  * # Controller for the login
  */
 
-angular.module('kakaduSpaApp').controller('LoginCtrl', function($scope, $location, AuthenticationService) {
+angular.module('kakaduSpaApp').controller('LoginCtrl', function ($scope, $location, AuthenticationService) {
   	$scope.credentials = { email: '', password: ''};
 
   	$scope.login = function() {

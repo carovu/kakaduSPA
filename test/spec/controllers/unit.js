@@ -31,6 +31,8 @@ describe('Unit test', function() {
       expect($route.routes['/course/:courseId/learning'].templateUrl).toEqual('views/coursequestion.html');
       expect($route.routes['/course/:courseId/learning'].controller).toEqual('CourseQuestionCtrl');
 
+      expect($route.routes['/favorites'].templateUrl).toEqual('views/favorites.html');
+      expect($route.routes['/favorites'].controller).toEqual('FavoritesCtrl');
       // otherwise redirect to
       expect($route.routes[null].redirectTo).toEqual('/');
     });

@@ -1,0 +1,45 @@
+<!-- header for favorites view -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="#/courses" class="navbar-brand pull-left">Kakadu</a> 
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="glyphicon glyphicon-align-justify"></span>
+			</button>
+		</div>
+
+		<nav class="navbar-collapse collapse">
+			<ul class="navbar-nav nav pull-right">
+				<li><a href="#/courses">All courses</a></li>
+				<li><a href="#/favorites">Your courses</a></li>
+				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
+			</ul>
+		</nav>
+	</div>
+</nav>
+
+<!-- Favoriteslist view, part of our index.html view -->
+<div class="container-fluid">
+	<div class="page-header">
+		<h1>Your courses</h1> 
+	</div>
+	<div class="col-md-12">
+		<!--Body content-->
+		<p>Search: <input ng-model="query">
+		Sort by:
+		  <select ng-model="orderProp">
+		    <option value="name">Alphabetical</option>
+		    <option value="age">Newest</option>
+		  </select>
+		</p>
+		<!-- list -->
+		<div class="list-group" ng-repeat="favorite in favorites | filter:query | orderBy:orderProp">
+		  	<a href="#/course/{{favorite.id}}/learning" class="list-group-item">
+		  		<span class="badge">{{favorite.percentage}}%</span>
+		  		<h4 class="list-group-item-heading">{{favorite.name}}</h4>
+		  		<p class="list-group-item-text">{{favorite.description}}</p>
+		  	</a>
+		  	<button type="button" class="btn btn-default btn-block" ng-model="favorites" ng-click="removeFavorite(favorite.id)">remove</button>
+		</div> 									
+	</div>
+</div>	

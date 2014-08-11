@@ -10,7 +10,9 @@
 
 		<nav class="navbar-collapse collapse">
 			<ul class="navbar-nav nav pull-right">
-				<li><a href="#/courses" ng-click="logOut()">Log Out</a></li>
+				<li><a href="#/courses">All courses</a></li>
+				<li><a href="#/favorites">Your courses</a></li>
+				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -19,31 +21,29 @@
 <!-- Courseslist view, part of our index.html view -->
 <div class="container-fluid">
 	<div class="page-header">
-		<h1>Courses</h1> 
+		<h1>All courses</h1> 
 	</div>
-	
-	<div class="row">
-		<div class="col-md-3">
-			<!--Sidebar content-->
-			Search: <input ng-model="query">
-			<p>Sort by:
-			  <select ng-model="orderProp">
-			    <option value="name">Alphabetical</option>
-			    <option value="age">Newest</option>
-			  </select>
-			</p>
-		</div>
-		<div class="col-md-9">
+		<div class="col-md-12">
 			<!--Body content-->
+			<!-- search -->
+			<form ng-submit="search(searchInput)">Search: <input ng-model="searchInput"></input>
+				Sort by:
+				  <select ng-model="orderProp">
+				    <option value="name">Alphabetical</option>
+				    <option value="age">Newest</option>
+				  </select>
+			</form>
 			<!-- list -->
-			<div class="list-group" ng-repeat="course in courses | filter:query | orderBy:orderProp">
+			<button ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</button>
+			<button ng-click="changePageSize()">add +25 entry per site </button>
+			<div class="list-group" ng-repeat="course in courses.data | orderBy:orderProp | limitTo:pageSize">
 			  	<a href="#/course/{{course.id}}/learning" class="list-group-item">
 			  		<span class="badge">{{course.percentage}}%</span>
 			  		<h4 class="list-group-item-heading">{{course.name}}</h4>
 			  		<p class="list-group-item-text">{{course.description}}</p>
 			  	</a>
+			  	<button type="button" class="btn btn-default btn-block" ng-model="favorites" ng-click="addFavorite(course.id)">add to "Your courses"</button>
 			  	<button type="button" class="btn btn-default btn-block" ng-model="courses" ng-click="resetPercentage(course.id)">reset</button>
 			</div> 									
 		</div>
-	</div>
 </div>			

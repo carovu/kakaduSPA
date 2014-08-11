@@ -13,6 +13,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       //Global variables
       $scope.question = data;
       $scope.checkAnswer = 'false'; //check variable, wheter user answered question right or wrong
+      $scope.message = '';  //notification, how you answered
       if($scope.question.percentage === 100){
         console.log('CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.');
       }
@@ -41,7 +42,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
         $scope.answeredCloze = []; //contains answers of the gaps 
         $scope.numRightGaps = 0;  //number of correct answered gaps
-        $scope.shuffledAnswers = shuffle($scope.question.answer); //shown answers
         $scope.showCheckCloze = 'true';
         $scope.showNextCloze = 'false';   
       }
@@ -56,11 +56,13 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       //user did remember answer correctly 
       $scope.simpleAnswerCorrect = function() {
         $scope.checkAnswer = 'true';
+        $scope.message = 'You remember correctly';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
       //user did not remember answer correctly
       $scope.simpleAnswerWrong = function() {
         $scope.checkAnswer = 'false';
+        $scope.message = 'You remember wrong';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
 
@@ -99,6 +101,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         //setting false is unnecessary, because checkanswer is false by default
         if(wrongAnswered === 0){
           $scope.checkAnswer = 'true';
+          $scope.message = 'You chose correctly';
+        }else{
+          $scope.message = 'You chose wrong';
         }
 
         //iterate through multiple answer array and change background of right answers
@@ -114,6 +119,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       $scope.dropCallback = function(event, ui, choice) {
         if($scope.question.answer === choice){
           $scope.checkAnswer = 'true';
+          $scope.message = 'You chose correctly';
+        }else{
+          $scope.message = 'You chose wrong';
         }
       };
 
@@ -134,6 +142,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         });  
         if($scope.numRightGaps === $scope.question.answer.length){
           $scope.checkAnswer = 'true';
+          $scope.message = 'You remember correctly';
+        }else{
+          $scope.message = 'You remember wrong';
         }
       };
 
@@ -150,10 +161,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
                              //we will add it manually here
           answer: $scope.checkAnswer //if user answers question right or wrong
         };
-
+        
         CourseQuestionService.nextQuestion($scope.questionmodel).success(function(data) {
           $scope.question = data;
           $scope.checkAnswer = 'false';
+          $scope.message = '';
           if($scope.question.percentage === 100){
             console.log('CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.');
           }
@@ -180,7 +192,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
 
             $scope.answeredCloze = []; 
             $scope.numRightGaps = 0; 
-            $scope.shuffledAnswers = shuffle($scope.question.answer); 
             $scope.showCheckCloze = 'true';
             $scope.showNextCloze = 'false';   
           }

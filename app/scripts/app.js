@@ -34,11 +34,15 @@ angular.module('kakaduSpaApp', [
     templateUrl: 'views/coursequestion.html',
     controller: 'CourseQuestionCtrl'
   })
+  .when('/favorites', {
+    templateUrl: 'views/favorites.html',
+    controller: 'FavoritesCtrl'
+  })
   .otherwise({
     redirectTo: '/'
   });
 })
-.run(function($rootScope, $location, $http, TokenService, AuthenticationService) {
+.run(function ($rootScope, $location, $http, TokenService, AuthenticationService) {
   TokenService.get().success(function(data){
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {
@@ -48,7 +52,7 @@ angular.module('kakaduSpaApp', [
       console.log(config);
   });
   //make sure you cannot access other course view without being logged in
-  var routesThatRequireAuth = ['/courses'];
+  var routesThatRequireAuth = ['/courses', '/favorites'];
   $rootScope.$on('$routeChangeStart', function() {
     if(window._(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
       $location.path('/login');

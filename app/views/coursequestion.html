@@ -11,6 +11,8 @@
 		<nav class="navbar-collapse collapse">
 			<ul class="navbar-nav nav pull-right">
 				<li><a href="#/courses" class="btn btn-large disabled">Click Kakadu to go back to the courses</a></li>
+				<li><a href="#/courses">All courses</a></li>
+				<li><a href="#/favorites">Your courses</a></li>
 				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
 			</ul>
 		</nav>
@@ -30,6 +32,7 @@
 		    {{question.percentage | number:0}}%
 		  </div>
 		</div>
+		<h3>{{message}}</h3>
 		<!-- questiontypes -->
 		<div ng-switch on="question.type">
 
@@ -55,8 +58,7 @@
 		    <div ng-switch-when="cloze">
 				<h2><p>Question</p></h2>
 				<cloze-question ng-model="question"></cloze-question>
-				<h2> <p>Answer</p></h2>
-				<p ng-repeat="shuffled in shuffledAnswers">{{shuffled}}</p>
+				<br>
 				<button type="button" class="btn btn-primary btn-large" ng-click="checkCloze()" ng-show="showCheckCloze">check</button>
 				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze">next</button>
 		    </div>
