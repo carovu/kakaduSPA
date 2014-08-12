@@ -8,7 +8,7 @@
  * # Controller for questions of chosen course
  */
 
-angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope, $routeParams, $http, $location, AuthenticationService, CourseQuestionService, MultipleQuestionService) {
+angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootScope, $scope, $routeParams, $http, $location, AuthenticationService, CourseQuestionService, MultipleQuestionService) {
     CourseQuestionService.getCourse($routeParams.courseId).success(function(data) {
       //Global variables
       $scope.question = data;
@@ -24,8 +24,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         $scope.simpleAnswered = 'false'; // for correct, wrong and next button
 
       } else if($scope.question.type === 'multiple'){
-
         $scope.chosenChoisesMultiple = [];
+        $scope.choicesFieldNum = []; //remembers the number of the chosen fields
         //fill rightAnswersMultiple array with the right answers
         if($scope.question.choices){
           $scope.rightAnswersMultiple = MultipleQuestionService.getAnswers($scope.question.choices, $scope.question.answer);
@@ -33,17 +33,21 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         $scope.showCheckMultiple = 'true'; //hide check button
         $scope.showNextMultiple = 'false'; //show next button
         $scope.chooseButtonMultiple = []; //number, of which choice field is clicked
+        $scope.shuffledChoices = shuffle($scope.question.choices); //shuffle choices
+        $scope.correctAnswerField = MultipleQuestionService.getAnswerFields($scope.shuffledChoices, $scope.rightAnswersMultiple); //like question.answer, but for shuffled array
 
       } else if($scope.question.type === 'dragdrop'){
 
         $scope.choiceDrop = ''; //dropped choice in answer field    
+        $scope.shuffledChoices = shuffle($scope.question.choices);
 
       } else if($scope.question.type === 'cloze'){
 
         $scope.answeredCloze = []; //contains answers of the gaps 
         $scope.numRightGaps = 0;  //number of correct answered gaps
         $scope.showCheckCloze = 'true';
-        $scope.showNextCloze = 'false';   
+        $scope.showNextCloze = 'false';
+        $scope.disableCloze = 0; //variable to disable input field or not
       }
       /*
       functions for simple questions
@@ -73,12 +77,31 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
       //cannot undo. what is in array, remains in array
       //field is number of field, so you know which field will change color, once it is clicked
       $scope.chooseChoiceMultiple = function(choice, field){
-        $scope.chooseButtonMultiple[field] = {'background-color':'orange'};
-        //check for uniqeness
-        if($scope.chosenChoisesMultiple.indexOf(choice) === -1){
-          //push choice into array
-          $scope.chosenChoisesMultiple.push(choice);
-        }
+        
+
+        if($scope.choicesFieldNum.indexOf(field) === -1){
+            $scope.chooseButtonMultiple[field] = {'background-color':'orange', 'border-style': 'solid', 'border-width': 'thick'};
+            $scope.choicesFieldNum.push(field);
+            //check for uniqeness
+            if($scope.chosenChoisesMultiple.indexOf(choice) === -1){
+              //push choice into array
+              $scope.chosenChoisesMultiple.push(choice);
+            }
+          }else{
+            $scope.chooseButtonMultiple[field] = {'background-color':'white'};
+            //delete your choice from fieldnumberarray
+            for(var i = $scope.choicesFieldNum.length - 1; i >= 0; i--){
+                if($scope.choicesFieldNum[i] === field){
+                    $scope.choicesFieldNum.splice(i,1);
+                }
+            }
+            //delete your choice from the chosenchoisesarray
+            for(var x = $scope.chosenChoisesMultiple.length - 1; x >= 0; x--){
+                if($scope.chosenChoisesMultiple[x] === choice){
+                    $scope.chosenChoisesMultiple.splice(x,1);
+                }
+            }
+          }
       };
       //check the chosen answers with solutionanswer
       //every choice has to be right, otherwise, answered wrong.
@@ -107,8 +130,13 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         }
 
         //iterate through multiple answer array and change background of right answers
-        angular.forEach($scope.question.answer, function(answerNumber){
-          $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
+        angular.forEach($scope.correctAnswerField, function(answerNumber){
+          if($scope.choicesFieldNum.indexOf(answerNumber) !== -1){
+            $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8', 'border-style': 'solid', 'border-width': 'thick'};
+          }else{
+            $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
+          }
+          
         });
       };
 
@@ -139,6 +167,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           }else{
             angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#FF6347');
           }
+          angular.element(document.getElementById('answeredCloze['+i+']').setAttribute('disabled', true));
         });  
         if($scope.numRightGaps === $scope.question.answer.length){
           $scope.checkAnswer = 'true';
@@ -146,6 +175,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
         }else{
           $scope.message = 'You remember wrong';
         }
+        $scope.disableCloze++;
       };
 
       /*
@@ -161,7 +191,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
                              //we will add it manually here
           answer: $scope.checkAnswer //if user answers question right or wrong
         };
-        
+
         CourseQuestionService.nextQuestion($scope.questionmodel).success(function(data) {
           $scope.question = data;
           $scope.checkAnswer = 'false';
@@ -177,16 +207,20 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
           } else if($scope.question.type === 'multiple'){
 
             $scope.chosenChoisesMultiple = [];
+            $scope.choicesFieldNum = [];
             if($scope.question.choices){
               $scope.rightAnswersMultiple = MultipleQuestionService.getAnswers($scope.question.choices, $scope.question.answer);
             }     
             $scope.showCheckMultiple = 'true'; 
             $scope.showNextMultiple = 'false'; 
             $scope.chooseButtonMultiple = [];
+            $scope.shuffledChoices = shuffle($scope.question.choices);
+            $scope.correctAnswerField = MultipleQuestionService.getAnswerFields($scope.shuffledChoices, $scope.rightAnswersMultiple);
 
           } else if($scope.question.type === 'dragdrop'){
 
             $scope.choiceDrop = '';
+            $scope.shuffledChoices = shuffle($scope.question.choices);
 
           } else if($scope.question.type === 'cloze'){
 
@@ -194,34 +228,25 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($scope,
             $scope.numRightGaps = 0; 
             $scope.showCheckCloze = 'true';
             $scope.showNextCloze = 'false';   
+            $scope.disableCloze = 0; 
           }
-        }).error(function (data, config) {
+        }).error(function (data) {
           $location.path('/');
-          console.log('error data:');
-          console.log(data);
-          console.log('error config:');
-          console.log(config);
+          $rootScope.notification = data.message;
         });
       };
 
       $scope.logOut = function() {
         AuthenticationService.logout().success(function() {
-        }).error(function (data, config) {
+        }).error(function (data) {
           $location.path('/course/'+$routeParams.courseId+'/learning');
-          console.log('error data:');
-          console.log(data);
-          console.log('error config:');
-          console.log(config);
+          $rootScope.notification = data.message;
         });
       };
       
-    }).error(function (data, config) {
+    }).error(function (data) {
       $location.path('/');
-      console.log('Have you logged in?');
-      console.log('error data:');
-      console.log(data);
-      console.log('error config:');
-      console.log(config);
+      $rootScope.notification = data.message+'. Have you logged in?' ;
     });
 
     function shuffle(array) {

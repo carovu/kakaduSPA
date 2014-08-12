@@ -56,7 +56,7 @@ angular.module('kakaduSpaApp', [
   $rootScope.$on('$routeChangeStart', function() {
     if(window._(routesThatRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn()) {
       $location.path('/login');
-      console.log('Please log in to continue.');
+      $rootScope.notification = 'You do not have permission. Have you tried logging in?';
     }
   });
 });

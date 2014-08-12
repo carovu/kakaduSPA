@@ -10,6 +10,9 @@
  
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
 
+/**
+ * Service to get csrf token from server
+ */
 kakaduServices.factory('TokenService', function($http) {
   return {
     get: function() {
@@ -18,6 +21,9 @@ kakaduServices.factory('TokenService', function($http) {
   };
 });
 
+/**
+ * Service to get requests concerning courses from server
+ */
 kakaduServices.factory('CoursesService', function($http) {
   return {
     get: function() {
@@ -35,6 +41,9 @@ kakaduServices.factory('CoursesService', function($http) {
   };
 });
 
+/**
+ * Service to get requests concerning the quiz from server
+ */
 kakaduServices.factory('CourseQuestionService', function($http) {
   return {
     getCourse: function(courseId) {
@@ -46,6 +55,9 @@ kakaduServices.factory('CourseQuestionService', function($http) {
   };
 });
 
+/**
+ * Service to get requests concerning the favorites from server
+ */
 kakaduServices.factory('FavoritesService', function($http) {
   return {
     getFavorites: function() {
@@ -60,6 +72,9 @@ kakaduServices.factory('FavoritesService', function($http) {
   };
 });
 
+/**
+ * Service to store information in cache
+ */
 kakaduServices.factory('SessionService', function() {
   return {
     get: function(key) {
@@ -74,6 +89,9 @@ kakaduServices.factory('SessionService', function() {
   };
 });
 
+/**
+ * Service to get requests concerning authentification from server
+ */
 kakaduServices.factory('AuthenticationService', function($http,  $sanitize, SessionService) {
 
   var cacheSession   = function() {
@@ -101,6 +119,9 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
   };
 });
 
+/**
+ * Service offers function for the multiple choice question
+ */
 kakaduServices.factory('MultipleQuestionService', function() {
   return {
     getAnswers: function(choices, answer) {
@@ -109,6 +130,15 @@ kakaduServices.factory('MultipleQuestionService', function() {
         rightAnswerMultiple.push(choices[answerNumber]);
       });
       return rightAnswerMultiple;
+    },
+    getAnswerFields: function(shuffledChoices, CorrectAnswer) {
+      var rightAnswerMultipleField = [];
+      angular.forEach(shuffledChoices, function(choice, index){
+        if(CorrectAnswer.indexOf(choice) !== -1){
+            rightAnswerMultipleField.push(index);
+          }
+      });
+      return rightAnswerMultipleField;
     }
   };
 });

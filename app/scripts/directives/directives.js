@@ -24,7 +24,7 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
 			var endPos = startPos + answers[i].length;
 			var before = question.substr(0, startPos);
 			var after = question.substr(endPos, question.length);
-			var gap = '<textarea id="answeredCloze['+i+']" class="span2" rows="1" style="resize:none"></textarea>';
+			var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input>';
 			question = before + gap + after;
 		}
 		element.html(question);
@@ -37,12 +37,11 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
 				var endPos = startPos + answers[i].length;
 				var before = question.substr(0, startPos);
 				var after = question.substr(endPos, question.length);
-				var gap = '<textarea id="answeredCloze['+i+']" class="span2" rows="1" style="resize:none"></textarea>';
+				var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input>';
 				question = before + gap + after;
 			}
 			element.html(question);
       	});
-
       }
     };
   });

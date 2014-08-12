@@ -23,27 +23,39 @@
 	<div class="page-header">
 		<h1>All courses</h1> 
 	</div>
-		<div class="col-md-12">
-			<!--Body content-->
-			<!-- search -->
-			<form ng-submit="search(searchInput)">Search: <input ng-model="searchInput"></input>
-				Sort by:
-				  <select ng-model="orderProp">
-				    <option value="name">Alphabetical</option>
-				    <option value="age">Newest</option>
-				  </select>
-			</form>
-			<!-- list -->
-			<button ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</button>
-			<button ng-click="changePageSize()">add +25 entry per site </button>
-			<div class="list-group" ng-repeat="course in courses.data | orderBy:orderProp | limitTo:pageSize">
-			  	<a href="#/course/{{course.id}}/learning" class="list-group-item">
+	<h5 class="text-center" ng-style="{color:'red'}">{{notification}}</h5>
+	<div class="col-md-12">
+		<!--Body content-->
+		<!-- search -->
+		<form ng-submit="search(searchInput)">Search: <input ng-model="searchInput"></input>
+			Sort by:
+			  <select ng-model="orderProp">
+			    <option value="name">Alphabetical</option>
+			    <option value="age">Newest</option>
+			  </select>
+		</form>
+		<!-- list -->
+		<button ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</button>
+		<button ng-click="changePageSize()">add +25 entry per site </button>
+		<div class="list-group" ng-repeat="course in courses.data | orderBy:orderProp | limitTo:pageSize">
+			<div ng-if="course.user_id === userId">
+				<a href="#/course/{{course.id}}/learning" class="list-group-item" ng-style="{'background-color':'#CCFFFF'}">
+			  		<span class="badge">{{course.percentage}}%</span>
+			  		<h4 class="list-group-item-heading">{{course.name}}</h4>
+			  		<p class="list-group-item-text">{{course.description}}</p>
+			  	</a>
+			  	<button type="button" class="btn btn-default btn-block" ng-model="favorites" ng-click="addFavorite(course.id)" ng-style="{'background-color':'#CCFFFF'}">add to "Your courses"</button>
+			  	<button type="button" class="btn btn-default btn-block" ng-model="courses" ng-click="resetPercentage(course.id)" ng-style="{'background-color':'#CCFFFF'}">reset</button>
+			</div>
+			<div ng-if="course.user_id !== userId">
+				<a href="#/course/{{course.id}}/learning" class="list-group-item">
 			  		<span class="badge">{{course.percentage}}%</span>
 			  		<h4 class="list-group-item-heading">{{course.name}}</h4>
 			  		<p class="list-group-item-text">{{course.description}}</p>
 			  	</a>
 			  	<button type="button" class="btn btn-default btn-block" ng-model="favorites" ng-click="addFavorite(course.id)">add to "Your courses"</button>
 			  	<button type="button" class="btn btn-default btn-block" ng-model="courses" ng-click="resetPercentage(course.id)">reset</button>
-			</div> 									
-		</div>
+			</div>
+		</div> 									
+	</div>
 </div>			

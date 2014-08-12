@@ -10,7 +10,6 @@
 
 		<nav class="navbar-collapse collapse">
 			<ul class="navbar-nav nav pull-right">
-				<li><a href="#/courses" class="btn btn-large disabled">Click Kakadu to go back to the courses</a></li>
 				<li><a href="#/courses">All courses</a></li>
 				<li><a href="#/favorites">Your courses</a></li>
 				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
@@ -21,7 +20,7 @@
 
 <!-- Question/learning view of our chosen course, part of our index.html view-->
 <div class="container">
-	<div class="col-md-9">
+	<div class="col-md-12">
 
 		<div class="page-header">
 			<h1>Quiz</h1> 
@@ -57,10 +56,12 @@
 
 		    <div ng-switch-when="cloze">
 				<h2><p>Question</p></h2>
-				<cloze-question ng-model="question"></cloze-question>
-				<br>
-				<button type="button" class="btn btn-primary btn-large" ng-click="checkCloze()" ng-show="showCheckCloze">check</button>
-				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze">next</button>
+				<form ng-submit="checkCloze()">
+					<cloze-question ng-model="question"></cloze-question>
+					<br>
+					<button type="submit" class="btn btn-primary btn-large" ng-show="showCheckCloze">check</button>
+					<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze">next</button>
+				</form>
 		    </div>
 
 		    <div ng-switch-when="multiple">
@@ -68,10 +69,10 @@
 				<p>{{question.question}}</p> 
 				<h2> <p>Choices</p></h2>
 				<!-- Show all choices in list than json format -->
-				<div ng-repeat="choice in question.choices">
+				<div ng-repeat="choice in shuffledChoices">
 					<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice, {{$index}})" ng-style="chooseButtonMultiple[{{$index}}]">{{choice}}</button>
 					<br>
-				</div>				
+				</div>			
 				<!-- show check button, if showCheckMultiple is true, else hide -->
 				<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">check</button>
 				<button type="button" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">next</button> 	
@@ -81,17 +82,17 @@
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
 				<h2><p>Drop your answer here</p><h2>
-				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:44px;'>
+				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:44px;' id="dropChoice">
   					<div ng-if="choiceDrop === question.answer">
-  						<div class="btn btn-success btn-block" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
+  						<div class="btn btn-success btn-block" data-drag="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
 					</div>
 					 <div ng-if="choiceDrop !== question.answer">
-  						<div class="btn btn-danger btn-block" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
+  						<div class="btn btn-danger btn-block" data-drag="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
 					</div>
 				</div>
 				<h2> <p>Choices</p></h2>
 				<!-- Show all choices in list than json format -->
-				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in question.choices">
+				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in shuffledChoices">
 					<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="choice">{{choice}}</div>
 				</div>				
 				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()">next</button>

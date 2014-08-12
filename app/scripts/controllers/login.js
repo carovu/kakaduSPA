@@ -7,17 +7,15 @@
  * # Controller for the login
  */
 
-angular.module('kakaduSpaApp').controller('LoginCtrl', function ($scope, $location, AuthenticationService) {
+angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $scope, $location, $cookieStore, AuthenticationService) {
   	$scope.credentials = { email: '', password: ''};
 
   	$scope.login = function() {
-    	AuthenticationService.login($scope.credentials).success(function() {
-    		$location.path('/courses');
-    	}).error(function (data, config) {
-    		console.log('error data:');
-    		console.log(data);
-      	console.log('error config:');
-      	console.log(config);
-		  });
+    	AuthenticationService.login($scope.credentials).success(function (data) {
+    		$location.path('/favorites');
+    		$cookieStore.put('databaseId', data.id);
+    	}).error(function (data) {
+        	$scope.notification = data.message;
+		});
   	};
 });

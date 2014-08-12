@@ -7,8 +7,10 @@
  * # Controller for List of Courses
  */
  
-angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $location, $route, $http, AuthenticationService, CoursesService, FavoritesService) {
+angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $rootScope, $location, $route, $http, $cookieStore, AuthenticationService, CoursesService, FavoritesService) {
     $scope.orderProp = 'age';
+    $scope.userId = $cookieStore.get('databaseId');
+    console.log($scope.userId);
     CoursesService.get().success(function(data) {
       $scope.courses = data;
       //pagination
@@ -19,11 +21,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $l
           $scope.currentPage = currentPage+1;
           CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
             $scope.courses = data;
-          }).error(function (data, config) {
-            console.log('error data:');
-            console.log(data);
-            console.log('error config:');
-            console.log(config);
+          }).error(function (data) {
+            $scope.notification = data.message;
           });
       };
 
@@ -39,18 +38,12 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $l
           $scope.pageSize += 25; 
           CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
             $scope.courses = data;
-          }).error(function (data, config) {
-            console.log('error data:');
-            console.log(data);
-            console.log('error config:');
-            console.log(config);
+          }).error(function (data) {
+            $scope.notification = data.message;
           });
       };
-    }).error(function (data, config) {
-      console.log('error data:');
-      console.log(data);
-      console.log('error config:');
-      console.log(config);
+    }).error(function (data) {
+      $scope.notification = data.message;
     });
 
       $scope.search = function(searchInput){
@@ -59,11 +52,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $l
           if($scope.courses.total === 0){
             console.log('nothing found');
           }
-        }).error(function (data, config) {
-          console.log('error data:');
-          console.log(data);
-          console.log('error config:');
-          console.log(config);
+        }).error(function (data) {
+          $scope.notification = data.message;
         });
       };
 
@@ -72,35 +62,25 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $l
           id: courseId,
           type: 'course'
         };
-        FavoritesService.add($scope.favoritemodel).success(function() {
-          
-      }).error(function (data, config) {
-        console.log('error data:');
-          console.log(data);
-          console.log('error config:');
-          console.log(config);
+      FavoritesService.add($scope.favoritemodel).success(function() {
+      }).error(function (data) {
+        $scope.notification = data.message;
       });
     };
 
     $scope.resetPercentage = function(courseId) {
       CoursesService.reset(courseId).success(function() {
         $route.reload();
-      }).error(function (data, config) {
-        console.log('error data:');
-        console.log(data);
-        console.log('error config:');
-        console.log(config);
+      }).error(function (data) {
+        $scope.notification = data.message;
       });
     };
 
     $scope.logOut = function() {
       AuthenticationService.logout().success(function() {
         $location.path('/');
-      }).error(function (data, config) {
-        console.log('error data:');
-        console.log(data);
-        console.log('error config:');
-        console.log(config);
+      }).error(function (data) {
+        $rootScope.notification = data.message;
       });
     };
   });
