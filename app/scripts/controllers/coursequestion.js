@@ -80,7 +80,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
         
 
         if($scope.choicesFieldNum.indexOf(field) === -1){
-            $scope.chooseButtonMultiple[field] = {'background-color':'orange', 'border-style': 'solid', 'border-width': 'thick'};
+            $scope.chooseButtonMultiple[field] = {'border-style': 'solid', 'border-width': 'thick'};
             $scope.choicesFieldNum.push(field);
             //check for uniqeness
             if($scope.chosenChoisesMultiple.indexOf(choice) === -1){

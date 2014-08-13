@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="#/courses" class="navbar-brand pull-left">Kakadu</a> 
+			<a href="#/courses" class="navbar-brand pull-left" title="Links to All courses">Kakadu</a> 
 			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="glyphicon glyphicon-align-justify"></span>
 			</button>
@@ -10,9 +10,9 @@
 
 		<nav class="navbar-collapse collapse">
 			<ul class="navbar-nav nav pull-right">
-				<li><a href="#/courses">All courses</a></li>
-				<li><a href="#/favorites">Your courses</a></li>
-				<li><a href="#/" ng-click="logOut()">Log Out</a></li>
+				<li><a href="#/courses" title="Links to All courses">All courses</a></li>
+				<li><a href="#/favorites" title="Links to Your courses">Your courses</a></li>
+				<li><a href="#/" ng-click="logOut()" title="Logs you out">Log Out</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -21,26 +21,40 @@
 <!-- Favoriteslist view, part of our index.html view -->
 <div class="container-fluid">
 	<div class="page-header">
-		<h1>Your courses</h1> 
+		<h1 title="This list contains all courses you have looked at or added from the all courses list.">Your courses</h1> 
 	</div>
 	<h5 class="text-center" ng-style="{color:'red'}">{{notification}}</h5>
 	<div class="col-md-12">
 		<!--Body content-->
-		<p>Search: <input ng-model="query">
+		<p>Search: <input ng-model="query" title="Search for a course from this list">
 		Sort by:
-		  <select ng-model="orderProp">
+		  <select ng-model="orderProp" title="Sorts the shown page">
 		    <option value="name">Alphabetical</option>
 		    <option value="age">Newest</option>
 		  </select>
 		</p>
 		<!-- list -->
-		<div class="list-group" ng-repeat="favorite in favorites | filter:query | orderBy:orderProp">
-		  	<a href="#/course/{{favorite.id}}/learning" class="list-group-item">
-		  		<span class="badge">{{favorite.percentage}}%</span>
-		  		<h4 class="list-group-item-heading">{{favorite.name}}</h4>
-		  		<p class="list-group-item-text">{{favorite.description}}</p>
-		  	</a>
-		  	<button type="button" class="btn btn-default btn-block" ng-model="favorites" ng-click="removeFavorite(favorite.id)">remove</button>
-		</div> 									
+		<div class="panel panel-default" ng-repeat="(favoriteIndex, favorite) in favorites | filter:query | orderBy:orderProp">
+			<!-- Default panel contents -->
+			<div class="panel-heading" title="A course.">
+				<span class="badge" title="The course percentage. Shows how much of the course you have already learned.">{{favorite.percentage}}%</span>
+				<a href="#/course/{{favorite.id}}/learning" title="Course title">{{favorite.name}}</a>
+				<span class="panel-title pull-right" title="Course menu">	
+					<div class="dropdown">
+					<a href="#/favorites" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#/favorites" ng-click="showDescription(favoriteIndex)" ng-hide="isShowing(favoriteIndex)" title="Show description">Show</a></li>
+						<li><a href="#/favorites" ng-click="hideDescription(favoriteIndex)" ng-show="isShowing(favoriteIndex)" title="Hide description">Hide</a></li>
+						<li class="divider"></li>
+						<li><a href="#/favorites" ng-model="favorites" ng-click="removeFavorite(favorite.id)" title="Removes this course from this list">Remove</a></li>
+						<li><a href="#/favorites" ng-model="favorites" ng-click="resetPercentage(favorite.id)" title="Resets the course percentage.">Reset</a></li>
+					</ul>
+					</div>
+				</span>
+			</div>
+			<div class="panel-body" ng-show="isShowing(favoriteIndex)">
+				<p>{{favorite.description}}</p>
+			</div>
+		</div>		
 	</div>
 </div>	
