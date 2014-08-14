@@ -29,8 +29,8 @@ kakaduServices.factory('CoursesService', function($http) {
     get: function() {
       return $http.get('http://localhost/kakadu/public/api/spa/courses');
     },
-    getPage: function(currentPage, perPage) {
-      return $http.get('http://localhost/kakadu/public/api/spa/courses?page='+currentPage+'&per_page='+perPage);
+    getPage: function(currentPage, perPage, sort, sortDir) {
+      return $http.get('http://localhost/kakadu/public/api/spa/courses?page='+currentPage+'&per_page='+perPage+'&sort='+sort+'&sort_dir='+sortDir);
     },
     search: function(searchInput) {
       return $http.get('http://localhost/kakadu/public/api/spa/courses/search?search='+searchInput);

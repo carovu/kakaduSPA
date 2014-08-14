@@ -6,8 +6,8 @@
  * @description
  * # shows favorites of courses.
  */
-angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $rootScope, $location, $route, $http, AuthenticationService, FavoritesService, CoursesService) {
-  $scope.activeFavoriteIndex = undefined;
+angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $rootScope, $location, $http, AuthenticationService, FavoritesService, CoursesService) {
+  $scope.activeFavoriteIndex = [];
   FavoritesService.getFavorites().success(function(data) {
     $scope.favorites = data;
     //if there are no favorites, jump to all courses
@@ -24,16 +24,16 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         id: favoriteId,
         type: 'course'
       };
-    FavoritesService.remove($scope.favoritemodel).success(function() {
-    		$route.reload();
+    FavoritesService.remove($scope.favoritemodel).success(function (data) {
+    	$scope.favorites = data;
     }).error(function (data) {
     	$scope.notification = data.message;
     });
   };
 
   $scope.resetPercentage = function(favoriteId) {
-    CoursesService.reset(favoriteId).success(function() {
-      $route.reload();
+    CoursesService.reset(favoriteId).success(function (data) {
+      $scope.favorites = data;
     }).error(function (data) {
       $scope.notification = data.message;
     });
@@ -48,16 +48,19 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
   };
 
   $scope.showDescription = function(index) {
-    $scope.activeFavoriteIndex = index;
+    $scope.activeFavoriteIndex.push(index);
   };
 
   $scope.hideDescription = function(index) {
-    if($scope.activeFavoriteIndex === index){
-      $scope.activeFavoriteIndex = undefined;
+    if($scope.activeFavoriteIndex.indexOf(index) !== -1){
+      $scope.activeFavoriteIndex.splice($scope.activeFavoriteIndex.indexOf(index),1);
     }
   };
 
   $scope.isShowing = function(index){
-    return  $scope.activeFavoriteIndex === index;
+    //if index is in array
+    if($scope.activeFavoriteIndex.indexOf(index) !== -1){
+      return true;
+    }
   };
 });

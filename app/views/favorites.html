@@ -37,7 +37,7 @@
 		<div class="panel panel-default" ng-repeat="(favoriteIndex, favorite) in favorites | filter:query | orderBy:orderProp">
 			<!-- Default panel contents -->
 			<div class="panel-heading" title="A course.">
-				<span class="badge" title="The course percentage. Shows how much of the course you have already learned.">{{favorite.percentage}}%</span>
+				<span class="badge" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%.">{{favorite.percentage}}</span>
 				<a href="#/course/{{favorite.id}}/learning" title="Course title">{{favorite.name}}</a>
 				<span class="panel-title pull-right" title="Course menu">	
 					<div class="dropdown">

@@ -7,20 +7,22 @@
  * # Controller for List of Courses
  */
  
-angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $rootScope, $location, $route, $http, $cookieStore, AuthenticationService, CoursesService, FavoritesService) {
+angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $rootScope, $location, $http, $cookieStore, AuthenticationService, CoursesService, FavoritesService) {
     $scope.orderProp = 'age';
     $scope.descript = 'false';
-    $scope.activeCourseIndex = undefined;
+    $scope.activeCourseIndex = [];
     $scope.userId = $cookieStore.get('databaseId');
     CoursesService.get().success(function(data) {
       $scope.courses = data;
       //pagination
       $scope.currentPage = data.current_page; 
-      $scope.pageSize = data.per_page;      
+      $scope.pageSize = data.per_page;
+      $scope.sort = 'id'; //data.sort;
+      $scope.sortDir = 'asc';// data.sort_dir; 
 
       $scope.setCurrentPage = function(currentPage) {
         $scope.currentPage = currentPage+1;
-        CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
+        CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
           $scope.courses = data;
         }).error(function (data) {
           $scope.notifStyle = {'color': 'red'};
@@ -31,7 +33,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
       $scope.nextPage = function(){
         if($scope.currentPage !== Math.ceil($scope.courses.total/ $scope.pageSize)){
           $scope.currentPage++;
-          CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
+          CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
             $scope.courses = data;
           }).error(function (data) {
             $scope.notifStyle = {'color': 'red'};
@@ -44,31 +46,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
       $scope.previousPage = function(){
         if($scope.currentPage !== 1){
           $scope.currentPage--;
-          CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
-            $scope.courses = data;
-          }).error(function (data) {
-            $scope.notifStyle = {'color': 'red'};
-            $scope.notification = data.message;
-          });
-        }
-      };
-
-      $scope.firstPage = function(){
-        if($scope.currentPage !== 1){
-          $scope.currentPage = 1;
-          CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
-            $scope.courses = data;
-          }).error(function (data) {
-            $scope.notifStyle = {'color': 'red'};
-            $scope.notification = data.message;
-          });
-        }
-      };
-
-      $scope.lastPage = function(){
-        if($scope.currentPage !== Math.ceil($scope.courses.total/ $scope.pageSize)){
-          $scope.currentPage = Math.ceil($scope.courses.total/ $scope.pageSize);
-          CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
+          CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
             $scope.courses = data;
           }).error(function (data) {
             $scope.notifStyle = {'color': 'red'};
@@ -85,15 +63,36 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
         return Math.ceil($scope.courses.total/ $scope.pageSize);
       };
 
-      $scope.changePageSize = function() {
-        $scope.pageSize += 25; 
-        CoursesService.getPage($scope.currentPage, $scope.pageSize).success(function(data) {
+      $scope.changePageSize = function(size) {
+        $scope.pageSize = size; 
+        CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
           $scope.courses = data;
         }).error(function (data) {
           $scope.notifStyle = {'color': 'red'};
           $scope.notification = data.message;
         });
       };
+
+      $scope.sortBy = function(sort) {
+        $scope.sort = sort; 
+        CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
+          $scope.courses = data;
+        }).error(function (data) {
+          $scope.notifStyle = {'color': 'red'};
+          $scope.notification = data.message;
+        });
+      };
+
+      $scope.orderBy = function(order) {
+        $scope.sortDir = order; 
+        CoursesService.getPage($scope.currentPage, $scope.pageSize, $scope.sort, $scope.sortDir).success(function(data) {
+          $scope.courses = data;
+        }).error(function (data) {
+          $scope.notifStyle = {'color': 'red'};
+          $scope.notification = data.message;
+        });
+      };
+
     }).error(function (data) {
       $scope.notifStyle = {'color': 'red'};
       $scope.notification = data.message;
@@ -131,17 +130,20 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
     };
 
     $scope.showDescription = function(index) {
-      $scope.activeCourseIndex = index;
+      $scope.activeCourseIndex.push(index);
     };
 
     $scope.hideDescription = function(index) {
-      if($scope.activeCourseIndex === index){
-        $scope.activeCourseIndex = undefined;
+      if($scope.activeCourseIndex.indexOf(index) !== -1){
+        $scope.activeCourseIndex.splice($scope.activeCourseIndex.indexOf(index),1);
       }
     };
 
     $scope.isShowing = function(index){
-      return  $scope.activeCourseIndex === index;
+      //if index is in array
+      if($scope.activeCourseIndex.indexOf(index) !== -1){
+        return true;
+      }
     };
 
     $scope.logOut = function() {
