@@ -23,12 +23,11 @@
 	<div class="page-header">
 		<h1 title="This list shows all existing courses.">All courses</h1> 
 	</div>
-	<h5 class="text-center" ng-style="notifStyle">{{notification}}</h5>
 	<div class="col-md-12">
 		<!--Body content-->		
 		<!-- search -->
 		<form ng-submit="search(searchInput)">
-			<input class="form-control" ng-model="searchInput" title="Search for a course from this list" placeholder="search for a course . . ."></input>
+			<input class="form-control" ng-model="searchInput" title="Search for a course from database" placeholder="Search"></input>
 		</form>	
 		<!-- Sorting -->
 		<div class="btn-group btn-group-justified">
@@ -64,9 +63,10 @@
 			</div>
 		</div>
 		<br>	
+		<h5 class="text-center" ng-style="notifStyle">{{notification}}</h5>
 		<!-- pagination -->
 		<div class="text-center" ng-hide="numberOfPages() == 1">
-			<ul class="pagination pagination-lg">
+			<ul class="pagination pagination-lg pagination-centered">
 				<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>	
 				<li><a href="#/courses" ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</a></li>
 				<li><a href="#/courses" ng-click="nextPage()" title="Show next page">&raquo;</a></li>
@@ -85,7 +85,7 @@
 							<li><a href="#/courses" ng-click="showDescription(courseIndex)" ng-hide="isShowing(courseIndex)" title="Show description">Show</a></li>
 							<li><a href="#/courses" ng-click="hideDescription(courseIndex)" ng-show="isShowing(courseIndex)" title="Hide description">Hide</a></li>
 							<li class="divider"></li>
-							<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id)" title="Add this course to the your courses list.">add</a></li>
+							<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id, true)" title="Add this course to the your courses list.">add</a></li>
 						</ul>
 						</div>
 					</span>
@@ -104,7 +104,7 @@
 							<li><a href="#/courses" ng-click="showDescription(courseIndex)" ng-hide="isShowing(courseIndex)" title="Show description">Show</a></li>
 							<li><a href="#/courses" ng-click="hideDescription(courseIndex)" ng-show="isShowing(courseIndex)" title="Hide description">Hide</a></li>
 							<li class="divider"></li>
-							<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id)" title="Add this course to the your courses list.">add</a></li>
+							<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id, false)" title="Add this course to the your courses list.">add</a></li>
 						</ul>
 						</div>
 					</span>
@@ -121,6 +121,6 @@
 				<li><a href="#/courses" ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</a></li>
 				<li><a href="#/courses" ng-click="nextPage()" title="Show next page">&raquo;</a></li>
 			</ul>	
-		</div>									
+		</div>								
 	</div>
 </div>			

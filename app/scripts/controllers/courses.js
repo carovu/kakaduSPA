@@ -110,23 +110,25 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
         });
       };
 
-    $scope.addFavorite = function(courseId) {
+    $scope.addFavorite = function(courseId, isFavorite) {
       $scope.favoritemodel = { 
           id: courseId,
           type: 'course'
         };
-      FavoritesService.add($scope.favoritemodel).success(function (status) {
-        if(status.status === 'Ok'){
-          $scope.notifStyle = {'color': 'black'};
-          $scope.notification = 'Course has been added to Your courses';
-        }else{
+        if(isFavorite === true){
           $scope.notifStyle = {'color': 'red'};
-          $scope.notification = status.messages.join()+'.';
+          $scope.notification = 'Course has already been added to Your courses list.';
+        } else{
+          FavoritesService.add($scope.favoritemodel).success(function (data) {
+            $scope.notifStyle = {'color': 'black'};
+            $scope.notification = 'Course has been added to Your courses';
+            $scope.courses = data;
+          }).error(function (data) {
+            $scope.notifStyle = {'color': 'red'};
+            $scope.notification = data.message;
+          });
         }
-      }).error(function (data) {
-        $scope.notifStyle = {'color': 'red'};
-        $scope.notification = data.message;
-      });
+      
     };
 
     $scope.showDescription = function(index) {
