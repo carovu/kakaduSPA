@@ -55,6 +55,7 @@
 						entries<span class="caret"></span>
 				  	</button>
 				  	<ul class="dropdown-menu" role="menu">
+				  		<li><a href="#/courses" ng-click="changePageSize(20)" title="Changes how many courses you see per page">20</a></li>
 					    <li><a href="#/courses" ng-click="changePageSize(40)" title="Changes how many courses you see per page">40</a></li>
 					    <li><a href="#/courses" ng-click="changePageSize(60)" title="Changes how many courses you see per page">60</a></li>
 					    <li><a href="#/courses" ng-click="changePageSize(80)" title="Changes how many courses you see per page">80</a></li>
@@ -63,12 +64,18 @@
 			</div>
 		</div>
 		<br>	
-		<h5 class="text-center" ng-style="notifStyle">{{notification}}</h5>
+		<div class="alert alert-success text-center" role="alert" ng-show="notifSuccess">
+			{{notification}}
+		</div>
+		<div class="alert alert-danger text-center" role="alert" ng-show="notifDanger">
+			{{notification}}
+		</div>
+		
 		<!-- pagination -->
-		<div class="text-center" ng-hide="numberOfPages() == 1">
+		<div class="text-center" ng-hide="numberOfPages() <= 1">
 			<ul class="pagination pagination-lg pagination-centered">
-				<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>	
-				<li><a href="#/courses" ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</a></li>
+				<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>
+				<li ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-class="{active: ($index+1) == currentPage}"ng-click="setCurrentPage($index)"><a href="#/courses">{{$index + 1}}</a></li>
 				<li><a href="#/courses" ng-click="nextPage()" title="Show next page">&raquo;</a></li>
 			</ul>	
 		</div>	
@@ -77,7 +84,7 @@
 			<!-- Default panel contents -->
 			<div ng-if="course.user_id === userId">
 				<div class="panel-heading" title="A course you have already looked at and is in the your courses list." ng-style="{'background-color':'#E5E5E5'}">
-					<a href="#/course/{{favorite.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
+					<a href="#/course/{{course.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
 					<span class="panel-title pull-right" title="Course menu">	
 						<div class="dropdown">
 						<a href="#/courses" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>
@@ -96,7 +103,7 @@
 			</div>
 			<div ng-if="course.user_id !== userId">
 				<div class="panel-heading" title="A course.">
-					<a href="#/course/{{favorite.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
+					<a href="#/course/{{course.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
 					<span class="panel-title pull-right" title="Course menu">	
 						<div class="dropdown">
 						<a href="#/courses" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>
@@ -115,10 +122,10 @@
 			</div>
 		</div>
 		<!-- pagination -->
-		<div class="text-center" ng-hide="numberOfPages() == 1">
-			<ul class="pagination pagination-lg">
-				<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>	
-				<li><a href="#/courses" ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-click="setCurrentPage($index)">{{$index + 1}}</a></li>
+		<div class="text-center" ng-hide="numberOfPages() <= 1">
+			<ul class="pagination pagination-lg pagination-centered">
+				<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>
+				<li ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-class="{active: ($index+1) == currentPage}"ng-click="setCurrentPage($index)"><a href="#/courses">{{$index + 1}}</a></li>
 				<li><a href="#/courses" ng-click="nextPage()" title="Show next page">&raquo;</a></li>
 			</ul>	
 		</div>								

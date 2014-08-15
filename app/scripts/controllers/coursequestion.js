@@ -8,14 +8,18 @@
  * # Controller for questions of chosen course
  */
 
-angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootScope, $scope, $routeParams, $http, $location, AuthenticationService, CourseQuestionService, MultipleQuestionService) {
+angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootScope, $scope, $routeParams, $http, $location, $cookieStore, AuthenticationService, CourseQuestionService, MultipleQuestionService) {
     CourseQuestionService.getCourse($routeParams.courseId).success(function(data) {
       //Global variables
       $scope.question = data;
       $scope.checkAnswer = 'false'; //check variable, wheter user answered question right or wrong
       $scope.message = '';  //notification, how you answered
-      if($scope.question.percentage === 100){
-        console.log('CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.');
+      $scope.notifInfo = 'false';
+      $scope.congrats = 'false'; //congratulations only appear the first time you reach 100;
+      if($scope.question.percentage === 100 && $scope.congrats === 'false'){
+        $scope.notifInfo = 'true';
+        $scope.congrats = 'true';
+        $scope.message = 'CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.';
       }
       //variables for the different types
       if($scope.question.type === 'simple'){
@@ -38,7 +42,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
 
       } else if($scope.question.type === 'dragdrop'){
 
-        $scope.choiceDrop = ''; //dropped choice in answer field    
+        $scope.choiceDrop = '';//dropped choice in answer field    
+        $scope.hideDragDrop = 'false'; //if a dragdropquestion follows another, the answerdraggable remains, use this to hide that bug.
         $scope.shuffledChoices = shuffle($scope.question.choices);
 
       } else if($scope.question.type === 'cloze'){
@@ -60,13 +65,15 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
       //user did remember answer correctly 
       $scope.simpleAnswerCorrect = function() {
         $scope.checkAnswer = 'true';
-        $scope.message = 'You remember correctly';
+        $scope.notifInfo = 'true';
+        $scope.message = 'You remembered correctly';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
       //user did not remember answer correctly
       $scope.simpleAnswerWrong = function() {
         $scope.checkAnswer = 'false';
-        $scope.message = 'You remember wrong';
+        $scope.notifInfo = 'true';
+        $scope.message = 'You remembered wrong';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
 
@@ -107,6 +114,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
       //every choice has to be right, otherwise, answered wrong.
       //there is no halfright or halfwrong
       $scope.checkMultiple = function(){
+        $scope.notifInfo = 'true';
         var wrongAnswered = 0;
         $scope.showCheckMultiple = 'false';
         $scope.showNextMultiple = 'true';
@@ -144,8 +152,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
       functions for DragDrop questions
       */
       //drop event
-      $scope.dropCallback = function(event, ui, choice) {
-        if($scope.question.answer === choice){
+      $scope.dropCallback = function(event, ui) {
+        $scope.notifInfo = 'true';
+        $scope.hideDragDrop = 'true';
+        if($scope.question.answer === angular.element(ui.draggable).scope().choiceDrop){
           $scope.checkAnswer = 'true';
           $scope.message = 'You chose correctly';
         }else{
@@ -158,6 +168,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
       */
       //checking cloze, we are using jquery, because offered AJS directives are not useful enough
       $scope.checkCloze = function(){
+        $scope.notifInfo = 'true';
         $scope.showCheckCloze = 'false';
         $scope.showNextCloze = 'true';
         angular.forEach($scope.question.answer, function(answer, i){
@@ -171,9 +182,9 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
         });  
         if($scope.numRightGaps === $scope.question.answer.length){
           $scope.checkAnswer = 'true';
-          $scope.message = 'You remember correctly';
+          $scope.message = 'You remembered correctly';
         }else{
-          $scope.message = 'You remember wrong';
+          $scope.message = 'You remembered wrong';
         }
         $scope.disableCloze++;
       };
@@ -191,13 +202,15 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
                              //we will add it manually here
           answer: $scope.checkAnswer //if user answers question right or wrong
         };
-
         CourseQuestionService.nextQuestion($scope.questionmodel).success(function(data) {
           $scope.question = data;
           $scope.checkAnswer = 'false';
           $scope.message = '';
-          if($scope.question.percentage === 100){
-            console.log('CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.');
+          $scope.notifInfo = 'false';
+          if($scope.question.percentage === 100 && $scope.congrats === 'false'){
+            $scope.notifInfo = 'true';
+            $scope.congrats = 'true';
+            $scope.message = 'CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.';
           }
           if($scope.question.type === 'simple'){
 
@@ -219,7 +232,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
 
           } else if($scope.question.type === 'dragdrop'){
 
-            $scope.choiceDrop = '';
+            $scope.hideDragDrop = 'false';
             $scope.shuffledChoices = shuffle($scope.question.choices);
 
           } else if($scope.question.type === 'cloze'){
@@ -232,20 +245,24 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
           }
         }).error(function (data) {
           $location.path('/');
+          $rootScope.notifDanger = 'true';
           $rootScope.notification = data.message;
         });
       };
 
       $scope.logOut = function() {
         AuthenticationService.logout().success(function() {
+          $cookieStore.remove('databaseId');
         }).error(function (data) {
           $location.path('/course/'+$routeParams.courseId+'/learning');
+          $rootScope.notifDanger = 'true';
           $rootScope.notification = data.message;
         });
       };
       
     }).error(function (data) {
       $location.path('/');
+      $rootScope.notifDanger = 'true';
       $rootScope.notification = data.message+'. Have you logged in?' ;
     });
 
@@ -268,26 +285,3 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function($rootSc
       return array;
     }
 });
-
-/*    Not needed dragdropUI functions, here, in case i will need it in the future
-jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)',onOver: 'overCallback', onOut: 'outCallback'}"
-jqyoui-draggable="{placeholder:true,animate:true, onStart:'startCallback', onStop: 'stopCallback', onDrag: 'dragCallback'}"
-      $scope.startCallback = function(event, ui) {
-
-      };
-
-      $scope.stopCallback = function(event, ui) {
-        console.log('stopCallback');
-      };
-
-      $scope.dragCallback = function(event, ui) {
-        console.log('dragCallback');
-      };
-      $scope.overCallback = function(event, ui) {
-        console.log('overCallback');
-      };
-
-      $scope.outCallback = function(event, ui) {
-        console.log('outCallback');
-      };
-*/

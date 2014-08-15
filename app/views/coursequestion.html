@@ -31,7 +31,9 @@
 		    {{question.percentage | number:0}}%
 		  </div>
 		</div>
-		<h3 title="Notification whether you answered the question correct or wrong.">{{message}}</h3>
+		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
+			{{message}}
+		</div>
 		<!-- questiontypes -->
 		<div ng-switch on="question.type">
 
@@ -77,23 +79,30 @@
 				<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">check</button>
 				<button type="button" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">next</button> 	
 		    </div>
-
-		    <div ng-switch-when="dragdrop" title="This is the type of question, where you drag the correct answer into the answerfield. The correct answer will be highlighted in green and a wrong answer in red.">
+		    <div ng-switch-when="dragdrop" title="This is the type of question, where you drag the correct answer into the answerfield. The correct answer will be highlighted in green and a wrong answer in red. Choosing nothing will be taken as not knowing the answer.">
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
-				<h2><p>Drop your answer here</p><h2>
-				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:44px;' id="dropChoice">
-  					<div ng-if="choiceDrop === question.answer">
-  						<div class="btn btn-success btn-block" data-drag="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
-					</div>
-					 <div ng-if="choiceDrop !== question.answer">
-  						<div class="btn btn-danger btn-block" data-drag="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable ng-show="choiceDrop" id="choiceDragDrop">{{choiceDrop}}</div>
+				<h2 class="text-center"><p>Drop your answer here</p><h2>
+				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback'}" style='height:44px;'>
+  					<div ng-show="hideDragDrop">
+	  					<div ng-if="choiceDrop === question.answer">
+	  						<div class="btn btn-success btn-block" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable="{placeholder:true,animate:true}" ng-hide="!choiceDrop" id="choiceDragDrop">
+	  							{{choiceDrop}}
+	  						</div>
+						</div>
+						 <div ng-if="choiceDrop !== question.answer">
+	  						<div class="btn btn-danger btn-block" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable="{placeholder:true,animate:true}" ng-hide="!choiceDrop" id="choiceDragDrop">
+	  							{{choiceDrop}}
+	  						</div>
+						</div>
 					</div>
 				</div>
 				<h2> <p>Choices</p></h2>
 				<!-- Show all choices in list than json format -->
 				<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in shuffledChoices">
-					<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="choice">{{choice}}</div>
+					<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-hide="!choice">
+						{{choice}}
+					</div>
 				</div>				
 				<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" title="Show the next question.">next</button>
 		    </div>
@@ -101,3 +110,4 @@
 		</div>
 	</div>
 </div>		
+<!-- -->

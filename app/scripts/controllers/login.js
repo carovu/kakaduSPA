@@ -9,13 +9,14 @@
 
 angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $scope, $location, $cookieStore, AuthenticationService) {
   	$scope.credentials = { email: '', password: ''};
-
+    
   	$scope.login = function() {
     	AuthenticationService.login($scope.credentials).success(function (data) {
     		$location.path('/favorites');
     		$cookieStore.put('databaseId', data.id);
     	}).error(function (data) {
-        	$scope.notification = data.message;
+    		$scope.notifDanger = 'true';
+        $scope.notification = data.message;
 		});
   	};
 });
