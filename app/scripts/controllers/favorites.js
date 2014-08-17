@@ -8,14 +8,17 @@
  */
 angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $rootScope, $location, $http, $cookieStore, AuthenticationService, FavoritesService, CoursesService) {
   $scope.activeFavoriteIndex = [];
+  $scope.notifInfo = 'false';
   $scope.notifDanger = 'false';
   FavoritesService.getFavorites().success(function(data) {
     $scope.favorites = data;
-    //if there are no favorites, jump to all courses
     if($scope.favorites.length === 0){
-      $location.path('/courses');
+      $scope.notifInfo = 'true';
+      $scope.notifDanger = 'false';
+      $scope.notification = 'Your list is currently empty';
     }
 	}).error(function (data) {
+      $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';
     	$scope.notification = data.message;
 	});
@@ -29,6 +32,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
     FavoritesService.remove($scope.favoritemodel).success(function (data) {
     	$scope.favorites = data;
     }).error(function (data) {
+      $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';
     	$scope.notification = data.message;
     });
@@ -38,6 +42,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
     CoursesService.reset(favoriteId).success(function (data) {
       $scope.favorites = data;
     }).error(function (data) {
+      $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';
       $scope.notification = data.message;
     });
@@ -48,6 +53,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
       $location.path('/');
       $cookieStore.remove('databaseId');
     }).error(function (data) {
+      $scope.notifInfo = 'false';
       $rootScope.notifDanger = 'true';
       $rootScope.notification = data.message;
     });

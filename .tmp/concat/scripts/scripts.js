@@ -267,14 +267,25 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', [
   '$location',
   '$cookieStore',
   'AuthenticationService',
-  function ($rootScope, $scope, $location, $cookieStore, AuthenticationService) {
+  'FavoritesService',
+  function ($rootScope, $scope, $location, $cookieStore, AuthenticationService, FavoritesService) {
     $scope.credentials = {
       email: '',
       password: ''
     };
     $scope.login = function () {
       AuthenticationService.login($scope.credentials).success(function (data) {
-        $location.path('/favorites');
+        FavoritesService.getFavorites().success(function (dataFav) {
+          $scope.favorites = dataFav;
+          if ($scope.favorites.length === 0) {
+            $location.path('/courses');
+          } else {
+            $location.path('/favorites');
+          }
+        }).error(function (data) {
+          $scope.notifDanger = 'true';
+          $scope.notification = data.message;
+        });
         $cookieStore.put('databaseId', data.id);
       }).error(function (data) {
         $scope.notifDanger = 'true';
@@ -509,8 +520,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
       } else if ($scope.question.type === 'dragdrop') {
         $scope.choiceDrop = '';
         //dropped choice in answer field    
-        $scope.hideDragDrop = 'false';
-        //if a dragdropquestion follows another, the answerdraggable remains, use this to hide that bug.
         $scope.shuffledChoices = shuffle($scope.question.choices);
       } else if ($scope.question.type === 'cloze') {
         $scope.answeredCloze = [];
@@ -619,14 +628,23 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
       functions for DragDrop questions
       */
       //drop event
-      $scope.dropCallback = function (event, ui) {
+      $scope.dropCallback = function (event, ui, choice) {
         $scope.notifInfo = 'true';
-        $scope.hideDragDrop = 'true';
-        if ($scope.question.answer === angular.element(ui.draggable).scope().choiceDrop) {
+        //angular.element(ui.draggable).scope().choiceDrop
+        if ($scope.question.answer === choice) {
           $scope.checkAnswer = 'true';
           $scope.message = 'You chose correctly';
         } else {
           $scope.message = 'You chose wrong';
+        }
+      };
+      //hide or show draggable
+      $scope.showDraggable = function (content) {
+        //is a choice
+        if ($scope.question.choices.indexOf(content) !== -1) {
+          return true;
+        } else {
+          return false;
         }
       };
       /*
@@ -690,7 +708,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
             $scope.shuffledChoices = shuffle($scope.question.choices);
             $scope.correctAnswerField = MultipleQuestionService.getAnswerFields($scope.shuffledChoices, $scope.rightAnswersMultiple);
           } else if ($scope.question.type === 'dragdrop') {
-            $scope.hideDragDrop = 'false';
+            //angular.element(document.getElementById('choiceDragDrop')).scope().choiceDrop = '';
+            $scope.choiceDrop = '';
             $scope.shuffledChoices = shuffle($scope.question.choices);
           } else if ($scope.question.type === 'cloze') {
             $scope.answeredCloze = [];
@@ -753,14 +772,17 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
   'CoursesService',
   function ($scope, $rootScope, $location, $http, $cookieStore, AuthenticationService, FavoritesService, CoursesService) {
     $scope.activeFavoriteIndex = [];
+    $scope.notifInfo = 'false';
     $scope.notifDanger = 'false';
     FavoritesService.getFavorites().success(function (data) {
       $scope.favorites = data;
-      //if there are no favorites, jump to all courses
       if ($scope.favorites.length === 0) {
-        $location.path('/courses');
+        $scope.notifInfo = 'true';
+        $scope.notifDanger = 'false';
+        $scope.notification = 'Your list is currently empty';
       }
     }).error(function (data) {
+      $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';
       $scope.notification = data.message;
     });
@@ -773,6 +795,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
       FavoritesService.remove($scope.favoritemodel).success(function (data) {
         $scope.favorites = data;
       }).error(function (data) {
+        $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
         $scope.notification = data.message;
       });
@@ -781,6 +804,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
       CoursesService.reset(favoriteId).success(function (data) {
         $scope.favorites = data;
       }).error(function (data) {
+        $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
         $scope.notification = data.message;
       });
@@ -790,6 +814,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
         $location.path('/');
         $cookieStore.remove('databaseId');
       }).error(function (data) {
+        $scope.notifInfo = 'false';
         $rootScope.notifDanger = 'true';
         $rootScope.notification = data.message;
       });

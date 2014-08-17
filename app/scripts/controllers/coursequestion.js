@@ -43,7 +43,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
       } else if($scope.question.type === 'dragdrop'){
 
         $scope.choiceDrop = '';//dropped choice in answer field    
-        $scope.hideDragDrop = 'false'; //if a dragdropquestion follows another, the answerdraggable remains, use this to hide that bug.
         $scope.shuffledChoices = shuffle($scope.question.choices);
 
       } else if($scope.question.type === 'cloze'){
@@ -152,14 +151,24 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
       functions for DragDrop questions
       */
       //drop event
-      $scope.dropCallback = function(event, ui) {
+      $scope.dropCallback = function(event, ui, choice) {
         $scope.notifInfo = 'true';
-        $scope.hideDragDrop = 'true';
-        if($scope.question.answer === angular.element(ui.draggable).scope().choiceDrop){
+        //angular.element(ui.draggable).scope().choiceDrop
+        if($scope.question.answer === choice){
           $scope.checkAnswer = 'true';
           $scope.message = 'You chose correctly';
         }else{
           $scope.message = 'You chose wrong';
+        }
+      };
+
+      //hide or show draggable
+      $scope.showDraggable = function(content) {
+        //is a choice
+        if($scope.question.choices.indexOf(content) !== -1){
+          return true;
+        } else{
+          return false;
         }
       };
 
@@ -202,7 +211,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
                              //we will add it manually here
           answer: $scope.checkAnswer //if user answers question right or wrong
         };
-        CourseQuestionService.nextQuestion($scope.questionmodel).success(function(data) {
+        CourseQuestionService.nextQuestion($scope.questionmodel).success(function (data) {
           $scope.question = data;
           $scope.checkAnswer = 'false';
           $scope.message = '';
@@ -232,7 +241,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
 
           } else if($scope.question.type === 'dragdrop'){
 
-            $scope.hideDragDrop = 'false';
+            //angular.element(document.getElementById('choiceDragDrop')).scope().choiceDrop = '';
+            $scope.choiceDrop = '';
             $scope.shuffledChoices = shuffle($scope.question.choices);
 
           } else if($scope.question.type === 'cloze'){
@@ -259,7 +269,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           $rootScope.notification = data.message;
         });
       };
-      
     }).error(function (data) {
       $location.path('/');
       $rootScope.notifDanger = 'true';
