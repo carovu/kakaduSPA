@@ -79,6 +79,7 @@
 				<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">check</button>
 				<button type="button" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">next</button> 	
 		    </div>
+
 		    <div ng-switch-when="dragdrop" title="This is the type of question, where you drag the correct answer into the answerfield. The correct answer will be highlighted in green and a wrong answer in red. Choosing nothing will be taken as not knowing the answer.">
 				<h2><p>Question</p></h2>
 				<p>{{question.question}}</p> 
