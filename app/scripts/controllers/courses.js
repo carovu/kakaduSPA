@@ -14,6 +14,7 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
     $scope.userId = $cookieStore.get('databaseId');
     $scope.notifSuccess = 'false';
     $scope.notifDanger = 'false';
+    
     CoursesService.get().success(function(data) {
       $scope.courses = data;
       //pagination
@@ -107,20 +108,20 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
       $scope.notification = data.message;
     });
 
-      $scope.search = function(searchInput){
-        CoursesService.search(searchInput).success(function(data) {
-          $scope.courses = data;
-          if($scope.courses.total === 0){
-            $scope.notifSuccess = 'false';
-            $scope.notifDanger = 'true';
-            $scope.notification = 'The course does not exist.';
-          }
-        }).error(function (data) {
+    $scope.search = function(searchInput){
+      CoursesService.search(searchInput).success(function(data) {
+        $scope.courses = data;
+        if($scope.courses.total === 0){
           $scope.notifSuccess = 'false';
           $scope.notifDanger = 'true';
-          $scope.notification = data.message;
-        });
-      };
+          $scope.notification = 'The course does not exist.';
+        }
+      }).error(function (data) {
+        $scope.notifSuccess = 'false';
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      });
+    };
 
     $scope.addFavorite = function(courseId, isFavorite) {
       $scope.favoritemodel = { 

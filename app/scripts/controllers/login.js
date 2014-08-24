@@ -27,6 +27,6 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
     	}).error(function (data) {
     		$scope.notifDanger = 'true';
         $scope.notification = data.message;
-		});
+		  });
   	};
 });

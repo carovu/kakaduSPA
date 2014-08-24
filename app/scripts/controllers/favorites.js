@@ -10,6 +10,7 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
   $scope.activeFavoriteIndex = [];
   $scope.notifInfo = 'false';
   $scope.notifDanger = 'false';
+  
   FavoritesService.getFavorites().success(function(data) {
     $scope.favorites = data;
     if($scope.favorites.length === 0){
@@ -31,6 +32,11 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
       };
     FavoritesService.remove($scope.favoritemodel).success(function (data) {
     	$scope.favorites = data;
+      if($scope.favorites.length === 0){
+        $scope.notifInfo = 'true';
+        $scope.notifDanger = 'false';
+        $scope.notification = 'Your list is currently empty';
+      }
     }).error(function (data) {
       $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';
@@ -41,11 +47,6 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
   $scope.resetPercentage = function(favoriteId) {
     CoursesService.reset(favoriteId).success(function (data) {
       $scope.favorites = data;
-      if($scope.favorites.length === 0){
-        $scope.notifInfo = 'true';
-        $scope.notifDanger = 'false';
-        $scope.notification = 'Your list is currently empty';
-      }
     }).error(function (data) {
       $scope.notifInfo = 'false';
       $scope.notifDanger = 'true';

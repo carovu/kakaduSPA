@@ -5,10 +5,51 @@
  * @name kakaduSpaApp.services
  * @description
  * # services
- * Service in the kakaduSpaApp.
+ * Services in the kakaduSpaApp.
  */
  
 var kakaduServices = angular.module('kakaduSpaAppServices', ['ngResource']);
+
+/**
+ * Service offers function for the multiple choice question
+ */
+kakaduServices.factory('MultipleQuestionService', function() {
+  return {
+    getAnswers: function(choices, answer) {
+      var rightAnswerMultiple = [];
+      angular.forEach(answer, function(answerNumber){
+        rightAnswerMultiple.push(choices[answerNumber]);
+      });
+      return rightAnswerMultiple;
+    },
+    getAnswerFields: function(shuffledChoices, CorrectAnswer) {
+      var rightAnswerMultipleField = [];
+      angular.forEach(shuffledChoices, function(choice, index){
+        if(CorrectAnswer.indexOf(choice) !== -1){
+            rightAnswerMultipleField.push(index);
+          }
+      });
+      return rightAnswerMultipleField;
+    }
+  };
+});
+
+/**
+ * Service to store information in cache
+ */
+kakaduServices.factory('SessionService', function() {
+  return {
+    get: function(key) {
+      return sessionStorage.getItem(key);
+    },
+    set: function(key, val) {
+      return sessionStorage.setItem(key, val); 
+    },
+    unset: function(key) {
+      return sessionStorage.removeItem(key);
+    }
+  };
+});
 
 /**
  * Service to get csrf token from server
@@ -72,22 +113,6 @@ kakaduServices.factory('FavoritesService', function($http) {
   };
 });
 
-/**
- * Service to store information in cache
- */
-kakaduServices.factory('SessionService', function() {
-  return {
-    get: function(key) {
-      return sessionStorage.getItem(key);
-    },
-    set: function(key, val) {
-      return sessionStorage.setItem(key, val); 
-    },
-    unset: function(key) {
-      return sessionStorage.removeItem(key);
-    }
-  };
-});
 
 /**
  * Service to get requests concerning authentification from server
@@ -115,30 +140,6 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
     },
     isLoggedIn: function() {
       return SessionService.get('authenticated');
-    }
-  };
-});
-
-/**
- * Service offers function for the multiple choice question
- */
-kakaduServices.factory('MultipleQuestionService', function() {
-  return {
-    getAnswers: function(choices, answer) {
-      var rightAnswerMultiple = [];
-      angular.forEach(answer, function(answerNumber){
-        rightAnswerMultiple.push(choices[answerNumber]);
-      });
-      return rightAnswerMultiple;
-    },
-    getAnswerFields: function(shuffledChoices, CorrectAnswer) {
-      var rightAnswerMultipleField = [];
-      angular.forEach(shuffledChoices, function(choice, index){
-        if(CorrectAnswer.indexOf(choice) !== -1){
-            rightAnswerMultipleField.push(index);
-          }
-      });
-      return rightAnswerMultipleField;
     }
   };
 });

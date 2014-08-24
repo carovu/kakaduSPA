@@ -17,37 +17,21 @@
 
   <body ng-app="kakaduSpaApp">
 
-    <!-- Header/ Menue -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <a href="#/" class="navbar-brand pull-left">Kakadu</a> 
-                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="glyphicon glyphicon-align-justify"></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <header-index></header-index>
 
     <!-- Contents -->
     <div class="container" ng-view=""></div>
+
+
     <div id="push"></div>
+    <!-- Back to top button -->
     <div class="scroll-top-wrapper" title="Back to the top">
         <span class="scroll-top-inner">
             <span class="glyphicon glyphicon-chevron-up"></span>
         </span>
     </div>
-    <!-- Footer  -->
-    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-        <div class="panel-footer text-center visible-sm visible-md visible-lg">
-            Version 2.0 of Kakadu 
-            <a href="http://uibk.ac.at/" title="Links to the university of innsbruck">Universit&auml;t Innsbruck</a> - <a href="http://informatik.uibk.ac.at/" title="Links to the institute of computer science">Institut f&uuml;r Informatik</a> - <a href="http://dbis-informatik.uibk.ac.at/" title="Links to the databases and information systems of the institute of computer science">Databases and Information Systems</a>             
-        </div>
-        <div class="panel-footer text-center visible-xs">
-            Version 2.0 of Kakadu             
-        </div>
-    </nav>
-
+    
+    <footer></footer>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>

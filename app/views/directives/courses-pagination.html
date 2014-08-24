@@ -1,0 +1,7 @@
+<div class="text-center" ng-hide="numberOfPages() <= 1">
+	<ul class="pagination pagination-lg pagination-centered">
+		<li><a href="#/courses" ng-click="previousPage()" title="Show previous page">&laquo;</a></li>
+		<li ng-repeat="i in getNumberAsArray(numberOfPages()) track by $index" ng-class="{active: ($index+1) == currentPage}"ng-click="setCurrentPage($index)"><a href="#/courses">{{$index + 1}}</a></li>
+		<li><a href="#/courses" ng-click="nextPage()" title="Show next page">&raquo;</a></li>
+	</ul>	
+</div>	

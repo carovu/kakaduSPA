@@ -1,0 +1,40 @@
+<div class="panel panel-default" ng-repeat="(courseIndex, course) in courses.data | limitTo:pageSize">
+	<div ng-if="course.user_id === userId">
+		<div class="panel-heading" title="A course you have already looked at and is in the your courses list." ng-style="{'background-color':'#E5E5E5'}">
+			<a href="#/course/{{course.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
+			<span class="panel-title pull-right" title="Course menu">	
+				<div class="dropdown">
+				<a href="#/courses" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#/courses" ng-click="showDescription(courseIndex)" ng-hide="isShowing(courseIndex)" title="Show description">Show</a></li>
+					<li><a href="#/courses" ng-click="hideDescription(courseIndex)" ng-show="isShowing(courseIndex)" title="Hide description">Hide</a></li>
+					<li class="divider"></li>
+					<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id, true)" title="Add this course to the your courses list.">add</a></li>
+				</ul>
+				</div>
+			</span>
+		</div>
+		<div class="panel-body" ng-show="isShowing(courseIndex)">
+			<p>{{course.description}}</p>
+		</div>
+	</div>
+	<div ng-if="course.user_id !== userId">
+		<div class="panel-heading" title="A course.">
+			<a href="#/course/{{course.id}}/learning" title="Links you to it's questions and automatically adds the course to Your courses list.">{{course.name}}</a>
+			<span class="panel-title pull-right" title="Course menu">	
+				<div class="dropdown">
+				<a href="#/courses" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#/courses" ng-click="showDescription(courseIndex)" ng-hide="isShowing(courseIndex)" title="Show description">Show</a></li>
+					<li><a href="#/courses" ng-click="hideDescription(courseIndex)" ng-show="isShowing(courseIndex)" title="Hide description">Hide</a></li>
+					<li class="divider"></li>
+					<li><a href="#/courses" ng-model="favorites" ng-click="addFavorite(course.id, false)" title="Add this course to the your courses list.">add</a></li>
+				</ul>
+				</div>
+			</span>
+		</div>
+		<div class="panel-body" ng-show="isShowing(courseIndex)">
+			<p>{{course.description}}</p>
+		</div>
+	</div>
+</div>
