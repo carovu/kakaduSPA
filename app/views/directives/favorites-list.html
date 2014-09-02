@@ -3,7 +3,7 @@
 		<span class="badge alert-warning" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage!=100 && favorite.percentage!=0">{{favorite.percentage}}</span>
 		<span class="badge alert-success" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage==100">{{favorite.percentage}}</span>
 		<span class="badge alert-danger" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage==0">{{favorite.percentage}}</span>
-		<a href="#/course/{{favorite.id}}/learning" title="Course title and the number of questions it contains">[{{favorite.quantity}}] {{favorite.name}}</a>
+		<a href="#/course/{{favorite.id}}/learning" title="The number of questions the course contains and its title">[{{favorite.quantity}}] {{favorite.name}}</a>
 		<span class="panel-title pull-right" title="Course menu">	
 			<div class="dropdown">
 			<a href="#/favorites" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></a>

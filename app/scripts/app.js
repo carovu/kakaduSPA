@@ -38,6 +38,14 @@ angular.module('kakaduSpaApp', [
     templateUrl: 'views/favorites.html',
     controller: 'FavoritesCtrl'
   })
+  .when('/profile', {
+    templateUrl: 'views/profile.html',
+    controller: 'ProfileCtrl'
+  })
+  .when('/registration', {
+    templateUrl: 'views/registration.html',
+    controller: 'RegistrationCtrl'
+  })
   .otherwise({
     redirectTo: '/'
   });

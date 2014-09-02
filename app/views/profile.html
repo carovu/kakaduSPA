@@ -1,0 +1,79 @@
+
+<header></header>
+
+<!-- Profile view, part of our index.html view -->
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+
+        <div class="page-header">
+			<h1 title="Here you change your information.">Profile</h1> 
+        </div>
+        <div class="alert alert-danger text-center" role="alert" ng-show="notifDanger">
+            {{notification}}
+        </div>
+        <div class="alert alert-success text-center" role="alert" ng-show="notifSuccess">
+            {{notification}}
+        </div>
+        <!-- Edit profile form -->
+        <form class="form-horizontal" ng-submit="editUser()">
+        	<div class="control-group">
+                <label class="control-label" for="inputEmail">Displayname</label>
+                <div class="controls">
+                    <input type="text" id="inputEmail" class="form-control" placeholder="user" ng-model="userCredentials.displayname" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">E-Mail</label>
+                <div class="controls">
+                    <input type="text" id="inputEmail" class="form-control" placeholder="user@example.com" ng-model="userCredentials.email" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Language</label>
+                <div class="controls">
+                    <input type="text" id="inputPassword" class="form-control" placeholder="language" ng-model="userCredentials.language" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary btn-sm btn-block">Change information</button>
+                </div>
+            </div>
+        </form>
+        <br>
+        <!-- Change password form -->
+        <form class="form-horizontal" ng-submit="changePwd()">
+        	<div class="control-group">
+                <label class="control-label" for="inputEmail">Old password</label>
+                <div class="controls">
+                    <input type="password" id="inputEmail" class="form-control" placeholder="old password" ng-model="passwordCredentials.password_old" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">New password</label>
+                <div class="controls">
+                    <input type="password" id="inputEmail" class="form-control" placeholder="new password" ng-model="passwordCredentials.password" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Confirm new password</label>
+                <div class="controls">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="new password" ng-model="passwordCredentials.password_confirmation" required>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary btn-sm btn-block">Change password</button>
+                </div>
+            </div>
+        </form>
+        <br>
+        <a href="#/profile" ng-click="deleteProfile()">Delete your profile</a>
+    </div>
+</div>

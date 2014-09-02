@@ -33,6 +33,12 @@ angular.module('kakaduSpaApp', [
     }).when('/favorites', {
       templateUrl: 'views/favorites.html',
       controller: 'FavoritesCtrl'
+    }).when('/profile', {
+      templateUrl: 'views/profile.html',
+      controller: 'ProfileCtrl'
+    }).when('/registration', {
+      templateUrl: 'views/registration.html',
+      controller: 'RegistrationCtrl'
     }).otherwise({ redirectTo: '/' });
   }
 ]).run([
@@ -213,6 +219,38 @@ kakaduServices.factory('AuthenticationService', [
     };
   }
 ]);
+/**
+ * Service to get requests concerning profile from server
+ */
+kakaduServices.factory('ProfileService', [
+  '$http',
+  function ($http) {
+    return {
+      editUser: function (credentials) {
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/edit', JSON.stringify(credentials));
+      },
+      changePwd: function (credentials) {
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/changepassword', JSON.stringify(credentials));
+      },
+      deleteProfile: function () {
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/delete');
+      }
+    };
+  }
+]);
+/**
+ * Service to get requests concerning registration from server
+ */
+kakaduServices.factory('RegistrationService', [
+  '$http',
+  function ($http) {
+    return {
+      register: function (credentials) {
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/register', JSON.stringify(credentials));
+      }
+    };
+  }
+]);
 'use strict';
 /**
  * @ngdoc directive
@@ -351,8 +389,23 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', [
       email: '',
       password: ''
     };
+    $rootScope.userCredentials = {
+      displayname: '',
+      email: '',
+      language: ''
+    };
+    //notification for registration
+    if ($scope.registrationNotif !== undefined) {
+      $scope.notifInfo = 'true';
+      $scope.notifDanger = 'false';
+      $scope.notification = $rootScope.registrationNotif;
+    }
     $scope.login = function () {
       AuthenticationService.login($scope.credentials).success(function (data) {
+        $rootScope.userCredentials.displayname = data.displayname;
+        $rootScope.userCredentials.email = data.email;
+        $rootScope.userCredentials.language = data.language;
+        $cookieStore.put('databaseId', data.id);
         FavoritesService.getFavorites().success(function (dataFav) {
           $scope.favorites = dataFav;
           if ($scope.favorites.length === 0) {
@@ -361,11 +414,12 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', [
             $location.path('/favorites');
           }
         }).error(function (data) {
+          $scope.notifInfo = 'false';
           $scope.notifDanger = 'true';
           $scope.notification = data.message;
         });
-        $cookieStore.put('databaseId', data.id);
       }).error(function (data) {
+        $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
         $scope.notification = data.message;
       });
@@ -892,16 +946,6 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
         $scope.notification = data.message;
       });
     };
-    $scope.logOut = function () {
-      AuthenticationService.logout().success(function () {
-        $location.path('/');
-        $cookieStore.remove('databaseId');
-      }).error(function (data) {
-        $scope.notifInfo = 'false';
-        $rootScope.notifDanger = 'true';
-        $rootScope.notification = data.message;
-      });
-    };
     $scope.showDescription = function (index) {
       $scope.activeFavoriteIndex.push(index);
     };
@@ -915,6 +959,16 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
       if ($scope.activeFavoriteIndex.indexOf(index) !== -1) {
         return true;
       }
+    };
+    $scope.logOut = function () {
+      AuthenticationService.logout().success(function () {
+        $location.path('/');
+        $cookieStore.remove('databaseId');
+      }).error(function (data) {
+        $scope.notifInfo = 'false';
+        $rootScope.notifDanger = 'true';
+        $rootScope.notification = data.message;
+      });
     };
   }
 ]);
@@ -962,3 +1016,91 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', [
     };
   }
 }(jQuery);
+'use strict';
+/**
+ * @ngdoc function
+ * @name kakaduSpaApp.controller:ProfileCtrl
+ * @description
+ * # ProfileCtrl
+ * Controller of the kakaduSpaApp
+ */
+angular.module('kakaduSpaApp').controller('ProfileCtrl', [
+  '$scope',
+  '$rootScope',
+  '$location',
+  '$cookieStore',
+  'ProfileService',
+  'SessionService',
+  'AuthenticationService',
+  function ($scope, $rootScope, $location, $cookieStore, ProfileService, SessionService, AuthenticationService) {
+    //$scope.passwordCredentials = { password_old: '', password: '', password_confirmation:''};
+    $scope.editUser = function () {
+      ProfileService.editUser($rootScope.userCredentials).success(function () {
+        $scope.notifSuccess = 'true';
+        $scope.notifDanger = 'false';
+        $scope.notification = 'Your user information has been changed.';
+      }).error(function (data) {
+        $scope.notifSuccess = 'false';
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      });
+    };
+    $scope.changePwd = function () {
+      ProfileService.changePwd($scope.passwordCredentials).success(function () {
+        $scope.notifSuccess = 'true';
+        $scope.notifDanger = 'false';
+        $scope.notification = 'Your password has been changed.';
+      }).error(function (data) {
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      });
+    };
+    $scope.deleteProfile = function () {
+      ProfileService.deleteProfile().success(function () {
+        $rootScope.registrationNotif = 'Your profile has been deleted';
+        SessionService.unset('authenticated');
+        $cookieStore.remove('databaseId');
+        $location.path('/');
+      }).error(function (data) {
+        $scope.notifSuccess = 'false';
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      });
+    };
+    $scope.logOut = function () {
+      AuthenticationService.logout().success(function () {
+        $location.path('/');
+        $cookieStore.remove('databaseId');
+      }).error(function (data) {
+        $rootScope.notifDanger = 'true';
+        $rootScope.notification = data.message;
+      });
+    };
+  }
+]);
+'use strict';
+/**
+ * @ngdoc function
+ * @name kakaduSpaApp.controller:RegistrationCtrl
+ * @description
+ * # RegistrationCtrl
+ * Controller of the kakaduSpaApp
+ */
+angular.module('kakaduSpaApp').controller('RegistrationCtrl', [
+  '$scope',
+  '$rootScope',
+  '$location',
+  'RegistrationService',
+  function ($scope, $rootScope, $location, RegistrationService) {
+    //$scope.credentials = { displayname: '', email: '', password: '', password_confirmation: ''};
+    $scope.register = function () {
+      RegistrationService.register($scope.credentials).success(function () {
+        $rootScope.registrationNotif = 'You are registered.';
+        $location.path('/');
+      }).error(function (data) {
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      });
+    };
+  }
+]);

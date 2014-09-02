@@ -54,17 +54,6 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
     });
   };
 
-  $scope.logOut = function() {
-    AuthenticationService.logout().success(function() {
-      $location.path('/');
-      $cookieStore.remove('databaseId');
-    }).error(function (data) {
-      $scope.notifInfo = 'false';
-      $rootScope.notifDanger = 'true';
-      $rootScope.notification = data.message;
-    });
-  };
-
   $scope.showDescription = function(index) {
     $scope.activeFavoriteIndex.push(index);
   };
@@ -80,5 +69,16 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
     if($scope.activeFavoriteIndex.indexOf(index) !== -1){
       return true;
     }
+  };
+
+  $scope.logOut = function() {
+    AuthenticationService.logout().success(function() {
+      $location.path('/');
+      $cookieStore.remove('databaseId');
+    }).error(function (data) {
+      $scope.notifInfo = 'false';
+      $rootScope.notifDanger = 'true';
+      $rootScope.notification = data.message;
+    });
   };
 });

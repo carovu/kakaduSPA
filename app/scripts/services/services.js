@@ -143,3 +143,31 @@ kakaduServices.factory('AuthenticationService', function($http,  $sanitize, Sess
     }
   };
 });
+
+/**
+ * Service to get requests concerning profile from server
+ */
+kakaduServices.factory('ProfileService', function($http) {
+  return {
+    editUser: function(credentials) {
+      return $http.post('http://localhost/kakadu/public/api/spa/profile/edit', JSON.stringify(credentials));
+    },
+    changePwd: function(credentials) {
+      return $http.post('http://localhost/kakadu/public/api/spa/profile/changepassword', JSON.stringify(credentials));
+    },
+    deleteProfile: function() {
+      return $http.post('http://localhost/kakadu/public/api/spa/profile/delete');
+    }
+  };
+});
+
+/**
+ * Service to get requests concerning registration from server
+ */
+kakaduServices.factory('RegistrationService', function($http) {
+  return {
+    register: function(credentials) {
+      return $http.post('http://localhost/kakadu/public/api/spa/auth/register', JSON.stringify(credentials));
+    }
+  };
+});
