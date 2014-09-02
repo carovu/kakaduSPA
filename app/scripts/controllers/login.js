@@ -16,6 +16,7 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
       $scope.notifInfo = 'true';
       $scope.notifDanger = 'false';
       $scope.notification = $rootScope.registrationNotif;
+      $rootScope.registrationNotif = undefined;
     }
   	$scope.login = function() {
     	AuthenticationService.login($scope.credentials).success(function (data) {
