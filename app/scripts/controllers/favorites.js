@@ -19,14 +19,17 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
       $scope.notification = 'Your list is currently empty';
     }
 	}).error(function (data) {
-      $scope.notifInfo = 'false';
-      $scope.notifDanger = 'true';
-    	$scope.notification = data.message;
+      if(angular.isString(data.message)){
+        $scope.notifInfo = 'false';
+        $scope.notifDanger = 'true';
+      	$scope.notification = data.message;
+      }
 	});
 	$scope.orderProp = 'age';
 
   $scope.removeFavorite = function(favoriteId) {
-  	$scope.favoritemodel = { 
+  	resetFavoritesNotif();
+    $scope.favoritemodel = { 
         id: favoriteId,
         type: 'course'
       };
@@ -38,27 +41,34 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         $scope.notification = 'Your list is currently empty';
       }
     }).error(function (data) {
-      $scope.notifInfo = 'false';
-      $scope.notifDanger = 'true';
-    	$scope.notification = data.message;
+      if(angular.isString(data.message)){
+        $scope.notifInfo = 'false';
+        $scope.notifDanger = 'true';
+      	$scope.notification = data.message;
+      }
     });
   };
 
   $scope.resetPercentage = function(favoriteId) {
+    resetFavoritesNotif();
     CoursesService.reset(favoriteId).success(function (data) {
       $scope.favorites = data;
     }).error(function (data) {
-      $scope.notifInfo = 'false';
-      $scope.notifDanger = 'true';
-      $scope.notification = data.message;
+      if(angular.isString(data.message)){
+        $scope.notifInfo = 'false';
+        $scope.notifDanger = 'true';
+        $scope.notification = data.message;
+      }
     });
   };
 
   $scope.showDescription = function(index) {
+    resetFavoritesNotif();
     $scope.activeFavoriteIndex.push(index);
   };
 
   $scope.hideDescription = function(index) {
+    resetFavoritesNotif();
     if($scope.activeFavoriteIndex.indexOf(index) !== -1){
       $scope.activeFavoriteIndex.splice($scope.activeFavoriteIndex.indexOf(index),1);
     }
@@ -72,13 +82,22 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
   };
 
   $scope.logOut = function() {
+    resetFavoritesNotif();
     AuthenticationService.logout().success(function() {
       $location.path('/');
       $cookieStore.remove('databaseId');
     }).error(function (data) {
-      $scope.notifInfo = 'false';
-      $rootScope.notifDanger = 'true';
-      $rootScope.notification = data.message;
+      if(angular.isString(data.message)){
+        $scope.notifInfo = 'false';
+        $rootScope.notifDanger = 'true';
+        $rootScope.notification = data.message;
+      }
     });
   };
+  
+  function resetFavoritesNotif() { 
+    $scope.notifInfo = 'false';
+    $scope.notifDanger = 'false';
+    $scope.notification = undefined;
+  }
 });

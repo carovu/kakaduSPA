@@ -11,12 +11,16 @@ angular.module('kakaduSpaApp').controller('RegistrationCtrl', function ($scope, 
 	//$scope.credentials = { displayname: '', email: '', password: '', password_confirmation: ''};
 
 	$scope.register = function(){
+        //reset notification
+        $scope.notifDanger = undefined;
 		RegistrationService.register($scope.credentials).success(function () {
         	$rootScope.registrationNotif = 'You are registered.';
             $location.path('/');
     	}).error(function (data) {
-    		$scope.notifDanger = 'true';
-        	$scope.notification = data.message;
+            if(angular.isString(data.message)){
+        		$scope.notifDanger = 'true';
+            	$scope.notification = data.message;
+            }
 		});
 	};
   });

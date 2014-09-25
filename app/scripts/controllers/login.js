@@ -18,7 +18,9 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
       $scope.notification = $rootScope.registrationNotif;
       $rootScope.registrationNotif = undefined;
     }
+
   	$scope.login = function() {
+      resetLoginNotif();
     	AuthenticationService.login($scope.credentials).success(function (data) {
         $rootScope.userCredentials.displayname = data.displayname;
         $rootScope.userCredentials.email = data.email;
@@ -32,15 +34,25 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
             $location.path('/favorites');
           }
         }).error(function (data) {
+          if(angular.isString(data.message)){
             $scope.notifInfo = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }
         });
     		
     	}).error(function (data) {
-        $scope.notifInfo = 'false';
-        $scope.notifDanger = 'true';
-        $scope.notification = data.message;
+        if(angular.isString(data.message)){
+          $scope.notifInfo = 'false';
+          $scope.notifDanger = 'true';
+          $scope.notification = data.message;
+        }
 		  });
   	};
+
+    function resetLoginNotif() {
+      $scope.notifInfo = undefined;
+      $scope.notifDanger = undefined; 
+      $scope.notification = undefined;     
+    }
 });
