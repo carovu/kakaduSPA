@@ -1,7 +1,7 @@
 /* Space out content a bit */
 body {
   padding-top: 50px;
-  padding-bottom: 130px;
+  padding-bottom: 60px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -46,6 +46,7 @@ body {
     border-bottom-left-radius: 10px;
     transition: all 0.5s ease-in-out;
 }
+
 .scroll-top-wrapper:hover {
     background-color: #888888;
     color: #eeeeee;
@@ -104,5 +105,73 @@ body {
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (max-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+
+  .navbar-default {
+     border-width: 0 0 1px;
+  }
+
+  .page-header-registration {
+    padding-bottom: 9px;
+    margin: 0px 0 0px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .page-header {
+    padding-bottom: 0px;
+    margin: 0px 0 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .btn-mobile-showcheck {
+      position: fixed;
+      opacity: 1.0;
+      visibility: visible;
+      cursor:pointer;
+      overflow: hidden;
+      text-align: center;
+      z-index: 99999999;
+      right: 120px;
+      bottom: 10px;
+      padding-top: 2px;
+      border-style:solid;
+  }
+
+  .btn-mobile-nextq {
+      position: fixed;
+      opacity: 1.0;
+      visibility: visible;
+      cursor:pointer;
+      overflow: hidden;
+      text-align: center;
+      z-index: 99999999;
+      right: 50px;
+      bottom: 10px;
+      padding-top: 2px;
+      border-style:solid;
+  }
+
+  body {
+    padding-top: 0px;
+    padding-bottom: 40px;
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "backToTopNavbar",
+  "version": "0.0.2",
+  "description": "This file allows you to use the backToTop button and collapses navbar automatically, when you click outside of the navbar element.",
+  "main": "./backToTopNavbar.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "test*",
+    "demo*",
+    "gruntFile.js",
+    "package.json"
+  ]
+}
