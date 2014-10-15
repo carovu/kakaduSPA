@@ -33,6 +33,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
             $scope.notifSuccess = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }else{
+            $location.path('/500');
           }
         });
       };
@@ -48,6 +50,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
               $scope.notifSuccess = 'false';
               $scope.notifDanger = 'true';
               $scope.notification = data.message;
+            }else{
+              $location.path('/500');
             }
           });
         }
@@ -65,6 +69,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
               $scope.notifSuccess = 'false';
               $scope.notifDanger = 'true';
               $scope.notification = data.message;
+            }else{
+              $location.path('/500');
             }
           });
         }
@@ -88,8 +94,9 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
             $scope.notifSuccess = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }else{
+            $location.path('/500');
           }
-          
         });
       };
 
@@ -103,6 +110,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
             $scope.notifSuccess = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }else{
+            $location.path('/500');
           }
         });
       };
@@ -117,6 +126,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
             $scope.notifSuccess = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }else{
+            $location.path('/500');
           }
         });
       };
@@ -126,6 +137,8 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
         $scope.notifSuccess = 'false';
         $scope.notifDanger = 'true';
         $scope.notification = data.message;
+      }else{
+        $location.path('/500');
       }
     });
 
@@ -143,34 +156,33 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
           $scope.notifSuccess = 'false';
           $scope.notifDanger = 'true';
           $scope.notification = data.message;
-        }
+        }else{
+        $location.path('/500');
+      }
       });
     };
 
-    $scope.addFavorite = function(courseId, isFavorite) {
+    $scope.addFavorite = function(courseId) {
       resetCoursesNotif();
       $scope.favoritemodel = { 
           id: courseId,
           type: 'course'
         };
-        if(isFavorite === true){
-          $scope.notifSuccess = 'false';
-          $scope.notifDanger = 'true';
-          $scope.notification = 'Course has already been added to Your courses list.';
-        } else{
-          FavoritesService.add($scope.favoritemodel).success(function (data) {
-            $scope.notifSuccess = 'true';
-            $scope.notifDanger = 'false';
-            $scope.notification = 'Course has been added to Your courses';
-            $scope.courses = data;
-          }).error(function (data) {
-            if(angular.isString(data.message)){
-              $scope.notifSuccess = 'false';
-              $scope.notifDanger = 'true';
-              $scope.notification = data.message;
-            }
-          });
-        }
+        FavoritesService.add($scope.favoritemodel).success(function (data) {
+          $scope.notifSuccess = 'true';
+          $scope.notifDanger = 'false';
+          $scope.notification = 'Course has been added to Your courses';
+          $scope.courses = data;
+        }).error(function (data) {
+          if(angular.isString(data.message)){
+            $scope.notifSuccess = 'false';
+            $scope.notifDanger = 'true';
+            $scope.notification = data.message;
+          }else{
+            $location.path('/500');
+          }
+        });
+        
       
     };
 
@@ -197,11 +209,16 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
       resetCoursesNotif();
       AuthenticationService.logout().success(function() {
         $location.path('/');
+        $cookieStore.remove('displayname');
+        $cookieStore.remove('email');
+        $cookieStore.remove('language');
         $cookieStore.remove('databaseId');
       }).error(function (data) {
         if(angular.isString(data.message)){
           $rootScope.notifDanger = 'true';
           $rootScope.notification = data.message;
+        }else{
+          $location.path('/500');
         }  
       });
     };

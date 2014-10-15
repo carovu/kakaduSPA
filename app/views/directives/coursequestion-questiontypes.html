@@ -1,5 +1,6 @@
 <div ng-switch on="question.type">
     <div ng-switch-when="simple" title="This is the type of question, where you try to remember the answer and the answer will be shown later.">
+    	<label>Answer in your mind. Click "Show answer" to see whether you were correct or not. Click "Checkmark", if you were right. Click "X", if you were wrong.</label>
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
 		<p>{{question.question}}</p> 
@@ -15,23 +16,26 @@
 		</div>
 		<br>	
 		<!-- hide show button after showing answer -->
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-hide="showSimpleAnswer" ng-click="showSimple()" title="Show the answer.">show</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-hide="showSimpleAnswer" ng-click="showSimple()">show</button>
+		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-hide="showSimpleAnswer" ng-click="showSimple()" title="Show the answer.">Show answer</button>
+		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-hide="showSimpleAnswer" ng-click="showSimple()">Show answer</button>
 		<!-- show next button after showing answer and checking answer is done -->
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()" title="Show the next question.">next</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">next</button>
+		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
+		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">Next Question</button>
     </div>
 
     <div ng-switch-when="cloze" title="This is the type of question, where you try to remember the answer and write them into the gaps. It is case insensitive.">
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
+		<br>
+		<label>Fill in the gaps. The question is insensitive, so when the answer is "Test", writing "tEsT" will be counted as correctly answered too.</label>
+		<br><br>
 		<form ng-submit="checkCloze()">
 			<cloze-question ng-model="question"></cloze-question>
-			<br>
-			<button type="submit" class="btn btn-primary btn-large hidden-xs" ng-show="showCheckCloze" title="Check your answer. Correct answers are highlighted as green and wrong answers as red.">check</button>
-			<button type="submit" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckCloze">check</button>
-			<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" ng-show="showNextCloze" title="Show the next question.">next</button>
-			<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()" ng-show="showNextCloze">next</button>
+			<br><br>
+			<button type="submit" class="btn btn-primary btn-large hidden-xs" ng-show="showCheckCloze" title="Check your answer. Correct answers are highlighted as green and wrong answers as red.">Check question</button>
+			<button type="submit" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckCloze">Check question</button>
+			<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" ng-show="showNextCloze" title="Show the next question.">Next Question</button>
+			<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()" ng-show="showNextCloze">Next Question</button>
 		</form>
     </div>
 
@@ -39,6 +43,8 @@
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
 		<p>{{question.question}}</p> 
+		<br>
+		<label>Select the correct answers. There can be one one or more correct answer choices.</label>
 		<h2 class="hidden-xs"><p>Choices</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Choices</p></h4>
 		<!-- Show all choices in list than json format -->
@@ -48,15 +54,17 @@
 		</div>			
 		<!-- show check button, if showCheckMultiple is true, else hide -->
 		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">check</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">check</button>
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">next</button> 	
-		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">next</button> 	
+		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">Check question</button>
+		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">Next Question</button> 	
+		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">Next Question</button> 	
     </div>
 
     <div ng-switch-when="dragdrop" title="This is the type of question, where you drag the correct answer into the answerfield. The correct answer will be highlighted in green and a wrong answer in red. Choosing nothing will be taken as not knowing the answer.">
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
 		<p>{{question.question}}</p> 
+		<br>
+		<label>Drag the correct answer into the answer field.</label>
 		<h2 class="text-center hidden-xs"><p>Drop your answer here</p><h2>
 		<h4 class="text-center hidden-sm hidden-md hidden-lg"><p>Drop your answer here</p><h4>
 		<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:44px;'>
@@ -79,7 +87,7 @@
 				{{choice}}
 			</div>
 		</div>				
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" title="Show the next question.">next</button>
-		<button type="button" class="btn btn-info btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()">next</button>
+		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
+		<button type="button" class="btn btn-info btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()">Next Question</button>
     </div>
 </div>

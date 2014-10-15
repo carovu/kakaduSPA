@@ -90,6 +90,9 @@ kakaduServices.factory('CourseQuestionService', function($http) {
     getCourse: function(courseId) {
       return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/learning');
     },
+    getLearnFavorites: function() {
+      return $http.get('http://localhost/kakadu/public/api/spa/favorites/learning');
+    },
     nextQuestion: function(questionmodel) {
       return $http.post('http://localhost/kakadu/public/api/spa/learning/next', questionmodel);
     }

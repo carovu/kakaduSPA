@@ -20,6 +20,8 @@ angular.module('kakaduSpaApp').controller('RegistrationCtrl', function ($scope, 
             if(angular.isString(data.message)){
         		$scope.notifDanger = 'true';
             	$scope.notification = data.message;
+            }else{
+                $location.path('/500');
             }
 		});
 	};

@@ -38,6 +38,10 @@ angular.module('kakaduSpaApp', [
     templateUrl: 'views/favorites.html',
     controller: 'FavoritesCtrl'
   })
+  .when('/favorites/learning', {
+    templateUrl: 'views/coursequestion.html',
+    controller: 'CourseQuestionCtrl'
+  })
   .when('/profile', {
     templateUrl: 'views/profile.html',
     controller: 'ProfileCtrl'
@@ -46,12 +50,20 @@ angular.module('kakaduSpaApp', [
     templateUrl: 'views/registration.html',
     controller: 'RegistrationCtrl'
   })
+  .when('/404', {
+    templateUrl: '/404.html'
+  })
+  .when('/404', {
+    templateUrl: '/500.html'
+  })
   .otherwise({
     redirectTo: '/'
   });
 })
 .run(function ($rootScope, $location, $http, TokenService, AuthenticationService) {
   TokenService.get().success(function(data){
+    //IF QUERY: When s-csrf-token exists, not same token as before, 
+    //then give notification that somewhere else logged in.
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {
       console.log('error data:');

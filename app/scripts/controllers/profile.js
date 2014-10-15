@@ -9,10 +9,18 @@
  */
 angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $rootScope, $location, $cookieStore, ProfileService, SessionService, AuthenticationService) {
 	//$scope.passwordCredentials = { password_old: '', password: '', password_confirmation:''};
-
+	$scope.languages = [
+      {id:'en', acronym:'en'} 
+      //client is currently monobilingual
+	  //{id:'de', acronym:'de'}
+    ];
+	$scope.userCredentials = { displayname: $cookieStore.get('displayname'), email: $cookieStore.get('email'), language: $cookieStore.get('language')};
   	$scope.editUser = function() {
   		resetProfileNotif();
-		ProfileService.editUser($rootScope.userCredentials).success(function () {
+		ProfileService.editUser($scope.userCredentials).success(function () {
+			$cookieStore.put('displayname', $scope.userCredentials.displayname);
+        	$cookieStore.put('email', $scope.userCredentials.email);
+        	$cookieStore.put('language', $scope.userCredentials.language);
 	   		$scope.notifSuccess = 'true';
 	   		$scope.notifDanger = 'false';
 	    	$scope.notification = 'Your user information has been changed.';
@@ -21,6 +29,8 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 				$scope.notifSuccess = 'false';
 				$scope.notifDanger = 'true';
 		    	$scope.notification = data.message;
+			}else{
+				$location.path('/500');
 			}
 		});
 	};
@@ -35,6 +45,8 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 			if(angular.isString(data.message)){
 				$scope.notifDanger = 'true';
 		    	$scope.notification = data.message;
+			}else{
+				$location.path('/500');
 			}
 		});
 	};
@@ -51,6 +63,8 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 				$scope.notifSuccess = 'false';
 				$scope.notifDanger = 'true';
 		    	$scope.notification = data.message;
+			}else{
+				$location.path('/500');
 			}
 		});
 	};
@@ -59,11 +73,16 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
   		resetProfileNotif();
 	    AuthenticationService.logout().success(function() {
 		    $location.path('/');
+		    $cookieStore.remove('displayname');
+		    $cookieStore.remove('email');
+		    $cookieStore.remove('language');
 		    $cookieStore.remove('databaseId');
 	    }).error(function (data) {
 	    	if(angular.isString(data.message)){
 	        	$rootScope.notifDanger = 'true';
 		        $rootScope.notification = data.message;
+			}else{
+				$location.path('/500');
 			}
 	    });
     };

@@ -8,8 +8,7 @@
  */
 
 angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $scope, $location, $cookieStore, AuthenticationService, FavoritesService) {
-  	$scope.credentials = { email: '', password: ''};
-    $rootScope.userCredentials = { displayname: '', email: '', language: ''};
+    $scope.credentials = { email: '', password: ''};
 
     //notification for registration
     if($scope.registrationNotif !== undefined){
@@ -22,9 +21,9 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
   	$scope.login = function() {
       resetLoginNotif();
     	AuthenticationService.login($scope.credentials).success(function (data) {
-        $rootScope.userCredentials.displayname = data.displayname;
-        $rootScope.userCredentials.email = data.email;
-        $rootScope.userCredentials.language = data.language;
+        $cookieStore.put('displayname', data.displayname);
+        $cookieStore.put('email', data.email);
+        $cookieStore.put('language', data.language);
         $cookieStore.put('databaseId', data.id);
         FavoritesService.getFavorites().success(function(dataFav) {
           $scope.favorites = dataFav;
@@ -38,6 +37,8 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
             $scope.notifInfo = 'false';
             $scope.notifDanger = 'true';
             $scope.notification = data.message;
+          }else{
+            $location.path('/500');
           }
         });
     		
@@ -46,6 +47,8 @@ angular.module('kakaduSpaApp').controller('LoginCtrl', function ($rootScope, $sc
           $scope.notifInfo = 'false';
           $scope.notifDanger = 'true';
           $scope.notification = data.message;
+        }else{
+          $location.path('/500');
         }
 		  });
   	};

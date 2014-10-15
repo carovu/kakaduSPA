@@ -6,7 +6,7 @@
 
     <div class="page-header">
 		<h1 title="Here you change your information." class="hidden-xs">Profile</h1> 
-        <h3 class="hidden-sm hidden-md hidden-lg">Profile</h3> 
+        <h2 class="hidden-sm hidden-md hidden-lg">Profile</h2> 
     </div>
     <div class="alert alert-danger text-center" role="alert" ng-show="notifDanger">
         {{notification}}
@@ -17,9 +17,9 @@
     <!-- Edit profile form -->
     <form class="form-horizontal" ng-submit="editUser()">
     	<div class="control-group">
-            <label class="control-label" for="inputEmail">Displayname</label>
+            <label class="control-label" for="inputDisplayname">Displayname</label>
             <div class="controls">
-                <input type="text" id="inputEmail" class="form-control" placeholder="user" ng-model="userCredentials.displayname" required>
+                <input type="text" id="inputDisplayname" class="form-control" placeholder="user" ng-model="userCredentials.displayname" required>
             </div>
             <span class="help-block"></span>
         </div>
@@ -31,10 +31,8 @@
             <span class="help-block"></span>
         </div>
         <div class="control-group">
-            <label class="control-label" for="inputPassword">Language</label>
-            <div class="controls">
-                <input type="text" id="inputPassword" class="form-control" placeholder="language" ng-model="userCredentials.language" required>
-            </div>
+            <label class="control-label" for="inputLanguage">Language</label>
+                <select ng-model="userCredentials.language" id="inputLanguage" ng-options="language.id as language.acronym for language in languages"><select>
             <span class="help-block"></span>
         </div>
         <div class="control-group">

@@ -23,6 +23,8 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
       	$scope.notification = data.message;
+      }else{
+        $location.path('/500');
       }
 	});
 	$scope.orderProp = 'age';
@@ -45,6 +47,8 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
       	$scope.notification = data.message;
+      }else{
+        $location.path('/500');
       }
     });
   };
@@ -58,10 +62,12 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
         $scope.notification = data.message;
+      }else{
+        $location.path('/500');
       }
     });
   };
-
+  
   $scope.showDescription = function(index) {
     resetFavoritesNotif();
     $scope.activeFavoriteIndex.push(index);
@@ -85,12 +91,17 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
     resetFavoritesNotif();
     AuthenticationService.logout().success(function() {
       $location.path('/');
-      $cookieStore.remove('databaseId');
+        $cookieStore.remove('displayname');
+        $cookieStore.remove('email');
+        $cookieStore.remove('language');
+        $cookieStore.remove('databaseId');
     }).error(function (data) {
       if(angular.isString(data.message)){
         $scope.notifInfo = 'false';
         $rootScope.notifDanger = 'true';
         $rootScope.notification = data.message;
+      }else{
+        $location.path('/500');
       }
     });
   };
