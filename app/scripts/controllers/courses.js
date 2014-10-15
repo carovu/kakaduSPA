@@ -15,7 +15,13 @@ angular.module('kakaduSpaApp').controller('CourseListCtrl', function ($scope, $r
     $scope.notifSuccess = 'false';
     $scope.notifDanger = 'false';
     
-    CoursesService.get().success(function(data) {
+    $scope.delay = 0;
+    $scope.minDuration = 0;
+    $scope.message = 'Please Wait...';
+    $scope.backdrop = true;
+    $scope.promise = null;
+
+    $scope.promise = CoursesService.get().success(function(data) {
       $scope.courses = data;
       //pagination
       $scope.currentPage = 1; 

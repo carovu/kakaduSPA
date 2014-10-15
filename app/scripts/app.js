@@ -17,6 +17,8 @@ angular.module('kakaduSpaApp', [
     'ngSanitize',
     'ngTouch',
     'ngDragDrop',
+    'cgBusy',
+    'ajoslin.promise-tracker',
     'kakaduSpaAppServices'
   ])
 .config(function ($routeProvider, $httpProvider) {
@@ -40,7 +42,7 @@ angular.module('kakaduSpaApp', [
   })
   .when('/favorites/learning', {
     templateUrl: 'views/coursequestion.html',
-    controller: 'CourseQuestionCtrl'
+    controller: 'FavoritesQuestionCtrl'
   })
   .when('/profile', {
     templateUrl: 'views/profile.html',

@@ -10,8 +10,14 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
   $scope.activeFavoriteIndex = [];
   $scope.notifInfo = 'false';
   $scope.notifDanger = 'false';
-  
-  FavoritesService.getFavorites().success(function(data) {
+
+  $scope.delay = 0;
+  $scope.minDuration = 0;
+  $scope.message = 'Please Wait...';
+  $scope.backdrop = true;
+  $scope.promise = null;
+
+  $scope.promise = FavoritesService.getFavorites().success(function(data) {
     $scope.favorites = data;
     if($scope.favorites.length === 0){
       $scope.notifInfo = 'true';

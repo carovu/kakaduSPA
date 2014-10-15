@@ -8,6 +8,12 @@
  * Controller of the kakaduSpaApp
  */
 angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $rootScope, $location, $cookieStore, ProfileService, SessionService, AuthenticationService) {
+	$scope.delay = 0;
+    $scope.minDuration = 0;
+    $scope.message = 'Please Wait...';
+    $scope.backdrop = true;
+    $scope.promise = null;
+
 	//$scope.passwordCredentials = { password_old: '', password: '', password_confirmation:''};
 	$scope.languages = [
       {id:'en', acronym:'en'} 
@@ -17,7 +23,7 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 	$scope.userCredentials = { displayname: $cookieStore.get('displayname'), email: $cookieStore.get('email'), language: $cookieStore.get('language')};
   	$scope.editUser = function() {
   		resetProfileNotif();
-		ProfileService.editUser($scope.userCredentials).success(function () {
+		$scope.promise = ProfileService.editUser($scope.userCredentials).success(function () {
 			$cookieStore.put('displayname', $scope.userCredentials.displayname);
         	$cookieStore.put('email', $scope.userCredentials.email);
         	$cookieStore.put('language', $scope.userCredentials.language);
@@ -37,7 +43,7 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 
 	$scope.changePwd = function() {
   		resetProfileNotif();
-		ProfileService.changePwd($scope.passwordCredentials).success(function () {
+		$scope.promise = ProfileService.changePwd($scope.passwordCredentials).success(function () {
 	   		$scope.notifSuccess = 'true';
 	   		$scope.notifDanger = 'false';
 	    	$scope.notification = 'Your password has been changed.';
@@ -53,7 +59,7 @@ angular.module('kakaduSpaApp').controller('ProfileCtrl', function ($scope, $root
 
 	$scope.deleteProfile = function() {
   		resetProfileNotif();
-		ProfileService.deleteProfile().success(function () {
+		$scope.promise = ProfileService.deleteProfile().success(function () {
 	   		$rootScope.registrationNotif = 'Your profile has been deleted';
 	   		SessionService.unset('authenticated');
 	   		$cookieStore.remove('databaseId');
