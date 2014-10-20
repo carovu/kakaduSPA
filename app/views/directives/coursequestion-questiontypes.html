@@ -15,6 +15,17 @@
 			</div> 
 		</div>
 		<br>	
+		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
+			{{message}}
+		</div>
+
+		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
+			{{mFailure}}
+		</div>
+
+		<div class="alert alert-success text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifSuccess">
+			{{mSuccess}}
+		</div>
 		<!-- hide show button after showing answer -->
 		<button type="button" class="btn btn-primary btn-large" ng-hide="showSimpleAnswer" ng-click="showSimple()" title="Show the answer.">Show Answer</button>
 		<!-- show next button after showing answer and checking answer is done -->
@@ -30,6 +41,17 @@
 		<form ng-submit="checkCloze()">
 			<cloze-question ng-model="question"></cloze-question>
 			<br><br>
+			<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
+				{{message}}
+			</div>
+
+			<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
+				{{mFailure}}
+			</div>
+
+			<div class="alert alert-success text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifSuccess">
+				{{mSuccess}}
+			</div>
 			<button type="submit" class="btn btn-primary btn-large" ng-show="showCheckCloze" title="Check your answer. Correct answers are highlighted as green and wrong answers as red.">Check Question</button>
 			<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze" title="Show the next question.">Next Question</button>
 		</form>
@@ -48,6 +70,17 @@
 			<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice, {{$index}})" ng-style="chooseButtonMultiple[{{$index}}]">{{choice}}</button>
 			<br>
 		</div>			
+		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
+			{{message}}
+		</div>
+
+		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
+			{{mFailure}}
+		</div>
+
+		<div class="alert alert-success text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifSuccess">
+			{{mSuccess}}
+		</div>
 		<!-- show check button, if showCheckMultiple is true, else hide -->
 		<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">Check Question</button>
 		<button type="button" class="btn btn-primary btn-large" ng-show="showSolution" class="ng-hide" ng-click="showCorrectAnswers()" title="Show the correct answers.">Show Solution</button> 		
@@ -82,7 +115,18 @@
 			<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="showDraggable(choice)">
 				{{choice}}
 			</div>
-		</div>				
+		</div>		
+		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
+			{{message}}
+		</div>
+
+		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
+			{{mFailure}}
+		</div>
+
+		<div class="alert alert-success text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifSuccess">
+			{{mSuccess}}
+		</div>		
 		<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
     </div>
 </div>
