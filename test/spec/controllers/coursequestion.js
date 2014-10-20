@@ -20,6 +20,9 @@ describe('Controller: CourseQuestionCtrl', function () {
       'getCourse': function(courseId) {
         return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/learning');
       },
+      'getLearnFavorites': function(courseId) {
+        return $http.get('http://localhost/kakadu/public/api/spa/favorites/learning');
+      },
       'nextQuestion': function(questionmodel) {
         return $http.post('http://localhost/kakadu/public/api/spa/learning/next', questionmodel);
       }
@@ -42,6 +45,12 @@ describe('Controller: CourseQuestionCtrl', function () {
     var courseId = 1;
     $httpBackend.expectGET('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/learning');
     CourseQuestionService.getCourse(courseId);
+  }));
+
+  it('should call $http.get in getLearnFavorites', inject(function (CourseQuestionService, $httpBackend) {
+    var courseId = 1;
+    $httpBackend.expectGET('http://localhost/kakadu/public/api/favorites/learning');
+    CourseQuestionService.getLearnFavorites();
   }));
 
   it('should call $http.post in nextQuestion', inject(function (CourseQuestionService, $httpBackend) {

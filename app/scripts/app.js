@@ -55,7 +55,7 @@ angular.module('kakaduSpaApp', [
   .when('/404', {
     templateUrl: '/404.html'
   })
-  .when('/404', {
+  .when('/500', {
     templateUrl: '/500.html'
   })
   .otherwise({
@@ -64,8 +64,6 @@ angular.module('kakaduSpaApp', [
 })
 .run(function ($rootScope, $location, $http, TokenService, AuthenticationService) {
   TokenService.get().success(function(data){
-    //IF QUERY: When s-csrf-token exists, not same token as before, 
-    //then give notification that somewhere else logged in.
     $http.defaults.headers.post['X-CSRF-Token'] = angular.fromJson(data);
   }).error(function (data, config) {
       console.log('error data:');

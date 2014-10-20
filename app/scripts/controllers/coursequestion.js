@@ -46,6 +46,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             }     
             $scope.showCheckMultiple = 'true'; //hide check button
             $scope.showNextMultiple = 'false'; //show next button
+            $scope.showSolution = 'false'; //show solution button
             $scope.chooseButtonMultiple = []; //number, of which choice field is clicked
             $scope.shuffledChoices = shuffle($scope.question.choices); //shuffle choices
             $scope.correctAnswerField = MultipleQuestionService.getAnswerFields($scope.shuffledChoices, $scope.rightAnswersMultiple); //like question.answer, but for shuffled array
@@ -95,8 +96,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           //cannot undo. what is in array, remains in array
           //field is number of field, so you know which field will change color, once it is clicked
           $scope.chooseChoiceMultiple = function(choice, field){
-            
-
             if($scope.choicesFieldNum.indexOf(field) === -1){
                 $scope.chooseButtonMultiple[field] = {'border-style': 'solid', 'border-width': 'thick'};
                 $scope.choicesFieldNum.push(field);
@@ -132,11 +131,17 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             //in case you skip question and choose nothing, will be counted as a wrong answer
             if($scope.chosenChoisesMultiple.length === 0){
                 wrongAnswered++;
-            }  
+                angular.forEach($scope.correctAnswerField, function(answerNumber){
+                  $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
+                });
+            }
             //iterate through multiple choice array, answer is the item of array
-            angular.forEach($scope.chosenChoisesMultiple, function(choice){
+            angular.forEach($scope.chosenChoisesMultiple, function(choice, key){
               if($scope.rightAnswersMultiple.indexOf(choice) === -1){
                 wrongAnswered++;
+                $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#f2dede', 'border-style': 'solid', 'border-width': 'thick'};
+              }else{
+                $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#dff0d8', 'border-style': 'solid', 'border-width': 'thick'};
               }
             });
 
@@ -146,18 +151,16 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
               $scope.notifSuccess = 'true';
               $scope.mSuccess = 'You answered correct.';
             }else{
+              $scope.showSolution = 'true';
               $scope.notifFailure = 'true';
               $scope.mFailure = 'You answered wrong.';
             }
+          };
 
-            //iterate through multiple answer array and change background of right answers
+          $scope.showCorrectAnswers = function() {
+            $scope.showSolution = 'false';
             angular.forEach($scope.correctAnswerField, function(answerNumber){
-              if($scope.choicesFieldNum.indexOf(answerNumber) !== -1){
-                $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8', 'border-style': 'solid', 'border-width': 'thick'};
-              }else{
-                $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
-              }
-              
+              $scope.chooseButtonMultiple[answerNumber] = {'background-color':'#dff0d8'};
             });
           };
 
@@ -202,9 +205,14 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             angular.forEach($scope.question.answer, function(answer, i){
               if(angular.lowercase(angular.element(document.getElementById('answeredCloze['+i+']')).val()) === angular.lowercase(answer)){
                 $scope.numRightGaps++;
-                angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#9acd32');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#dff0d8');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.borderColor = '#d6e9c6');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.color = '#3c763d');
               }else{
-                angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#FF6347');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.backgroundColor = '#f2dede');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.borderColor = '#ebccd1');
+                angular.element(document.getElementById('answeredCloze['+i+']').style.color = '#a94442');
+                angular.element(document.getElementById(answer).innerHTML = answer);
               }
               angular.element(document.getElementById('answeredCloze['+i+']').setAttribute('disabled', true));
             });  
@@ -261,6 +269,7 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
                 }     
                 $scope.showCheckMultiple = 'true'; 
                 $scope.showNextMultiple = 'false'; 
+                $scope.showSolution = 'false'; //show solution button
                 $scope.chooseButtonMultiple = [];
                 $scope.shuffledChoices = shuffle($scope.question.choices);
                 $scope.correctAnswerField = MultipleQuestionService.getAnswerFields($scope.shuffledChoices, $scope.rightAnswersMultiple);

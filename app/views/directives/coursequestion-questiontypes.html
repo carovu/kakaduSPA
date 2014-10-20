@@ -16,26 +16,22 @@
 		</div>
 		<br>	
 		<!-- hide show button after showing answer -->
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-hide="showSimpleAnswer" ng-click="showSimple()" title="Show the answer.">Show answer</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-hide="showSimpleAnswer" ng-click="showSimple()">Show answer</button>
+		<button type="button" class="btn btn-primary btn-large" ng-hide="showSimpleAnswer" ng-click="showSimple()" title="Show the answer.">Show Answer</button>
 		<!-- show next button after showing answer and checking answer is done -->
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()">Next Question</button>
+		<button type="button" class="btn btn-primary btn-large" ng-show="showSimpleAnswer=='true' && simpleAnswered=='false'" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
     </div>
 
     <div ng-switch-when="cloze" title="This is the type of question, where you try to remember the answer and write them into the gaps. It is case insensitive.">
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
 		<br>
-		<label>Fill in the gaps. The question is insensitive, so when the answer is "Test", writing "tEsT" will be counted as correctly answered too.</label>
+		<label>Fill in the gaps. The question is insensitive, so when the answer is "Test", writing "tEsT" will be counted as correctly answered as well. Solution of falsely answered questions are shown beside the gaps.</label>
 		<br><br>
 		<form ng-submit="checkCloze()">
 			<cloze-question ng-model="question"></cloze-question>
 			<br><br>
-			<button type="submit" class="btn btn-primary btn-large hidden-xs" ng-show="showCheckCloze" title="Check your answer. Correct answers are highlighted as green and wrong answers as red.">Check question</button>
-			<button type="submit" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckCloze">Check question</button>
-			<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" ng-show="showNextCloze" title="Show the next question.">Next Question</button>
-			<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()" ng-show="showNextCloze">Next Question</button>
+			<button type="submit" class="btn btn-primary btn-large" ng-show="showCheckCloze" title="Check your answer. Correct answers are highlighted as green and wrong answers as red.">Check Question</button>
+			<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" ng-show="showNextCloze" title="Show the next question.">Next Question</button>
 		</form>
     </div>
 
@@ -53,10 +49,10 @@
 			<br>
 		</div>			
 		<!-- show check button, if showCheckMultiple is true, else hide -->
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">check</button>
-		<button type="button" class="btn btn-primary btn-large btn-mobile-showcheck hidden-sm hidden-md hidden-lg" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()">Check question</button>
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">Next Question</button> 	
-		<button type="button" class="btn btn-primary btn-large btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()">Next Question</button> 	
+		<button type="button" class="btn btn-primary btn-large" ng-show="showCheckMultiple" class="ng-hide" ng-click="checkMultiple()" title="Check your answer. The correct answers are highlighted in green.">Check Question</button>
+		<button type="button" class="btn btn-primary btn-large" ng-show="showSolution" class="ng-hide" ng-click="showCorrectAnswers()" title="Show the correct answers.">Show Solution</button> 		
+		<button type="button" class="btn btn-primary btn-large" ng-show="showNextMultiple" class="ng-hide" ng-click="nextQuestion()" title="Show the next question.">Next Question</button> 	
+
     </div>
 
     <div ng-switch-when="dragdrop" title="This is the type of question, where you drag the correct answer into the answerfield. The correct answer will be highlighted in green and a wrong answer in red. Choosing nothing will be taken as not knowing the answer.">
@@ -87,7 +83,6 @@
 				{{choice}}
 			</div>
 		</div>				
-		<button type="button" class="btn btn-primary btn-large hidden-xs" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
-		<button type="button" class="btn btn-info btn-mobile-nextq hidden-sm hidden-md hidden-lg" ng-click="nextQuestion()">Next Question</button>
+		<button type="button" class="btn btn-primary btn-large" ng-click="nextQuestion()" title="Show the next question.">Next Question</button>
     </div>
 </div>

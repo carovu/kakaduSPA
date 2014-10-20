@@ -26,7 +26,7 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
 			var endPos = startPos + answers[i].length;
 			var before = question.substr(0, startPos);
 			var after = question.substr(endPos, question.length);
-			var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input>';
+			var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input> <label id="'+answers[i]+'" style="color:#3c763d"></label>';
 			question = before + gap + after;
 		}
 		element.html(question);
@@ -39,7 +39,7 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
 				var endPos = startPos + answers[i].length;
 				var before = question.substr(0, startPos);
 				var after = question.substr(endPos, question.length);
-				var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input>';
+				var gap = '<input type="text" id="answeredCloze['+i+']" style="background-color:#ababab; border:none"></input> <label id="'+answers[i]+'" style="color:#3c763d"></label>';
 				question = before + gap + after;
 			}
 			element.html(question);
@@ -117,14 +117,6 @@ angular.module('kakaduSpaApp').directive('listFavorites', function () {
     return {
     	restrict: 'E',
     	templateUrl:'views/directives/favorites-list.html'
-    };
-  });
-
-//directive for showing the progressbar
-angular.module('kakaduSpaApp').directive('progressbar', function () {
-    return {
-    	restrict: 'E',
-    	templateUrl:'views/directives/coursequestion-progressbar.html'
     };
   });
 

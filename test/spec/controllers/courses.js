@@ -25,9 +25,6 @@ describe('Controller: CourseListCtrl', function () {
       },
       'search': function(searchInput) {
         return $http.get('http://localhost/kakadu/public/api/spa/courses/search?search=test');
-      },
-      'reset': function(courseId) {
-        return $http.get('http://localhost/kakadu/public/api/spa/course/1/reset');
       }
     };
 
@@ -61,11 +58,6 @@ describe('Controller: CourseListCtrl', function () {
   it('should call $http.get in search', inject(function (CoursesService, $httpBackend) {
     $httpBackend.expectGET('http://localhost/kakadu/public/api/spa/courses/search?search=test');
     CoursesService.search();
-  }));
-
-  it('should call $http.get in reset', inject(function (CoursesService, $httpBackend) {
-    $httpBackend.expectGET('http://localhost/kakadu/public/api/spa/course/1/reset');
-    CoursesService.reset();
   }));
 });
 

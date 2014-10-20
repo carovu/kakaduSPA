@@ -75,9 +75,6 @@ kakaduServices.factory('CoursesService', function($http) {
     },
     search: function(searchInput) {
       return $http.get('http://localhost/kakadu/public/api/spa/courses/search?search='+searchInput);
-    },
-    reset: function(courseId) {
-      return $http.get('http://localhost/kakadu/public/api/spa/course/'+ courseId +'/reset');
     }
   };
 });

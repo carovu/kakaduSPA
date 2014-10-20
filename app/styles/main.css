@@ -146,7 +146,7 @@ body {
     border-bottom: 1px solid #eee;
   }
 
-  .btn-mobile-showcheck {
+  .btn-mobile {
       position: fixed;
       opacity: 1.0;
       visibility: visible;
@@ -154,22 +154,8 @@ body {
       overflow: hidden;
       text-align: center;
       z-index: 99999999;
-      right: 120px;
-      bottom: 10px;
-      padding-top: 2px;
-      border-style:solid;
-  }
-
-  .btn-mobile-nextq {
-      position: fixed;
-      opacity: 1.0;
-      visibility: visible;
-      cursor:pointer;
-      overflow: hidden;
-      text-align: center;
-      z-index: 99999999;
-      right: 50px;
-      bottom: 10px;
+      left: 50%;
+      bottom: 5%;
       padding-top: 2px;
       border-style:solid;
   }

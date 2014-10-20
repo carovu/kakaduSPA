@@ -32,11 +32,6 @@ describe('Controller: LoginCtrl', function () {
 
   it('initial values should be correct', function () {
     createLoginCtrl();
-    expect(scope.credentials.email).toBe('');
-    expect(scope.credentials.password).toBe('');  
-    expect(scope.userCredentials.displayname).toBe('');  
-    expect(scope.userCredentials.email).toBe('');  
-    expect(scope.userCredentials.language).toBe('');  
   });  
 
   it('should exist', inject(function (AuthenticationService) {

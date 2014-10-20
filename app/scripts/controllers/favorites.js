@@ -6,7 +6,7 @@
  * @description
  * # shows favorites of courses.
  */
-angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $rootScope, $location, $http, $cookieStore, AuthenticationService, FavoritesService, CoursesService) {
+angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $rootScope, $location, $http, $cookieStore, AuthenticationService, FavoritesService) {
   $scope.activeFavoriteIndex = [];
   $scope.notifInfo = 'false';
   $scope.notifDanger = 'false';
@@ -53,21 +53,6 @@ angular.module('kakaduSpaApp').controller('FavoritesCtrl', function ($scope, $ro
         $scope.notifInfo = 'false';
         $scope.notifDanger = 'true';
       	$scope.notification = data.message;
-      }else{
-        $location.path('/500');
-      }
-    });
-  };
-
-  $scope.resetPercentage = function(favoriteId) {
-    resetFavoritesNotif();
-    CoursesService.reset(favoriteId).success(function (data) {
-      $scope.favorites = data;
-    }).error(function (data) {
-      if(angular.isString(data.message)){
-        $scope.notifInfo = 'false';
-        $scope.notifDanger = 'true';
-        $scope.notification = data.message;
       }else{
         $location.path('/500');
       }

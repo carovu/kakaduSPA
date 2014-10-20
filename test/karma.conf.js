@@ -32,6 +32,8 @@ module.exports = function(config) {
       'bower_components/underscore/underscore.js',
       'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-dragdrop/src/angular-dragdrop.js',
+      'bower_components/angular-promise-tracker/promise-tracker.js',
+      'bower_components/angular-busy/dist/angular-busy.js',
       'app/scripts/**/*.js',
       //'test/mock/**/*.js',
       'test/spec/**/*.js'
