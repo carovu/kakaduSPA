@@ -94,8 +94,16 @@
 		<p>{{question.question}}</p> 
 		<br>
 		<label>Drag the correct answer into the answer field.</label>
-		<h2 class="text-center hidden-xs"><p>Drop your answer here</p><h2>
-		<h4 class="text-center hidden-sm hidden-md hidden-lg"><p>Drop your answer here</p><h4>
+		<h2 class="hidden-xs"><p>Choices</p></h2>
+		<h4 class="hidden-sm hidden-md hidden-lg"><p>Choices</p></h4>
+		<!-- Show all choices in list than json format -->
+		<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in shuffledChoices">
+			<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="showDraggable(choice)">
+				{{choice}}
+			</div>
+		</div>	
+		<h2 class="hidden-xs"><p>Answer</p><h2>
+		<h4 class="hidden-sm hidden-md hidden-lg"><p>Answer</p><h4>
 		<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choiceDrop" jqyoui-droppable="{onDrop:'dropCallback(choiceDrop)'}" style='height:44px;'>
 				<div ng-if="choiceDrop === question.answer">
 					<div class="btn btn-success btn-block" data-drag="false" data-jqyoui-options ng-model="choiceDrop" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="showDraggable(choiceDrop)" id="choiceDragDrop">
@@ -107,15 +115,7 @@
 						{{choiceDrop}}
 					</div>
 			</div>
-		</div>
-		<h2 class="hidden-xs"><p>Choices</p></h2>
-		<h4 class="hidden-sm hidden-md hidden-lg"><p>Choices</p></h4>
-		<!-- Show all choices in list than json format -->
-		<div class="btn btn-droppable thumbnail" data-drop="true" data-jqyoui-options ng-model="choice" jqyoui-droppable style='height:44px;' ng-repeat="choice in shuffledChoices">
-			<div class="btn btn-primary btn-block" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="choice" jqyoui-draggable="{placeholder:true,animate:true}" ng-show="showDraggable(choice)">
-				{{choice}}
-			</div>
-		</div>		
+		</div>	
 		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
 			{{message}}
 		</div>

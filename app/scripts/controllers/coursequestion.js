@@ -151,9 +151,14 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
               $scope.notifSuccess = 'true';
               $scope.mSuccess = 'You answered correct.';
             }else{
-              $scope.showSolution = 'true';
-              $scope.notifFailure = 'true';
-              $scope.mFailure = 'You answered wrong.';
+              if($scope.chosenChoisesMultiple.length === 0){
+                $scope.notifFailure = 'true';
+                $scope.mFailure = 'You answered wrong.';
+              }else{
+                $scope.showSolution = 'true';
+                $scope.notifFailure = 'true';
+                $scope.mFailure = 'You answered wrong.';
+              }
             }
           };
 
