@@ -14,7 +14,8 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
     $scope.message = 'Please Wait...';
     $scope.backdrop = true;
     $scope.promise = null;
-    
+    $scope.showStat = 'false';
+
     $scope.promise = CourseQuestionService.getCourse($routeParams.courseId).success(function(data) {
           //Global variables
           $scope.question = data;
@@ -22,15 +23,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           $scope.message = '';  //notification, how you answered
           $scope.mSuccess = ''; //notification for correctly answered
           $scope.mFailure = ''; //notification for falsely answered
-          $scope.notifInfo = 'false';
           $scope.notifSuccess = 'false';
           $scope.notifFailure = 'false';
-          $scope.congrats = 'false'; //congratulations only appear the first time you reach 100;
-          if($scope.question.percentage === 100 && $scope.congrats === 'false'){
-            $scope.notifInfo = 'true';
-            $scope.congrats = 'true';
-            $scope.message = 'CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.';
-          }
+          $scope.numCorrectPercentage = ($scope.question.numCorrect/$scope.question.numAnswered)*100;
+          $scope.numIncorrectPercentage = ($scope.question.numIncorrect/$scope.question.numAnswered)*100;
           //variables for the different types
           if($scope.question.type === 'simple'){
 
@@ -75,7 +71,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           //user did remember answer correctly 
           $scope.simpleAnswerCorrect = function() {
             $scope.checkAnswer = 'true';
-            $scope.notifInfo = 'false';
             $scope.notifSuccess = 'true';
             $scope.mSuccess = 'You answered correct.';
             $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
@@ -83,7 +78,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           //user did not remember answer correctly
           $scope.simpleAnswerWrong = function() {
             $scope.checkAnswer = 'false';
-            $scope.notifInfo = 'false';
             $scope.notifFailure = 'true';
             $scope.mFailure = 'You answered wrong.';
             $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
@@ -124,7 +118,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           //every choice has to be right, otherwise, answered wrong.
           //there is no halfright or halfwrong
           $scope.checkMultiple = function(){
-            $scope.notifInfo = 'false';
             var wrongAnswered = 0;
             $scope.showCheckMultiple = 'false';
             $scope.showNextMultiple = 'true';
@@ -174,7 +167,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           */
           //drop event
           $scope.dropCallback = function(event, ui, choice) {
-            $scope.notifInfo = 'false';
             $scope.mSuccess = 'You answered correct.';
             //angular.element(ui.draggable).scope().choiceDrop
             if($scope.question.answer === choice){
@@ -204,7 +196,6 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           */
           //checking cloze, we are using jquery, because offered AJS directives are not useful enough
           $scope.checkCloze = function(){
-            $scope.notifInfo = 'false';
             $scope.showCheckCloze = 'false';
             $scope.showNextCloze = 'true';
             angular.forEach($scope.question.answer, function(answer, i){
@@ -251,15 +242,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
               $scope.message = '';
               $scope.mSuccess = ''; 
               $scope.mFailure = ''; 
-              $scope.notifInfo = 'false';
               $scope.notifSuccess = 'false';
               $scope.notifFailure = 'false';
-              $scope.notifInfo = 'false';
-              if($scope.question.percentage === 100 && $scope.congrats === 'false'){
-                $scope.notifInfo = 'true';
-                $scope.congrats = 'true';
-                $scope.message = 'CONGRATULATIONS! Well done! You have learned all questions. You can go back to the other courses by clicking on kakadu or continue learning this course by remaining here.';
-              }
+              $scope.numCorrectPercentage = ($scope.question.numCorrect/$scope.question.numAnswered)*100;
+              $scope.numIncorrectPercentage = ($scope.question.numIncorrect/$scope.question.numAnswered)*100;
               if($scope.question.type === 'simple'){
 
                 $scope.showSimpleAnswer = 'false';
@@ -300,6 +286,13 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             });
           };
 
+          $scope.showStatistic = function() {
+            if($scope.showStat === 'false'){
+              $scope.showStat = 'true';
+            } else{
+              $scope.showStat = 'false';
+            }
+          };
           $scope.logOut = function() {
             AuthenticationService.logout().success(function() {
               $cookieStore.remove('displayname');

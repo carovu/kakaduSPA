@@ -1,0 +1,31 @@
+<div ng-show="showStat">
+	<div class="progress" title="Overall statistic. Compromised of all answered correctly and incorrectly questions.">
+	  <div class="progress-bar progress-bar-info" style="width: {{numCorrectPercentage}}%">
+	    {{question.numCorrect}}
+	  </div>
+	  <div class="progress-bar progress-bar-warning" style="width: {{numIncorrectPercentage}}%">
+	    {{question.numIncorrect}}
+	  </div>
+	</div>
+	<p>{{question.numCorrect}} correct questions answered </p>
+	<p>{{question.numIncorrect}} incorrect questions answered </p> 
+	<p>{{question.numAnswered}} overall questions answered</p>
+</div>
+
+<div ng-switch on="question.iteration">
+	<div ng-switch-when="1" class="progress" title="The progress bar shows you your progress by illustrating the course percentage.">
+		<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{question.percentage}}%;" >
+		    {{question.percentage | number:0}}%
+		</div>
+	</div>
+	<div ng-switch-when="2" class="progress" title="The progress bar shows you your progress by illustrating the course percentage.">
+		<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{question.percentage}}%;" >
+	    {{question.percentage | number:0}}%
+		</div>
+	</div>
+	<div ng-switch-default class="progress" title="The progress bar shows you your progress by illustrating the course percentage.">
+		<div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{question.percentage}}%;" >
+	    {{question.percentage | number:0}}%
+		</div>
+	</div>	
+</div>

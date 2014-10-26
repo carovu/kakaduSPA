@@ -41,7 +41,7 @@ angular.module('kakaduSpaApp', [
     controller: 'FavoritesCtrl'
   })
   .when('/favorites/learning', {
-    templateUrl: 'views/coursequestion.html',
+    templateUrl: 'views/favoritesquestion.html',
     controller: 'FavoritesQuestionCtrl'
   })
   .when('/profile', {

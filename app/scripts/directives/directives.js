@@ -120,6 +120,14 @@ angular.module('kakaduSpaApp').directive('listFavorites', function () {
     };
   });
 
+//directive for showing the progressbar
+angular.module('kakaduSpaApp').directive('progressbar', function () {
+    return {
+     restrict: 'E',
+     templateUrl:'views/directives/coursequestion-progressbar.html'
+    };
+  });
+
 //directive for showing the questiontypes
 angular.module('kakaduSpaApp').directive('questiontypes', function () {
     return {

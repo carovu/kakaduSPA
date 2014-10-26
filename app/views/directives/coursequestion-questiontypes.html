@@ -10,15 +10,11 @@
 		<div class ng-show="showSimpleAnswer" class="ng-hide">
 			<p>{{question.answer}}</p>
 			<div class ng-show="simpleAnswered" class="ng-hide">
-				<button type="button" class="btn btn-default" ng-click="simpleAnswerCorrect()" title="Click this button, if you remembered the answer correctly."><span class="glyphicon glyphicon-ok"></button> 
-				<button type="button" class="btn btn-default" ng-click="simpleAnswerWrong()" title="Click this button, if you remembered the answer wrong."><span class="glyphicon glyphicon-remove"></button>
+				<button type="button" class="btn btn-success" ng-click="simpleAnswerCorrect()" title="Click this button, if you remembered the answer correctly."><span class="glyphicon glyphicon-ok"> Correct</button> 
+				<button type="button" class="btn btn-danger" ng-click="simpleAnswerWrong()" title="Click this button, if you remembered the answer wrong."><span class="glyphicon glyphicon-remove"> Incorrect</button>
 			</div> 
 		</div>
 		<br>	
-		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
-			{{message}}
-		</div>
-
 		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
 			{{mFailure}}
 		</div>
@@ -41,10 +37,6 @@
 		<form ng-submit="checkCloze()">
 			<cloze-question ng-model="question"></cloze-question>
 			<br><br>
-			<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
-				{{message}}
-			</div>
-
 			<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
 				{{mFailure}}
 			</div>
@@ -70,10 +62,6 @@
 			<button type="button" class="btn btn-default btn-block" ng-click="chooseChoiceMultiple(choice, {{$index}})" ng-style="chooseButtonMultiple[{{$index}}]">{{choice}}</button>
 			<br>
 		</div>			
-		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
-			{{message}}
-		</div>
-
 		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
 			{{mFailure}}
 		</div>
@@ -116,10 +104,6 @@
 					</div>
 			</div>
 		</div>	
-		<div class="alert alert-info text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifInfo">
-			{{message}}
-		</div>
-
 		<div class="alert alert-danger text-center" role="alert" title="Notification whether you answered the question correct or wrong." ng-show="notifFailure">
 			{{mFailure}}
 		</div>
