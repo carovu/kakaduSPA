@@ -228,7 +228,7 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
           question: $scope.question.id, //changes after every request
           course: $scope.question.course, //must always remain the same
           catalog: $scope.question.catalog, //changes after every request
-          section: 'course', //in laravelclient is choice between learning from catalogsection or favoritesection and is given over view, backbone and javascript 
+          section: 'favorites', //in laravelclient is choice between learning from catalogsection or favoritesection and is given over view, backbone and javascript 
                              //-> since we only have a course section in this client, and no backbone or view to give over and then call from in postadd, 
                              //we will add it manually here
           answer: $scope.checkAnswer //if user answers question right or wrong
