@@ -131,7 +131,7 @@ kakaduServices.factory('TokenService', [
   function ($http) {
     return {
       get: function () {
-        return $http.get('http://localhost/kakadu/public/api/spa/token');
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/token');
       }
     };
   }
@@ -144,13 +144,13 @@ kakaduServices.factory('CoursesService', [
   function ($http) {
     return {
       get: function () {
-        return $http.get('http://localhost/kakadu/public/api/spa/courses');
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses');
       },
       getPage: function (currentPage, perPage, sort, sortDir) {
-        return $http.get('http://localhost/kakadu/public/api/spa/courses?page=' + currentPage + '&per_page=' + perPage + '&sort=' + sort + '&sort_dir=' + sortDir);
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses?page=' + currentPage + '&per_page=' + perPage + '&sort=' + sort + '&sort_dir=' + sortDir);
       },
       search: function (searchInput) {
-        return $http.get('http://localhost/kakadu/public/api/spa/courses/search?search=' + searchInput);
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/courses/search?search=' + searchInput);
       }
     };
   }
@@ -163,13 +163,13 @@ kakaduServices.factory('CourseQuestionService', [
   function ($http) {
     return {
       getCourse: function (courseId) {
-        return $http.get('http://localhost/kakadu/public/api/spa/course/' + courseId + '/learning');
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/course/' + courseId + '/learning');
       },
       getLearnFavorites: function () {
-        return $http.get('http://localhost/kakadu/public/api/spa/favorites/learning');
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/favorites/learning');
       },
       nextQuestion: function (questionmodel) {
-        return $http.post('http://localhost/kakadu/public/api/spa/learning/next', questionmodel);
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/learning/next', questionmodel);
       }
     };
   }
@@ -182,13 +182,13 @@ kakaduServices.factory('FavoritesService', [
   function ($http) {
     return {
       getFavorites: function () {
-        return $http.get('http://localhost/kakadu/public/api/spa/favorites');
+        return $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/favorites');
       },
       add: function (data) {
-        return $http.post('http://localhost/kakadu/public/api/spa/favorites/add', data);
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/favorites/add', data);
       },
       remove: function (data) {
-        return $http.post('http://localhost/kakadu/public/api/spa/favorites/remove', data);
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/favorites/remove', data);
       }
     };
   }
@@ -209,12 +209,12 @@ kakaduServices.factory('AuthenticationService', [
     };
     return {
       login: function (credentials) {
-        var login = $http.post('http://localhost/kakadu/public/api/spa/auth/login', JSON.stringify(credentials));
+        var login = $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/login', JSON.stringify(credentials));
         login.success(cacheSession);
         return login;
       },
       logout: function () {
-        var logout = $http.get('http://localhost/kakadu/public/api/spa/auth/logout');
+        var logout = $http.get('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/logout');
         logout.success(uncacheSession);
         return logout;
       },
@@ -232,13 +232,13 @@ kakaduServices.factory('ProfileService', [
   function ($http) {
     return {
       editUser: function (credentials) {
-        return $http.post('http://localhost/kakadu/public/api/spa/profile/edit', JSON.stringify(credentials));
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/edit', JSON.stringify(credentials));
       },
       changePwd: function (credentials) {
-        return $http.post('http://localhost/kakadu/public/api/spa/profile/changepassword', JSON.stringify(credentials));
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/changepassword', JSON.stringify(credentials));
       },
       deleteProfile: function () {
-        return $http.post('http://localhost/kakadu/public/api/spa/profile/delete');
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/profile/delete');
       }
     };
   }
@@ -251,7 +251,7 @@ kakaduServices.factory('RegistrationService', [
   function ($http) {
     return {
       register: function (credentials) {
-        return $http.post('http://localhost/kakadu/public/api/spa/auth/register', JSON.stringify(credentials));
+        return $http.post('http://dbis-fw.uibk.ac.at:6680/api/spa/auth/register', JSON.stringify(credentials));
       }
     };
   }
