@@ -72,14 +72,14 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
           $scope.simpleAnswerCorrect = function() {
             $scope.checkAnswer = 'true';
             $scope.notifSuccess = 'true';
-            $scope.mSuccess = 'You answered correct.';
+            $scope.mSuccess = 'Your answer was correct.';
             $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
           };
           //user did not remember answer correctly
           $scope.simpleAnswerWrong = function() {
             $scope.checkAnswer = 'false';
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
             $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
           };
 
@@ -130,11 +130,15 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             }
             //iterate through multiple choice array, answer is the item of array
             angular.forEach($scope.chosenChoisesMultiple, function(choice, key){
-              if($scope.rightAnswersMultiple.indexOf(choice) === -1){
-                wrongAnswered++;
-                $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#f2dede', 'border-style': 'solid', 'border-width': 'thick'};
+              if($scope.chosenChoisesMultiple.length === $scope.rightAnswersMultiple.length){
+                if($scope.rightAnswersMultiple.indexOf(choice) === -1){
+                  wrongAnswered++;
+                  $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#f2dede', 'border-style': 'solid', 'border-width': 'thick'};
+                }else{
+                  $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#dff0d8', 'border-style': 'solid', 'border-width': 'thick'};
+                }
               }else{
-                $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {'background-color':'#dff0d8', 'border-style': 'solid', 'border-width': 'thick'};
+                wrongAnswered++;
               }
             });
 
@@ -142,15 +146,15 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             if(wrongAnswered === 0){
               $scope.checkAnswer = 'true';
               $scope.notifSuccess = 'true';
-              $scope.mSuccess = 'You answered correct.';
+              $scope.mSuccess = 'Your answer was correct.';
             }else{
               if($scope.chosenChoisesMultiple.length === 0){
                 $scope.notifFailure = 'true';
-                $scope.mFailure = 'You answered wrong.';
+                $scope.mFailure = 'Your answer was not correct';
               }else{
                 $scope.showSolution = 'true';
                 $scope.notifFailure = 'true';
-                $scope.mFailure = 'You answered wrong.';
+                $scope.mFailure = 'Your answer was not correct';
               }
             }
           };
@@ -173,11 +177,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
               $scope.checkAnswer = 'true';
               $scope.notifSuccess = 'true';
               $scope.notifFailure = 'false';
-              $scope.mSuccess = 'You answered correct.';
+              $scope.mSuccess = 'Your answer was correct.';
             }else{
               $scope.notifSuccess = 'false';
               $scope.notifFailure = 'true';
-              $scope.mFailure = 'You answered wrong.';
+              $scope.mFailure = 'Your answer was not correct';
             }
           };
 
@@ -215,10 +219,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', function ($rootS
             if($scope.numRightGaps === $scope.question.answer.length){
               $scope.checkAnswer = 'true';
               $scope.notifSuccess = 'true';
-              $scope.mSuccess = 'You answered correct.';
+              $scope.mSuccess = 'Your answer was correct.';
             }else{
               $scope.notifFailure = 'true';
-              $scope.mFailure = 'You answered wrong.';
+              $scope.mFailure = 'Your answer was not correct';
             }
             $scope.disableCloze++;
           };

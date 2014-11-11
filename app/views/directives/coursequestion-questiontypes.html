@@ -1,9 +1,9 @@
 <div ng-switch on="question.type">
     <div ng-switch-when="simple" title="This is the type of question, where you try to remember the answer and the answer will be shown later.">
-    	<label>Answer in your mind. Click "Show answer" to see whether you were correct or not. Click "Checkmark", if you were right. Click "X", if you were wrong.</label>
 		<h2 class="hidden-xs"><p>Question</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Question</p></h4>
 		<p>{{question.question}}</p> 
+		<label>Answer in your mind. Click "Show answer" to see whether you were correct or not. Click "Checkmark", if you were right. Click "X", if you were wrong.</label>
 		<h2 class="hidden-xs"><p>Answer</p></h2>
 		<h4 class="hidden-sm hidden-md hidden-lg"><p>Answer</p></h4>
 		<!-- show simplequestion, if showSimpleAnswer is true, else hide -->

@@ -69,14 +69,14 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
       $scope.simpleAnswerCorrect = function() {
         $scope.checkAnswer = 'true';
         $scope.notifSuccess = 'true';
-        $scope.mSuccess = 'You answered correct.';
+        $scope.mSuccess = 'Your answer was correct';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
       //user did not remember answer correctly
       $scope.simpleAnswerWrong = function() {
         $scope.checkAnswer = 'false';
         $scope.notifFailure = 'true';
-        $scope.mFailure = 'You answered wrong.';
+        $scope.mFailure = 'Your answer was not correct';
         $scope.simpleAnswered = 'false';//hide correct, wrong button in simple after clicking on them
       };
 
@@ -139,15 +139,15 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
         if(wrongAnswered === 0){
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         }else{
           if($scope.chosenChoisesMultiple.length === 0){
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           }else{
             $scope.showSolution = 'true';
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           }
         }
       };
@@ -170,11 +170,11 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
           $scope.notifFailure = 'false';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         }else{
           $scope.notifSuccess = 'false';
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
       };
 
@@ -212,10 +212,10 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
         if($scope.numRightGaps === $scope.question.answer.length){
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         }else{
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
         $scope.disableCloze++;
       };
@@ -280,6 +280,14 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', function ($ro
           $rootScope.notifDanger = 'true';
           $rootScope.notification = data.message;
         });
+      };
+      
+      $scope.showStatistic = function() {
+        if($scope.showStat === 'false'){
+          $scope.showStat = 'true';
+        } else{
+          $scope.showStat = 'false';
+        }
       };
 
       $scope.logOut = function() {

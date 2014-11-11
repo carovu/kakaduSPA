@@ -277,7 +277,7 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
         var endPos = startPos + answers[i].length;
         var before = question.substr(0, startPos);
         var after = question.substr(endPos, question.length);
-        var gap = '<input type="text" id="answeredCloze[' + i + ']" style="background-color:#ababab; border:none"></input> <label id="' + answers[i] + '" style="color:#3c763d"></label>';
+        var gap = '<input type="text" id="answeredCloze[' + i + ']" style="background-color:#ababab; border:none; padding-left: 5px; padding-right: 5px"></input> <label id="' + answers[i] + '" style="color:#3c763d"></label>';
         question = before + gap + after;
       }
       element.html(question);
@@ -290,7 +290,7 @@ angular.module('kakaduSpaApp').directive('clozeQuestion', function () {
           var endPos = startPos + answers[i].length;
           var before = question.substr(0, startPos);
           var after = question.substr(endPos, question.length);
-          var gap = '<input type="text" id="answeredCloze[' + i + ']" style="background-color:#ababab; border:none"></input> <label id="' + answers[i] + '" style="color:#3c763d"></label>';
+          var gap = '<input type="text" id="answeredCloze[' + i + ']" style="background-color:#ababab; border:none; padding-left: 5px; padding-right: 5px"></input> <label id="' + answers[i] + '" style="color:#3c763d"></label>';
           question = before + gap + after;
         }
         element.html(question);
@@ -755,14 +755,14 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
       $scope.simpleAnswerCorrect = function () {
         $scope.checkAnswer = 'true';
         $scope.notifSuccess = 'true';
-        $scope.mSuccess = 'You answered correct.';
+        $scope.mSuccess = 'Your answer was correct.';
         $scope.simpleAnswered = 'false';  //hide correct, wrong button in simple after clicking on them
       };
       //user did not remember answer correctly
       $scope.simpleAnswerWrong = function () {
         $scope.checkAnswer = 'false';
         $scope.notifFailure = 'true';
-        $scope.mFailure = 'You answered wrong.';
+        $scope.mFailure = 'Your answer was not correct';
         $scope.simpleAnswered = 'false';  //hide correct, wrong button in simple after clicking on them
       };
       /*
@@ -815,34 +815,38 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
         }
         //iterate through multiple choice array, answer is the item of array
         angular.forEach($scope.chosenChoisesMultiple, function (choice, key) {
-          if ($scope.rightAnswersMultiple.indexOf(choice) === -1) {
-            wrongAnswered++;
-            $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {
-              'background-color': '#f2dede',
-              'border-style': 'solid',
-              'border-width': 'thick'
-            };
+          if ($scope.chosenChoisesMultiple.length === $scope.rightAnswersMultiple.length) {
+            if ($scope.rightAnswersMultiple.indexOf(choice) === -1) {
+              wrongAnswered++;
+              $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {
+                'background-color': '#f2dede',
+                'border-style': 'solid',
+                'border-width': 'thick'
+              };
+            } else {
+              $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {
+                'background-color': '#dff0d8',
+                'border-style': 'solid',
+                'border-width': 'thick'
+              };
+            }
           } else {
-            $scope.chooseButtonMultiple[$scope.choicesFieldNum[key]] = {
-              'background-color': '#dff0d8',
-              'border-style': 'solid',
-              'border-width': 'thick'
-            };
+            wrongAnswered++;
           }
         });
         //setting false is unnecessary, because checkanswer is false by default
         if (wrongAnswered === 0) {
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct.';
         } else {
           if ($scope.chosenChoisesMultiple.length === 0) {
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           } else {
             $scope.showSolution = 'true';
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           }
         }
       };
@@ -863,11 +867,11 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
           $scope.notifFailure = 'false';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct.';
         } else {
           $scope.notifSuccess = 'false';
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
       };
       //hide or show draggable
@@ -903,10 +907,10 @@ angular.module('kakaduSpaApp').controller('CourseQuestionCtrl', [
         if ($scope.numRightGaps === $scope.question.answer.length) {
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct.';
         } else {
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
         $scope.disableCloze++;
       };
@@ -1194,14 +1198,14 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', [
       $scope.simpleAnswerCorrect = function () {
         $scope.checkAnswer = 'true';
         $scope.notifSuccess = 'true';
-        $scope.mSuccess = 'You answered correct.';
+        $scope.mSuccess = 'Your answer was correct';
         $scope.simpleAnswered = 'false';  //hide correct, wrong button in simple after clicking on them
       };
       //user did not remember answer correctly
       $scope.simpleAnswerWrong = function () {
         $scope.checkAnswer = 'false';
         $scope.notifFailure = 'true';
-        $scope.mFailure = 'You answered wrong.';
+        $scope.mFailure = 'Your answer was not correct';
         $scope.simpleAnswered = 'false';  //hide correct, wrong button in simple after clicking on them
       };
       /*
@@ -1273,15 +1277,15 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', [
         if (wrongAnswered === 0) {
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         } else {
           if ($scope.chosenChoisesMultiple.length === 0) {
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           } else {
             $scope.showSolution = 'true';
             $scope.notifFailure = 'true';
-            $scope.mFailure = 'You answered wrong.';
+            $scope.mFailure = 'Your answer was not correct';
           }
         }
       };
@@ -1302,11 +1306,11 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', [
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
           $scope.notifFailure = 'false';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         } else {
           $scope.notifSuccess = 'false';
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
       };
       //hide or show draggable
@@ -1342,10 +1346,10 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', [
         if ($scope.numRightGaps === $scope.question.answer.length) {
           $scope.checkAnswer = 'true';
           $scope.notifSuccess = 'true';
-          $scope.mSuccess = 'You answered correct.';
+          $scope.mSuccess = 'Your answer was correct';
         } else {
           $scope.notifFailure = 'true';
-          $scope.mFailure = 'You answered wrong.';
+          $scope.mFailure = 'Your answer was not correct';
         }
         $scope.disableCloze++;
       };
@@ -1400,6 +1404,13 @@ angular.module('kakaduSpaApp').controller('FavoritesQuestionCtrl', [
           $rootScope.notifDanger = 'true';
           $rootScope.notification = data.message;
         });
+      };
+      $scope.showStatistic = function () {
+        if ($scope.showStat === 'false') {
+          $scope.showStat = 'true';
+        } else {
+          $scope.showStat = 'false';
+        }
       };
       $scope.logOut = function () {
         AuthenticationService.logout().success(function () {

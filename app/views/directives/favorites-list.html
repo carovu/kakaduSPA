@@ -1,16 +1,11 @@
 <div class="panel panel-default" ng-repeat="(favoriteIndex, favorite) in favorites | filter:query | orderBy:orderProp">
 	<div class="panel-heading" title="A course.">
-		<span class="badge alert-warning" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage<75 && favorite.percentage>25">{{favorite.percentage}}%</span>
-		<span class="badge alert-success" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage>=75">{{favorite.percentage}}%</span>
-		<span class="badge alert-danger" title="The course percentage. Shows how much of the course you have already learned. Maximum is 100%." ng-show="favorite.percentage<=25">{{favorite.percentage}}%</span>
-
 		<a href="#/course/{{favorite.id}}/learning" title="Course title">[{{favorite.quantity}}] {{favorite.name}}</a>
 		<a href="#/favorites" class="panel-title pull-right" ng-click="showDescription(favoriteIndex)" ng-hide="isShowing(favoriteIndex)" title="Show description"><span class="glyphicon glyphicon-chevron-down"></span></a>
 	</div>
 
 
 	<div class="panel-body" ng-show="isShowing(favoriteIndex)">
-		<p>Iteration: {{favorite.iteration}}</p>
 		<p>Overall number of questions: {{favorite.quantity}}</p>
 		<p>{{favorite.description}}</p>
 			<a href="#/favorites" ng-model="favorites" ng-click="removeFavorite(favorite.id)" title="Removes this courses as a favorite and from this list">Remove from Your Courses</a>
